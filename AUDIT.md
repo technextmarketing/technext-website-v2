@@ -36,6 +36,10 @@ Date: 12 September 2026. Re-run the static half any time with `python _src/audit
      pop-up zooms out of that node (WAAPI), prev/next through the steps, cross-links to app pop-ups.
    - Slide 3 — two counter-rotating rings of Odoo apps around the Ready Partner badge; hover pauses and
      shows labels; click → app pop-up.
+   - **3D tilt stage** — the whole active slide (copy, cards, nodes, labels, rings) rotates toward the cursor
+     in any direction (±8° X, ±12° Y, eased) on a 1300 px perspective; layers sit at their own depth
+     (copy 40 · dashboard 60 · floaters 60–140 · toasts 150 · flow nodes 28–133 · edge labels 100 ·
+     orbit rings 20/80 · partner badge 150) so the tilt shows the layering. Fine pointers only.
    - Shared background: three drifting aurora blobs, dot grid with radial mask, cursor spotlight, particle
      field with proximity links (canvas, paused when the tab is hidden).
    - Marquee strip of 20 Odoo apps along the bottom edge; pauses on hover.

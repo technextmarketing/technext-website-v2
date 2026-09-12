@@ -179,9 +179,12 @@
     if (first) slide.classList.add('cam-first');
     hero.classList.add('is-cam');
     hero.style.setProperty('--cam', first ? '700ms' : '900ms');
+    tiltReset();
     camTimers.push(setTimeout(function () {
       slide.classList.remove('is-entering', 'cam-first'); CAM_IN.forEach(function (c) { slide.classList.remove(c); });
       hero.classList.remove('is-cam'); hero.style.removeProperty('--cam');
+      // ease from flat into the current cursor tilt instead of snapping
+      tilt.cx = tilt.cy = 0; if (!tilt.raf) tilt.raf = requestAnimationFrame(tiltStep);
     }, first ? 2000 : 3000));
   }
   function camLeave(slide, o) {
@@ -275,13 +278,28 @@
   })();
   bg.on();
 
-  /* ================================================================ parallax layers + tilt */
-  var layers = $$('[data-depth]', hero), dash = $('.dash', hero);
-  function parallax(x, y) {
-    if (!fine || reduce) return;
-    layers.forEach(function (el) { var d = parseFloat(el.dataset.depth) || 0; el.style.transform = 'translate(' + (x * d * 40).toFixed(1) + 'px,' + (y * d * 30).toFixed(1) + 'px)'; });
-    if (dash) dash.style.transform = 'rotateY(' + (x * 9).toFixed(2) + 'deg) rotateX(' + (-y * 7).toFixed(2) + 'deg)';
+  /* ================================================================ 3D tilt stage + parallax layers
+     The active slide's .slide-inner rotates toward the cursor (max ±6° X, ±9° Y) with eased follow-through;
+     [data-depth] floaters also drift laterally and sit at their own Z (data-z). Everything else gets its
+     depth from CSS translateZ, so the tilt reveals the layering. */
+  var layers = $$('[data-depth]', hero);
+  var tilt = { tx: 0, ty: 0, cx: 0, cy: 0, raf: null };
+  function tiltStep() {
+    tilt.cx += (tilt.tx - tilt.cx) * 0.11; tilt.cy += (tilt.ty - tilt.cy) * 0.11;
+    var inner = $('.slide-inner', slides[idx]);
+    if (inner) inner.style.transform = 'rotateX(' + (-tilt.cy * 16).toFixed(2) + 'deg) rotateY(' + (tilt.cx * 24).toFixed(2) + 'deg)';
+    layers.forEach(function (el) {
+      var d = parseFloat(el.dataset.depth) || 0, z = parseFloat(el.dataset.z) || 0;
+      el.style.transform = 'translate3d(' + (tilt.cx * d * 48).toFixed(1) + 'px,' + (tilt.cy * d * 36).toFixed(1) + 'px,' + z + 'px)';
+    });
+    tilt.raf = (Math.abs(tilt.tx - tilt.cx) > 0.0005 || Math.abs(tilt.ty - tilt.cy) > 0.0005) ? requestAnimationFrame(tiltStep) : null;
   }
+  function parallax(x, y) {
+    if (!fine || reduce || mobile.matches) return;
+    tilt.tx = x; tilt.ty = y;
+    if (!tilt.raf) tilt.raf = requestAnimationFrame(tiltStep);
+  }
+  function tiltReset() { tilt.cx = tilt.cy = 0; slides.forEach(function (s) { var i = $('.slide-inner', s); if (i) i.style.transform = ''; }); }
 
   /* ================================================================ rotating word */
   var rot = $('.rot', hero), rotTimer = null;

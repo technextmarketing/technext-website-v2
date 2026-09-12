@@ -488,7 +488,7 @@ a.card:hover{text-decoration:none}
 @keyframes spinr{to{rotate:360deg}}
 .orbit-core{position:relative;z-index:2;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 30px 22px;text-align:center;box-shadow:var(--shadow-md);width:min(300px,64%)}
 .orbit-core::before{content:"";position:absolute;inset:-14px;border-radius:28px;border:2px solid var(--blue-100);animation:breathe 4s ease-in-out infinite;z-index:-1}
-@keyframes breathe{50%{transform:scale(1.05);opacity:.4}}
+@keyframes breathe{50%{scale:1.05;opacity:.4}}
 .orbit-core img{width:100%;height:auto;margin:0 auto 10px}
 .orbit-core small{display:block;font:600 12px/1.3 var(--font-body);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
@@ -815,6 +815,29 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 @keyframes camOutFly{to{transform:translateZ(900px) translateY(6%) scale(1.35);opacity:0;filter:blur(14px)}}
 @keyframes camOutTilt{to{transform:rotateX(82deg) translateY(-35%) translateZ(-300px) scale(.85);opacity:0;filter:blur(10px)}}
 @keyframes bgBreathe{0%{transform:scale(1.08)}100%{transform:none}}
+
+/* ---------- hero 3D tilt stage (desktop, fine pointer) ----------
+   hero.js rotates the active .slide-inner toward the cursor (rotateX/rotateY, eased). Layers carry
+   their own Z so the tilt reveals depth: copy 30 · dashboard 40 · floaters 60–140 · toasts 120 ·
+   flow nodes 20–90 · edge labels 70 · orbit rings 20/60 · partner badge 110. */
+@media (min-width:961px) and (hover:hover){
+  .slide-inner,.slide-inner>*,.slide-copy,.dash-wrap,.flow,.flow-grid,.orbit{transform-style:preserve-3d}
+  .hero-track{perspective:1300px}
+  .slide-copy{transform:translateZ(40px)}
+  .dash-wrap{perspective:none}
+  .dash{transform:translateZ(60px)}
+  .toasts{transform:translateZ(150px)}
+  .flow-svg{transform:translateZ(10px)}
+  .fnode{transform:translateZ(calc(var(--z,0)*1.4px))}
+  .fnode:hover{transform:translateZ(calc(var(--z,0)*1.4px + 50px)) translateY(-4px) scale(1.03)}
+  .flow-label{transform:translate(-50%,-50%) translateZ(100px)}
+  .flow-hint{transform:translateZ(20px)}
+  .ring--2{transform:translateZ(20px)}
+  .ring--1{transform:translateZ(80px)}
+  .orbit-core{transform:translateZ(150px)}
+  .orbit-core::before{transform:translateZ(-30px)}
+  .spec-strip,.mono-list,.pill-row{transform-style:preserve-3d}
+}
 
 /* ---------- semantic helpers (audit) ---------- */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
