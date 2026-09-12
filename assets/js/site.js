@@ -251,6 +251,15 @@
     });
   });
 
+  /* ---------------- YouTube facades: load the player only on click ---------------- */
+  document.addEventListener('click', function (e) {
+    var f = e.target.closest('[data-yt]');
+    if (!f || f.classList.contains('is-playing')) return;
+    var id = f.getAttribute('data-yt'), title = f.getAttribute('aria-label') || 'Video';
+    f.classList.add('is-playing');
+    f.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1" title="' + title.replace(/"/g, '') + '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+  });
+
   /* ---------------- scroll reveals ---------------- */
   var reveals = $$('.reveal');
   if (reduce || !('IntersectionObserver' in window)) {

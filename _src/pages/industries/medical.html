@@ -1,4 +1,4 @@
-<!--meta {"title": "Odoo for Medical & Healthcare", "desc": "Odoo for clinics and healthcare groups: consumables stock per branch, central purchasing, clean accounts per entity — implemented by TechNext, Odoo Ready Partner.", "out": "industries/medical.html", "nav": "industries"} -->
+<!--meta {"title": "Odoo for Medical & Healthcare", "desc": "Odoo for clinics and healthcare groups: consumables stock per branch, central purchasing, clean accounts per entity — implemented by TechNext, Odoo Ready Partner.", "out": "industries/medical.html", "nav": "industries", "scripts": ["assets/js/showcase.js"]} -->
 
 <section class="page-hero">
   <div class="container">
@@ -23,15 +23,16 @@
 
 <section class="section section--alt">
   <div class="container">
-    <div class="two two--top">
-      <div class="reveal"><span class="hand">how odoo maps to it</span><h2>The apps we switch on.</h2><p class="lead">Standard Odoo covers most of it; we configure rather than build.</p><div class="actions"><a class="btn-link" href="{{ROOT}}odoo/apps.html">All Odoo apps {{icon:arrow}}</a></div></div>
-      <ul class="applist">
-        <li>{{odoo:stock:40}}<span><b>Inventory</b> Lots, expiry dates, one location per branch, minimum-stock rules.</span></li>
-        <li>{{odoo:purchase:40}}<span><b>Purchase</b> Central RFQs, vendor pricelists, bills matched to receipts.</span></li>
-        <li>{{odoo:accountant:40}}<span><b>Accounting</b> One company per entity or analytic accounts per branch; consolidated reports.</span></li>
-        <li>{{odoo:point_of_sale:40}}<span><b>Point of Sale</b> Front-desk billing posted straight to Accounting.</span></li>
-        <li>{{odoo:appointment:40}}<span><b>Appointments</b> Optional online booking linked to patient contacts.</span></li>
-      </ul>
+    <div class="sec-head sec-head--row reveal"><div><span class="hand">how odoo maps to it</span><h2 style="margin:0">The apps we switch on.</h2></div><a class="btn-link" href="{{ROOT}}odoo/apps.html">All Odoo apps {{icon:arrow}}</a></div>
+    <div class="showcase reveal" data-showcase data-interval="6000">
+      <div class="sc-list" role="tablist" aria-label="Odoo apps for clinics and healthcare groups">
+        <button class="sc-tab" role="tab" type="button" data-app="stock" data-kicker="Inventory · Supply Chain" data-title="Inventory" data-href="{{ROOT}}odoo/apps/stock.html" data-desc="Consumables and medicines tracked by lot and expiry, with one stock location per branch and replenishment that runs itself." data-points="Lots and expiry dates on every consumable|One location per branch, transfers between branches|Minimum-stock rules that raise purchase orders">{{odoo:stock:36}}<span><b>Inventory</b><small>Lots, expiry, one location per branch.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="purchase" data-kicker="Purchase · Supply Chain" data-title="Purchase" data-href="{{ROOT}}odoo/apps/purchase.html" data-desc="Central purchasing for the whole group, with bills matched to what each branch actually received." data-points="Central RFQs across branches|Vendor pricelists and lead times|Bills matched to receipts, three-way">{{odoo:purchase:36}}<span><b>Purchase</b><small>Central RFQs, bills matched to receipts.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="accountant" data-kicker="Accounting · Finance" data-title="Accounting" data-href="{{ROOT}}odoo/apps/accountant.html" data-desc="Clean books per entity or analytic accounts per branch — and a consolidated view without a spreadsheet." data-points="One company per entity or analytic accounts per branch|Consolidated P&amp;L across the group|Bank feeds reconciled daily">{{odoo:accountant:36}}<span><b>Accounting</b><small>Books per branch, consolidated reports.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="point_of_sale" data-kicker="Point of Sale · Sales" data-title="Point of Sale" data-href="{{ROOT}}odoo/apps/point_of_sale.html" data-desc="Front-desk billing that posts straight to Accounting, with card terminals and e-receipts." data-points="Front-desk billing with card terminals|Sessions posted straight to Accounting|Receipts by email or print">{{odoo:point_of_sale:36}}<span><b>Point of Sale</b><small>Front-desk billing to Accounting.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="appointment" data-kicker="Appointments · Services" data-title="Appointments" data-href="{{ROOT}}odoo/apps/appointment.html" data-desc="Optional online booking per clinic or doctor, with reminders — each booking creates or updates the patient contact." data-points="Booking pages per clinic or doctor|Email or SMS reminders|Booking creates the patient contact">{{odoo:appointment:36}}<span><b>Appointments</b><small>Online booking linked to contacts.</small></span></button>
+      </div>
+      <div class="sc-panel" role="tabpanel" aria-live="polite"></div>
     </div>
   </div>
 </section>

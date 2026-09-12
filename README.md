@@ -8,7 +8,8 @@ Static HTML/CSS/JS, no framework, deployed to GitHub Pages.
 ## Editing
 
 Pages are written as partials in `_src/pages/` and wrapped with the shared header, mega menus,
-Let's Talk panel and footer by the build script. Edit a partial, then rebuild:
+Let's Talk panel and footer by the build script; the 50 Odoo module pages are generated from
+`_src/apps_content.json`. Edit a partial (or re-run the fetch), then rebuild:
 
 ```bash
 python _src/build.py
@@ -29,6 +30,8 @@ what GitHub Pages serves — commit both the partial and the generated file.
 | One-time 10 s intro (motion-path plane, letter rise, typewriter), buttons, forms, reveals | `assets/js/site.js` |
 | Official Odoo app icons (from download.odoocdn.com) | `assets/img/odoo/<module>.svg`, used as `{{odoo:module}}` |
 | Favicons / OG image / intro logo split | `python _src/make_assets.py` |
+| Odoo module pages content (from odoo.com) | `python _src/fetch_odoo.py` → `_src/apps_content.json`; pages generated as `odoo/apps/<module>.html` |
+| App showcase component (industry + Odoo ERP pages) | `assets/js/showcase.js`; content in `data-*` attributes on each `.sc-tab` |
 | Static audit (links, SEO, headings, labels, claims) | `python _src/audit.py` — see `AUDIT.md` |
 
 The intro plays on every fresh load and refresh; it is skipped when a visitor clicks between pages of the site (same-origin referrer) or uses back/forward. `?intro=1` forces it on any load.

@@ -118,15 +118,16 @@
 
 <section class="section section--alt">
   <div class="container">
-    <div class="two two--top">
-      <div class="reveal"><span class="hand">how odoo maps to it</span><h2>The apps we switch on.</h2><p class="lead">Bookings become sales orders; costs attach to the same analytic account.</p><div class="actions"><a class="btn-link" href="../odoo/apps.html">All Odoo apps <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div></div>
-      <ul class="applist">
-        <li><img class="oi" src="../assets/img/odoo/sale.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><b>Sales</b> Quotation templates per package, optional items, deposits and balance invoices.</span></li>
-        <li><img class="oi" src="../assets/img/odoo/purchase.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><b>Purchase</b> Supplier orders linked to the booking; bills matched on arrival.</span></li>
-        <li><img class="oi" src="../assets/img/odoo/accountant.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><b>Accounting</b> Multi-currency, analytic accounts per booking for margin reports.</span></li>
-        <li><img class="oi" src="../assets/img/odoo/crm.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><b>CRM</b> Inquiries and follow-ups before the quotation.</span></li>
-        <li><img class="oi" src="../assets/img/odoo/event.svg" alt="" width="40" height="40" loading="lazy" decoding="async"><span><b>Events</b> or <b>Rental</b> Where group departures or equipment are part of the offer.</span></li>
-      </ul>
+    <div class="sec-head sec-head--row reveal"><div><span class="hand">how odoo maps to it</span><h2 style="margin:0">The apps we switch on.</h2></div><a class="btn-link" href="../odoo/apps.html">All Odoo apps <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+    <div class="showcase reveal" data-showcase data-interval="6000">
+      <div class="sc-list" role="tablist" aria-label="Odoo apps for travel and tours">
+        <button class="sc-tab" role="tab" type="button" data-app="sale" data-kicker="Sales" data-title="Sales" data-href="../odoo/apps/sale.html" data-desc="Bookings become quotations from a template, accepted online, with deposit and balance invoices raised from the same order." data-points="Quotation templates per package with optional items|Deposit and balance invoices|Online acceptance with e-signature"><img class="oi" src="../assets/img/odoo/sale.svg" alt="" width="36" height="36" loading="lazy" decoding="async"><span><b>Sales</b><small>Package quotations, deposits, balances.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="purchase" data-kicker="Purchase · Supply Chain" data-title="Purchase" data-href="../odoo/apps/purchase.html" data-desc="Hotel, transport and guide costs ordered against the booking and matched when the bills arrive." data-points="Supplier orders linked to the booking|Bills matched on arrival|Costs land on the booking's analytic account"><img class="oi" src="../assets/img/odoo/purchase.svg" alt="" width="36" height="36" loading="lazy" decoding="async"><span><b>Purchase</b><small>Supplier costs tied to the booking.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="accountant" data-kicker="Accounting · Finance" data-title="Accounting" data-href="../odoo/apps/accountant.html" data-desc="Sell in one currency, buy in three, report in a fourth — and see the margin per booking before the trip." data-points="Multi-currency selling and buying|Margin per booking from analytic accounts|Bank reconciliation across currencies"><img class="oi" src="../assets/img/odoo/accountant.svg" alt="" width="36" height="36" loading="lazy" decoding="async"><span><b>Accounting</b><small>Multi-currency, margin per booking.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="crm" data-kicker="CRM · Sales" data-title="CRM" data-href="../odoo/apps/crm.html" data-desc="Inquiries from the website and WhatsApp land in one pipeline with follow-ups, then become the quotation." data-points="Web and WhatsApp inquiries in one pipeline|Scheduled follow-ups before the quotation|Won lead becomes the quotation"><img class="oi" src="../assets/img/odoo/crm.svg" alt="" width="36" height="36" loading="lazy" decoding="async"><span><b>CRM</b><small>Inquiries and follow-ups first.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="event" data-kicker="Events · Marketing" data-title="Events &amp; Rental" data-href="../odoo/apps/event.html" data-desc="Group departures run as events with registrations and tickets; equipment goes through Rental where it is part of the offer." data-points="Group departures as events with registrations|Tickets and attendee lists|Rental for equipment where relevant"><img class="oi" src="../assets/img/odoo/event.svg" alt="" width="36" height="36" loading="lazy" decoding="async"><span><b>Events &amp; Rental</b><small>Group departures and equipment.</small></span></button>
+      </div>
+      <div class="sc-panel" role="tabpanel" aria-live="polite"></div>
     </div>
   </div>
 </section>
@@ -227,6 +228,6 @@
 
 <script src="../assets/js/site.js" defer></script>
 <script src="../assets/js/chat.js" defer></script>
-
+<script src="../assets/js/showcase.js" defer></script>
 </body>
 </html>

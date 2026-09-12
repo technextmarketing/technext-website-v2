@@ -326,8 +326,8 @@ def apps_cats_html() -> str:
         cards = []
         for app in c["apps"]:
             tag = ' <span class="tag">Focus</span>' if app["focus"] else ""
-            cards.append(f'<div class="app{" is-focus" if app["focus"] else ""}" data-app="{app["mod"]}">'
-                         f'{{{{odoo:{app["mod"]}:40}}}}<div><b>{app["name"]}{tag}</b><small>{app["desc"]}</small></div></div>')
+            cards.append(f'<a class="app{" is-focus" if app["focus"] else ""}" data-app="{app["mod"]}" href="apps/{app["mod"]}.html">'
+                         f'{{{{odoo:{app["mod"]}:40}}}}<div><b>{app["name"]}{tag}</b><small>{app["desc"]}</small></div>{{{{icon:arrow}}}}</a>')
         focus_note = (' <span class="tag tag--ok">{{icon:check}} Our focus area</span>' if c.get("focus") else "")
         out.append(f'''<section class="apps-cat" id="{c["id"]}">
   <div class="container">
@@ -360,6 +360,140 @@ def letters_html() -> tuple:
     return imgs, meta["w"], meta["h"]
 
 
+# ---------------------------------------------------------------- Odoo module pages
+APP_CONTENT_PATH = SRC / "apps_content.json"
+APP_CONTENT = json.loads(APP_CONTENT_PATH.read_text(encoding="utf-8")) if APP_CONTENT_PATH.exists() else {}
+CAT_BY_MOD = {a["mod"]: c for c in S.APP_CATEGORIES for a in c["apps"]}
+APP_BY_MOD = {a["mod"]: a for c in S.APP_CATEGORIES for a in c["apps"]}
+
+# How TechNext implements each focus app (our own words; everything from odoo.com is attributed).
+IMPLEMENT = {
+    "accountant": ["Chart of accounts, taxes and journals set up for how you close the month", "Bank feeds connected and reconciliation rules tuned on your real statements", "Opening balances and open items migrated and reconciled before cut-over", "Finance team trained on invoicing, reconciliation and month-end"],
+    "account": ["Invoice templates in your branding with your payment terms", "Payment links and reminders configured", "Invoicing policy per product: on order, on delivery, by milestone", "Portal set up so customers see their history"],
+    "sale": ["Quotation templates and optional products for your offers", "Pricelists, discounts and approval rules", "Confirmation → delivery → invoice flow configured end to end", "Sales team trained on quotations, orders and the portal"],
+    "stock": ["Warehouses, locations and routes modelled on your sites", "Barcode operations for receipts, picking and counts", "Reordering rules that raise purchase orders automatically", "Opening stock counted in and valued correctly"],
+    "purchase": ["Vendor pricelists and lead times loaded", "RFQ → order → receipt → bill matching configured", "Approval thresholds for purchase orders", "Buyers trained on RFQs and vendor bills"],
+    "crm": ["Pipeline stages per team with required fields", "Lead capture from web forms, email and WhatsApp", "Assignment rules and scheduled activities", "Won opportunity → quotation without re-entry"],
+}
+DEFAULT_IMPLEMENT = ["Discovery: we map how the process runs today and match it to the app", "Configuration on a staging database, checked against real records", "Training for the people who will use it, on your own data", "Support after go-live: fixes, changes and upgrades"]
+
+
+def yt_facade(vid: str, title: str) -> str:
+    return (f'<button class="yt" type="button" data-yt="{vid}" aria-label="Play video: {title}">'
+            f'<img src="https://i.ytimg.com/vi/{vid}/hqdefault.jpg" alt="" loading="lazy" decoding="async" onerror="this.remove()">'
+            f'<span class="yt-play">{{{{icon:play}}}}</span><span class="yt-cap">Official Odoo video · YouTube</span></button>')
+
+
+def app_page(mod: str) -> tuple:
+    app, cat = APP_BY_MOD[mod], CAT_BY_MOD[mod]
+    c = APP_CONTENT.get(mod, {})
+    name = app["name"]
+    lead = c.get("lead") or c.get("description") or app["desc"]
+    headline = c.get("headline") or f"{name} in Odoo"
+    odoo_url = c.get("url", "https://www.odoo.com/")
+    focus = ' <span class="tag tag--ok">{{icon:check}} TechNext focus app</span>' if app["focus"] else ""
+    # media: video first, else hero image
+    media = ""
+    if c.get("youtube"):
+        media = yt_facade(c["youtube"][0], f"Odoo {name}")
+    elif c.get("mp4"):
+        poster = f' poster="{c["images"][0]}"' if c.get("images") else ""
+        media = f'<video class="app-video" controls preload="none" playsinline{poster}><source src="{c["mp4"]}" type="video/mp4"></video>'
+    elif c.get("images"):
+        media = (f'<img class="app-shot" src="{c["images"][0]}" alt="Odoo {name} screenshot" loading="lazy" decoding="async" '
+                 f'onerror="this.outerHTML=\'<div class=&quot;app-media-fallback&quot;><img class=&quot;oi&quot; src=&quot;{{{{ROOT}}}}assets/img/odoo/{mod}.svg&quot; alt=&quot;&quot; width=&quot;96&quot; height=&quot;96&quot;></div>\'">')
+    else:
+        media = f'<div class="app-media-fallback">{{{{odoo:{mod}:96}}}}</div>'
+    # sections from odoo.com
+    secs = "".join(f'<article class="card reveal" style="--i:{i}"><div class="card-ic">{{{{odoo:{mod}:36}}}}</div><h3>{s["h"]}</h3><p>{s["p"]}</p></article>'
+                   for i, s in enumerate(c.get("sections", [])[:6]))
+    if not secs:
+        secs = f'<article class="card reveal"><div class="card-ic">{{{{odoo:{mod}:36}}}}</div><h3>{name}</h3><p>{app["desc"]}</p></article>'
+    # gallery
+    shots = [i for i in c.get("images", []) if not i.endswith(".svg")][:6]
+    # external screenshots hide themselves if odoocdn ever refuses the request
+    gallery = "".join(f'<figure class="shot reveal" style="--i:{k}"><img src="{u}" alt="Odoo {name} screenshot {k+1}" loading="lazy" decoding="async" onerror="this.closest(\'figure\').remove()"><figcaption>Odoo {name} · screenshot from odoo.com</figcaption></figure>' for k, u in enumerate(shots))
+    more_video = "".join(f'<div class="reveal" style="--i:{k}">{yt_facade(v, f"Odoo {name} video {k+2}")}</div>' for k, v in enumerate(c.get("youtube", [])[1:3]))
+    # related apps: same category, plus focus trio
+    rel_mods = [a["mod"] for a in cat["apps"] if a["mod"] != mod][:4]
+    for extra in ("accountant", "sale", "stock"):
+        if extra != mod and extra not in rel_mods and len(rel_mods) < 6:
+            rel_mods.append(extra)
+    related = "".join(f'<a class="app" href="{m}.html">{{{{odoo:{m}:40}}}}<div><b>{APP_BY_MOD[m]["name"]}</b><small>{APP_BY_MOD[m]["desc"]}</small></div>{{{{icon:arrow}}}}</a>' for m in rel_mods)
+    impl = "".join(f'<li>{{{{icon:check}}}}{p}</li>' for p in IMPLEMENT.get(mod, DEFAULT_IMPLEMENT))
+    desc_meta = (c.get("description") or "").strip()
+    if len(desc_meta) < 60:
+        desc_meta = f"Odoo {name}: {app['desc']} What it does, official screens and video, and how TechNext configures it for your company."
+    if len(desc_meta) > 160:
+        desc_meta = desc_meta[:157].rsplit(" ", 1)[0] + "…"
+    meta = {"title": f"Odoo {name} — features and implementation | TechNext", "desc": desc_meta,
+            "out": f"odoo/apps/{mod}.html", "nav": "odoo"}
+    content = f'''
+<section class="page-hero page-hero--split">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="{{{{ROOT}}}}index.html">Home</a><span>Odoo</span><span><a href="{{{{ROOT}}}}odoo/apps.html">Apps</a></span><span><a href="{{{{ROOT}}}}odoo/apps.html#{cat["id"]}">{cat["title"]}</a></span><span>{name}</span></nav>
+    <div class="two">
+      <div>
+        <div class="app-hero-head">{{{{odoo:{mod}:56}}}}<span class="hand">odoo · {cat["title"].lower()}</span></div>
+        <h1>{name}<span class="app-sub">{headline}</span></h1>
+        <p class="lead">{lead}</p>
+        <div class="pill-row"><span class="tag tag--odoo">Odoo Ready Partner</span>{focus}</div>
+        <div class="actions">
+          <a class="btn btn-primary btn-lg" href="{{{{ROOT}}}}quotation.html">Get a quotation {{{{icon:arrow}}}}</a>
+          <a class="btn btn-ghost btn-lg" href="{odoo_url}" target="_blank" rel="noopener">See it on odoo.com {{{{icon:expand}}}}</a>
+        </div>
+      </div>
+      <div class="app-media reveal">{media}</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="sec-head reveal"><span class="hand">what it does</span><h2>{name}, as Odoo presents it.</h2><p class="lead">Highlights from the official product page. TechNext configures these to your process.</p></div>
+    <div class="grid-3">{secs}</div>
+  </div>
+</section>
+
+{"" if not gallery else f'''<section class="section section--alt section--tight">
+  <div class="container">
+    <div class="sec-head reveal"><span class="hand">screens</span><h2>Inside the app.</h2></div>
+    <div class="shots">{gallery}</div>
+  </div>
+</section>'''}
+
+{"" if not more_video else f'''<section class="section section--tight">
+  <div class="container"><div class="sec-head reveal"><span class="hand">watch</span><h2>More from Odoo.</h2></div><div class="grid-2">{more_video}</div></div>
+</section>'''}
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="two two--top">
+      <div class="reveal"><span class="hand">how technext implements it</span><h2>{name}, configured to how you work.</h2><p class="lead">Standard Odoo first. We set it up on a staging database, migrate your data, train your team and stay on after go-live.</p><div class="actions"><a class="btn btn-primary" href="{{{{ROOT}}}}odoo/discovery.html">Start with discovery {{{{icon:arrow}}}}</a><a class="btn-link" href="{{{{ROOT}}}}odoo/support.html">Support plans {{{{icon:arrow}}}}</a></div></div>
+      <ul class="checks" style="margin:0">{impl}</ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="sec-head sec-head--row reveal"><div><span class="hand">works with</span><h2 style="margin:0">Apps that share the same database.</h2></div><a class="btn-link" href="{{{{ROOT}}}}odoo/apps.html">All Odoo apps {{{{icon:arrow}}}}</a></div>
+    <div class="apps-grid">{related}</div>
+    <p class="small muted mt-24">Product descriptions, screenshots and videos are © Odoo S.A. and shown for reference from <a href="{odoo_url}" target="_blank" rel="noopener">odoo.com</a>. TechNext is an Odoo Ready Partner; we implement and support Odoo.</p>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="cta reveal">
+      <div><span class="hand">next step</span><h2>Want {name} running in your company?</h2><p>Tell us how the process works today. We'll say what to switch on first and what it takes.</p></div>
+      <div class="actions"><a class="btn btn-white btn-lg" href="{{{{ROOT}}}}quotation.html">Get a quotation</a><a class="btn btn-outline-white btn-lg" href="#talk">Let's talk</a></div>
+    </div>
+  </div>
+</section>'''
+    return meta, content
+
+
 def build_page(path: Path, nav_cache: dict) -> str:
     raw = path.read_text(encoding="utf-8")
     m = META_RE.match(raw)
@@ -367,6 +501,10 @@ def build_page(path: Path, nav_cache: dict) -> str:
         raise ValueError(f"{path}: missing <!--meta {{...}} --> header")
     meta = json.loads(m.group(1))
     content = raw[m.end():].strip("\n")
+    return render(meta, content, nav_cache)
+
+
+def render(meta: dict, content: str, nav_cache: dict) -> str:
     if "{{APPS_NAV}}" in content:
         content = content.replace("{{APPS_NAV}}", apps_nav_html()).replace("{{APPS_CATS}}", apps_cats_html())
     if "{{MARQUEE}}" in content:
@@ -424,6 +562,9 @@ def main():
     built = []
     for path in sorted(PAGES.rglob("*.html")):
         built.append(build_page(path, nav_cache))
+    for mod in APP_BY_MOD:
+        meta, content = app_page(mod)
+        built.append(render(meta, content, nav_cache))
     write_sitemap(built)
     print(f"built {len(built)} pages -> {ROOT}")
     for b in built:

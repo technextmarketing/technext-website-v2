@@ -1,4 +1,4 @@
-<!--meta {"title": "Odoo ERP System — implementation by TechNext", "desc": "Odoo ERP implementation by TechNext, an Odoo Ready Partner in Singapore. Accounting, Sales and Inventory first — configured, migrated, trained and supported.", "out": "solutions/odoo-erp.html", "nav": "solution"} -->
+<!--meta {"title": "Odoo ERP System — implementation by TechNext", "desc": "Odoo ERP implementation by TechNext, an Odoo Ready Partner in Singapore. Accounting, Sales and Inventory first — configured, migrated, trained and supported.", "out": "solutions/odoo-erp.html", "nav": "solution", "scripts": ["assets/js/showcase.js"]} -->
 
 <section class="page-hero page-hero--split">
   <div class="container">
@@ -22,6 +22,13 @@
           <div><span>Delivery</span><span>Discovery → Training → Integration → Support</span></div>
           <div><span>Teams</span><span>Singapore · Vietnam · Philippines</span></div>
         </div>
+        <div class="pill-row" style="margin-top:18px">
+          <a class="tag" href="{{ROOT}}odoo/apps/accountant.html">{{odoo:accountant:16}} Accounting</a>
+          <a class="tag" href="{{ROOT}}odoo/apps/sale.html">{{odoo:sale:16}} Sales</a>
+          <a class="tag" href="{{ROOT}}odoo/apps/stock.html">{{odoo:stock:16}} Inventory</a>
+          <a class="tag" href="{{ROOT}}odoo/apps/purchase.html">{{odoo:purchase:16}} Purchase</a>
+          <a class="tag" href="{{ROOT}}odoo/apps/crm.html">{{odoo:crm:16}} CRM</a>
+        </div>
       </aside>
     </div>
   </div>
@@ -43,20 +50,19 @@
 
 <section class="section section--alt">
   <div class="container">
-    <div class="two two--top">
-      <div class="reveal">
-        <span class="hand">where we start</span>
-        <h2>Accounting, Sales and Inventory — together.</h2>
-        <p class="lead">These three share products, partners and journals. Implemented as one project they remove the re-keying between quotes, stock movements and the ledger.</p>
-        <div class="actions"><a class="btn-link" href="{{ROOT}}odoo/apps.html">All Odoo apps {{icon:arrow}}</a></div>
+    <div class="sec-head sec-head--row reveal">
+      <div><span class="hand">where we start</span><h2 style="margin:0">Accounting, Sales and Inventory — together.</h2><p class="lead" style="margin-top:12px">These three share products, partners and journals. Implemented as one project they remove the re-keying between quotes, stock movements and the ledger.</p></div>
+      <a class="btn-link" href="{{ROOT}}odoo/apps.html">All Odoo apps {{icon:arrow}}</a>
+    </div>
+    <div class="showcase reveal" data-showcase data-interval="6000">
+      <div class="sc-list" role="tablist" aria-label="Focus apps">
+        <button class="sc-tab" role="tab" type="button" data-app="accountant" data-kicker="Finance · focus app" data-title="Accounting" data-href="{{ROOT}}odoo/apps/accountant.html" data-desc="The ledger, bank feeds, tax and reporting — configured for how you actually close the month." data-points="Journals, bank sync and one-click reconciliation|GST / VAT returns, multi-currency, multi-company|P&amp;L, balance sheet, aged receivables, cash forecast">{{odoo:accountant:36}}<span><b>Accounting</b><small>Journals, bank sync, tax, reports.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="sale" data-kicker="Sales · focus app" data-title="Sales" data-href="{{ROOT}}odoo/apps/sale.html" data-desc="Quotations, confirmation and invoicing that follow your pricing and approval rules — confirmation reserves stock." data-points="Quotation templates, pricelists and e-signature|Confirmation reserves stock and schedules delivery|Invoice on order or on delivery">{{odoo:sale:36}}<span><b>Sales</b><small>Quotation → order → invoice.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="stock" data-kicker="Supply Chain · focus app" data-title="Inventory" data-href="{{ROOT}}odoo/apps/stock.html" data-desc="Real stock across warehouses, barcode operations and replenishment that raises purchase orders before you run out." data-points="Multi-warehouse, locations and barcodes|Reordering rules that create purchase orders|Lots, serials and expiry dates">{{odoo:stock:36}}<span><b>Inventory</b><small>Stock, barcodes, replenishment.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="purchase" data-kicker="Supply Chain" data-title="Purchase" data-href="{{ROOT}}odoo/apps/purchase.html" data-desc="RFQs to vendors, orders, and bills matched to what was actually received." data-points="RFQs and vendor pricelists|Three-way match: order, receipt, bill|Triggered by reordering rules">{{odoo:purchase:36}}<span><b>Purchase</b><small>RFQs, bills matched to receipts.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="crm" data-kicker="Sales" data-title="CRM" data-href="{{ROOT}}odoo/apps/crm.html" data-desc="Leads, pipeline and activities — a won deal opens the quotation with customer and pricelist already set." data-points="Pipeline by team with required fields|Lead capture from web, email and WhatsApp|Won opportunity → quotation without re-entry">{{odoo:crm:36}}<span><b>CRM</b><small>Pipeline that hands off to Sales.</small></span></button>
       </div>
-      <ul class="applist">
-        <li>{{odoo:accountant:40}}<span><b>Accounting</b> Journals, bank sync, GST/VAT, multi-currency, financial reports.</span></li>
-        <li>{{odoo:sale:40}}<span><b>Sales</b> Quotation templates, pricelists, confirmations, invoicing policy.</span></li>
-        <li>{{odoo:stock:40}}<span><b>Inventory</b> Multi-warehouse, barcodes, reordering rules that raise purchase orders.</span></li>
-        <li>{{odoo:purchase:40}}<span><b>Purchase</b> RFQs, vendor bills matched to receipts.</span></li>
-        <li>{{odoo:crm:40}}<span><b>CRM</b> Pipeline that hands off to Sales without re-entry.</span></li>
-      </ul>
+      <div class="sc-panel" role="tabpanel" aria-live="polite"></div>
     </div>
   </div>
 </section>

@@ -905,6 +905,88 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 .hero.is-hot .ring,.hero.is-hot .tile{animation-play-state:paused}
 .hero.is-hot .toast{transition:none}
 
+/* ---------- Odoo module pages ---------- */
+.app-hero-head{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.app-hero-head .hand{margin:0;transform:none}
+.app-sub{display:block;font:600 clamp(1.1rem,1.8vw,1.35rem)/1.3 var(--font-display);color:var(--blue);letter-spacing:-.01em;margin-top:10px}
+.app-media{border-radius:var(--r-lg);overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-md);aspect-ratio:16/9;display:grid;place-items:center}
+.app-media>*{width:100%;height:100%}
+.app-shot,.app-video{object-fit:cover;display:block}
+.app-media-fallback{display:grid;place-items:center;background:linear-gradient(135deg,var(--blue-050),#fff)}
+.yt{position:relative;display:block;width:100%;height:100%;border:0;padding:0;background:#0b1020;cursor:pointer;overflow:hidden;border-radius:inherit;aspect-ratio:16/9}
+.yt img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92;transition:transform .5s var(--ease-out),opacity .3s}
+.yt:hover img{transform:scale(1.03);opacity:1}
+.yt-play{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;box-shadow:0 14px 34px -10px rgba(49,103,202,.7);transition:transform .3s var(--spring),background-color .2s}
+.yt-play .ic{width:30px;height:30px;margin-left:3px}
+.yt:hover .yt-play{transform:scale(1.1);background:var(--blue-700)}
+.yt-cap{position:absolute;left:14px;bottom:12px;font:600 12px var(--font-body);color:#fff;background:rgba(11,16,32,.55);padding:5px 9px;border-radius:8px;backdrop-filter:blur(4px)}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.shots{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(320px,38%);gap:16px;overflow-x:auto;padding:4px 4px 16px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.shot{margin:0;scroll-snap-align:start;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+.shot img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--alt)}
+.shot figcaption{font-size:12.5px;color:var(--muted);padding:10px 14px}
+a.app{color:inherit;text-decoration:none}
+a.app>.ic{width:18px;height:18px;color:var(--muted);margin-left:auto;align-self:center;flex:none;transition:transform .25s var(--spring),color .2s}
+a.app:hover>.ic{transform:translateX(3px);color:var(--blue)}
+
+/* ---------- app showcase (industry + Odoo ERP pages) ---------- */
+.showcase{display:grid;grid-template-columns:minmax(260px,.9fr) 1.1fr;gap:22px;align-items:start}
+.sc-list{display:grid;gap:8px}
+.sc-tab{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);text-align:left;cursor:pointer;position:relative;overflow:hidden;transition:border-color .2s ease,background-color .2s ease,box-shadow .2s ease}
+.sc-tab .oi{width:36px;height:36px;flex:none;transition:transform .35s var(--spring)}
+.sc-tab b{display:block;font:700 15px/1.25 var(--font-display);color:var(--ink)}
+.sc-tab small{display:block;font-size:13px;color:var(--muted);line-height:1.4;margin-top:2px}
+.sc-tab:hover{border-color:var(--blue-100);box-shadow:var(--shadow-sm)}
+.sc-tab:hover .oi{transform:scale(1.1) rotate(-4deg)}
+.sc-tab.is-active{border-color:var(--blue);background:var(--blue-050)}
+.sc-tab::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--blue);transform:scaleX(0);transform-origin:left}
+.showcase.is-ticking .sc-tab.is-active::after{animation:prog var(--sc-progress-dur,6s) linear forwards}
+.sc-panel{position:relative;min-height:340px;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);overflow:hidden}
+.sc-panel-inner{padding:28px}
+.sc-panel-inner.is-in{animation:scIn .45s var(--spring) both}
+.sc-panel-inner.is-out{position:absolute;inset:0;animation:scOut .25s ease forwards;pointer-events:none}
+@keyframes scIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes scOut{to{opacity:0;transform:translateY(-10px)}}
+.sc-head{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.sc-head .oi{width:64px;height:64px;flex:none;animation:popIn .5s var(--spring) both}
+.sc-head h3{margin:0;font-size:1.5rem}
+.sc-kicker{font:700 11px/1 var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.sc-lead{font-size:1.02rem;color:var(--body);margin-bottom:14px}
+.sc-panel .checks{margin-top:0}
+.sc-panel .checks li{opacity:0;transform:translateY(8px);animation:fadeUp .4s ease-out forwards;animation-delay:calc(var(--i)*60ms + 120ms)}
+.sc-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+@media (max-width:960px){
+  .showcase{grid-template-columns:1fr}
+  .sc-panel{min-height:0}
+  .shots{grid-auto-columns:minmax(260px,85%)}
+}
+
+/* ---------- one-system diagram (company page) ---------- */
+.sysdia{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 22px 22px;box-shadow:var(--shadow-sm);overflow:hidden}
+.sysdia-grid{display:grid;grid-template-columns:1fr 56px 1fr;gap:12px;align-items:center}
+.sysdia-h{font:700 12px/1 var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;text-align:center}
+.tools{display:grid;gap:8px;position:relative}
+.tool{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px dashed #d9d6dd;border-radius:10px;background:var(--alt);font:600 13px var(--font-body);color:var(--body)}
+.tool .ic{width:16px;height:16px;color:var(--muted)}
+.tool i{margin-left:auto;font:600 10.5px var(--font-body);color:var(--amber);background:var(--amber-050);padding:3px 7px;border-radius:999px;font-style:normal}
+.sysdia-arrow{display:grid;place-items:center;color:var(--blue)}
+.sysdia-arrow .ic{width:28px;height:28px;animation:nudgeX 1.8s ease-in-out infinite}
+@keyframes nudgeX{50%{transform:translateX(6px)}}
+.hub{position:relative;display:grid;place-items:center;padding:12px 0}
+.hub-core{position:relative;z-index:2;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 16px;box-shadow:var(--shadow-md);text-align:center;font:700 13px var(--font-display);color:var(--ink)}
+.hub-core img{width:110px;height:auto;margin:0 auto 4px}
+.hub-core small{display:block;font:600 11px var(--font-body);color:var(--ok);letter-spacing:.06em;text-transform:uppercase}
+.hub-ring{position:absolute;inset:0;display:grid;place-items:center}
+.hub-i{position:absolute;width:34px;height:34px;left:50%;top:50%;margin:-17px;transform:rotate(var(--a)) translate(92px) rotate(calc(-1*var(--a)));background:#fff;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;box-shadow:var(--shadow-sm);opacity:0}
+.hub-i .oi{width:22px;height:22px}
+.reveal.is-in .hub-i{animation:popIn .5s var(--spring) forwards;animation-delay:calc(var(--i)*90ms + 200ms)}
+.hub{min-height:220px}
+.hub-ring::before{content:"";position:absolute;width:184px;height:184px;border-radius:50%;border:1px dashed var(--blue-100);animation:spinr 40s linear infinite}
+.sysdia-foot{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-top:18px;font-size:13px;color:var(--muted)}
+.sysdia-foot b{color:var(--ink)}
+.tools::after{content:"";position:absolute;inset:8px 20px;background:repeating-linear-gradient(115deg,transparent 0 22px,rgba(217,58,48,.10) 22px 24px);pointer-events:none;border-radius:10px}
+@media (max-width:640px){.sysdia-grid{grid-template-columns:1fr}.sysdia-arrow .ic{transform:rotate(90deg)}.sysdia-arrow .ic{animation:none}}
+
 /* ---------- semantic helpers (audit) ---------- */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .as-h1{font-size:clamp(2.4rem,5.2vw,4.3rem);line-height:1.04;font-weight:800;letter-spacing:-.025em;margin:0 0 .5em}

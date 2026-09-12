@@ -1,4 +1,4 @@
-<!--meta {"title": "Odoo for Travel & Tours", "desc": "Odoo for travel agencies, tour operators and hospitality: quotations, supplier costs and margin per booking, multi-currency invoicing — implemented by TechNext.", "out": "industries/travel.html", "nav": "industries"} -->
+<!--meta {"title": "Odoo for Travel & Tours", "desc": "Odoo for travel agencies, tour operators and hospitality: quotations, supplier costs and margin per booking, multi-currency invoicing — implemented by TechNext.", "out": "industries/travel.html", "nav": "industries", "scripts": ["assets/js/showcase.js"]} -->
 
 <section class="page-hero">
   <div class="container">
@@ -23,15 +23,16 @@
 
 <section class="section section--alt">
   <div class="container">
-    <div class="two two--top">
-      <div class="reveal"><span class="hand">how odoo maps to it</span><h2>The apps we switch on.</h2><p class="lead">Bookings become sales orders; costs attach to the same analytic account.</p><div class="actions"><a class="btn-link" href="{{ROOT}}odoo/apps.html">All Odoo apps {{icon:arrow}}</a></div></div>
-      <ul class="applist">
-        <li>{{odoo:sale:40}}<span><b>Sales</b> Quotation templates per package, optional items, deposits and balance invoices.</span></li>
-        <li>{{odoo:purchase:40}}<span><b>Purchase</b> Supplier orders linked to the booking; bills matched on arrival.</span></li>
-        <li>{{odoo:accountant:40}}<span><b>Accounting</b> Multi-currency, analytic accounts per booking for margin reports.</span></li>
-        <li>{{odoo:crm:40}}<span><b>CRM</b> Inquiries and follow-ups before the quotation.</span></li>
-        <li>{{odoo:event:40}}<span><b>Events</b> or <b>Rental</b> Where group departures or equipment are part of the offer.</span></li>
-      </ul>
+    <div class="sec-head sec-head--row reveal"><div><span class="hand">how odoo maps to it</span><h2 style="margin:0">The apps we switch on.</h2></div><a class="btn-link" href="{{ROOT}}odoo/apps.html">All Odoo apps {{icon:arrow}}</a></div>
+    <div class="showcase reveal" data-showcase data-interval="6000">
+      <div class="sc-list" role="tablist" aria-label="Odoo apps for travel and tours">
+        <button class="sc-tab" role="tab" type="button" data-app="sale" data-kicker="Sales" data-title="Sales" data-href="{{ROOT}}odoo/apps/sale.html" data-desc="Bookings become quotations from a template, accepted online, with deposit and balance invoices raised from the same order." data-points="Quotation templates per package with optional items|Deposit and balance invoices|Online acceptance with e-signature">{{odoo:sale:36}}<span><b>Sales</b><small>Package quotations, deposits, balances.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="purchase" data-kicker="Purchase · Supply Chain" data-title="Purchase" data-href="{{ROOT}}odoo/apps/purchase.html" data-desc="Hotel, transport and guide costs ordered against the booking and matched when the bills arrive." data-points="Supplier orders linked to the booking|Bills matched on arrival|Costs land on the booking's analytic account">{{odoo:purchase:36}}<span><b>Purchase</b><small>Supplier costs tied to the booking.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="accountant" data-kicker="Accounting · Finance" data-title="Accounting" data-href="{{ROOT}}odoo/apps/accountant.html" data-desc="Sell in one currency, buy in three, report in a fourth — and see the margin per booking before the trip." data-points="Multi-currency selling and buying|Margin per booking from analytic accounts|Bank reconciliation across currencies">{{odoo:accountant:36}}<span><b>Accounting</b><small>Multi-currency, margin per booking.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="crm" data-kicker="CRM · Sales" data-title="CRM" data-href="{{ROOT}}odoo/apps/crm.html" data-desc="Inquiries from the website and WhatsApp land in one pipeline with follow-ups, then become the quotation." data-points="Web and WhatsApp inquiries in one pipeline|Scheduled follow-ups before the quotation|Won lead becomes the quotation">{{odoo:crm:36}}<span><b>CRM</b><small>Inquiries and follow-ups first.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="event" data-kicker="Events · Marketing" data-title="Events &amp; Rental" data-href="{{ROOT}}odoo/apps/event.html" data-desc="Group departures run as events with registrations and tickets; equipment goes through Rental where it is part of the offer." data-points="Group departures as events with registrations|Tickets and attendee lists|Rental for equipment where relevant">{{odoo:event:36}}<span><b>Events &amp; Rental</b><small>Group departures and equipment.</small></span></button>
+      </div>
+      <div class="sc-panel" role="tabpanel" aria-live="polite"></div>
     </div>
   </div>
 </section>

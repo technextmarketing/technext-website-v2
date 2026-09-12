@@ -1,4 +1,4 @@
-<!--meta {"title": "Odoo for Retail — POS, stock and accounting", "desc": "Odoo for retailers: Point of Sale, shared stock across stores, promotions and daily takings posted to Accounting — implemented by TechNext, Odoo Ready Partner.", "out": "industries/retail.html", "nav": "industries"} -->
+<!--meta {"title": "Odoo for Retail — POS, stock and accounting", "desc": "Odoo for retailers: Point of Sale, shared stock across stores, promotions and daily takings posted to Accounting — implemented by TechNext, Odoo Ready Partner.", "out": "industries/retail.html", "nav": "industries", "scripts": ["assets/js/showcase.js"]} -->
 
 <section class="page-hero">
   <div class="container">
@@ -23,15 +23,16 @@
 
 <section class="section section--alt">
   <div class="container">
-    <div class="two two--top">
-      <div class="reveal"><span class="hand">how odoo maps to it</span><h2>The apps we switch on.</h2><p class="lead">POS, Inventory and Accounting are one database — every sale moves stock and posts a journal entry.</p><div class="actions"><a class="btn-link" href="{{ROOT}}odoo/apps.html">All Odoo apps {{icon:arrow}}</a></div></div>
-      <ul class="applist">
-        <li>{{odoo:point_of_sale:40}}<span><b>Point of Sale</b> Offline-capable, barcode, promotions, loyalty, receipts by email.</span></li>
-        <li>{{odoo:stock:40}}<span><b>Inventory</b> One location per store, inter-store transfers, cycle counts, reordering rules.</span></li>
-        <li>{{odoo:accountant:40}}<span><b>Accounting</b> Sessions closed to journals automatically; card settlements reconciled from the bank feed.</span></li>
-        <li>{{odoo:purchase:40}}<span><b>Purchase</b> Supplier orders from minimum-stock rules.</span></li>
-        <li>{{odoo:website_sale:40}}<span><b>eCommerce</b> Same products and stock online, if you sell there too.</span></li>
-      </ul>
+    <div class="sec-head sec-head--row reveal"><div><span class="hand">how odoo maps to it</span><h2 style="margin:0">The apps we switch on.</h2></div><a class="btn-link" href="{{ROOT}}odoo/apps.html">All Odoo apps {{icon:arrow}}</a></div>
+    <div class="showcase reveal" data-showcase data-interval="6000">
+      <div class="sc-list" role="tablist" aria-label="Odoo apps for retail">
+        <button class="sc-tab" role="tab" type="button" data-app="point_of_sale" data-kicker="Point of Sale · Sales" data-title="Point of Sale" data-href="{{ROOT}}odoo/apps/point_of_sale.html" data-desc="A till that keeps selling when the internet drops, with barcodes, promotions and loyalty — every sale moves stock and posts a journal entry." data-points="Works offline, syncs when back|Barcode, promotions and loyalty|Card terminals and e-receipts">{{odoo:point_of_sale:36}}<span><b>Point of Sale</b><small>Offline-capable, promotions, loyalty.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="stock" data-kicker="Inventory · Supply Chain" data-title="Inventory" data-href="{{ROOT}}odoo/apps/stock.html" data-desc="One location per store, transfers between stores and counts that keep the shelf and the system in agreement." data-points="One location per store|Inter-store transfers and cycle counts|Reordering rules per store">{{odoo:stock:36}}<span><b>Inventory</b><small>Per-store stock, transfers, counts.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="accountant" data-kicker="Accounting · Finance" data-title="Accounting" data-href="{{ROOT}}odoo/apps/accountant.html" data-desc="POS sessions close straight to journals and card settlements reconcile from the bank feed — no Z-report typing." data-points="Sessions closed to journals automatically|Card settlements reconciled from the bank feed|Daily takings visible without spreadsheets">{{odoo:accountant:36}}<span><b>Accounting</b><small>Takings posted, settlements reconciled.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="purchase" data-kicker="Purchase · Supply Chain" data-title="Purchase" data-href="{{ROOT}}odoo/apps/purchase.html" data-desc="Supplier orders raised from minimum-stock rules; receipts update store stock the moment they are scanned." data-points="Supplier orders from minimum-stock rules|Vendor pricelists and lead times|Receipts update store stock">{{odoo:purchase:36}}<span><b>Purchase</b><small>Supplier orders from stock rules.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="website_sale" data-kicker="eCommerce · Websites" data-title="eCommerce" data-href="{{ROOT}}odoo/apps/website_sale.html" data-desc="Sell the same products online with live stock from the stores, including click-and-collect." data-points="Same products and stock online|Click-and-collect|Online orders reserve store stock">{{odoo:website_sale:36}}<span><b>eCommerce</b><small>Same products and stock online.</small></span></button>
+      </div>
+      <div class="sc-panel" role="tabpanel" aria-live="polite"></div>
     </div>
   </div>
 </section>

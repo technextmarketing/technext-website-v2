@@ -1,4 +1,4 @@
-<!--meta {"title": "Odoo for Ecommerce — orders, stock and payouts", "desc": "Odoo for online sellers: web and marketplace orders, fulfilment tied to real stock, payouts reconciled in Accounting — implemented by TechNext, Odoo Ready Partner.", "out": "industries/ecommerce.html", "nav": "industries"} -->
+<!--meta {"title": "Odoo for Ecommerce — orders, stock and payouts", "desc": "Odoo for online sellers: web and marketplace orders, fulfilment tied to real stock, payouts reconciled in Accounting — implemented by TechNext, Odoo Ready Partner.", "out": "industries/ecommerce.html", "nav": "industries", "scripts": ["assets/js/showcase.js"]} -->
 
 <section class="page-hero">
   <div class="container">
@@ -23,15 +23,16 @@
 
 <section class="section section--alt">
   <div class="container">
-    <div class="two two--top">
-      <div class="reveal"><span class="hand">how odoo maps to it</span><h2>The apps we switch on.</h2><p class="lead">Odoo eCommerce or a connector to your existing store — either way orders reach Inventory and Accounting automatically.</p><div class="actions"><a class="btn-link" href="{{ROOT}}odoo/integration.html">About integrations {{icon:arrow}}</a></div></div>
-      <ul class="applist">
-        <li>{{odoo:website_sale:40}}<span><b>eCommerce</b> Odoo's own store with live stock, or a connector for Shopify, WooCommerce and marketplaces.</span></li>
-        <li>{{odoo:stock:40}}<span><b>Inventory</b> Reservations on payment, barcode picking, carrier labels and tracking back to the customer.</span></li>
-        <li>{{odoo:accountant:40}}<span><b>Accounting</b> Payout statements matched to orders, fees and refunds; tax by destination.</span></li>
-        <li>{{odoo:purchase:40}}<span><b>Purchase</b> Replenishment from sales velocity and minimum stock.</span></li>
-        <li>{{odoo:helpdesk:40}}<span><b>Helpdesk</b> Order questions and returns in one queue.</span></li>
-      </ul>
+    <div class="sec-head sec-head--row reveal"><div><span class="hand">how odoo maps to it</span><h2 style="margin:0">The apps we switch on.</h2></div><a class="btn-link" href="{{ROOT}}odoo/integration.html">About integrations {{icon:arrow}}</a></div>
+    <div class="showcase reveal" data-showcase data-interval="6000">
+      <div class="sc-list" role="tablist" aria-label="Odoo apps for online sellers">
+        <button class="sc-tab" role="tab" type="button" data-app="website_sale" data-kicker="eCommerce · Websites" data-title="eCommerce" data-href="{{ROOT}}odoo/apps/website_sale.html" data-desc="Odoo's own store with live stock, or a connector to Shopify, WooCommerce and marketplaces — either way orders reach Inventory and Accounting on their own." data-points="Odoo store with live stock, or a connector to your platform|Payment gateways and shipping rates|Orders reserve stock on payment">{{odoo:website_sale:36}}<span><b>eCommerce</b><small>Own store or connector to yours.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="stock" data-kicker="Inventory · Supply Chain" data-title="Inventory" data-href="{{ROOT}}odoo/apps/stock.html" data-desc="Pick by barcode, print the carrier label and send tracking back to the customer without a spreadsheet in between." data-points="Barcode picking and packing|Carrier labels and tracking to the customer|Backorders and returns handled">{{odoo:stock:36}}<span><b>Inventory</b><small>Picking, labels, tracking, returns.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="accountant" data-kicker="Accounting · Finance" data-title="Accounting" data-href="{{ROOT}}odoo/apps/accountant.html" data-desc="Gateway and marketplace payouts matched to orders, fees and refunds; tax applied by destination." data-points="Payouts matched to orders, fees and refunds|Tax by destination|Marketplace statements reconciled">{{odoo:accountant:36}}<span><b>Accounting</b><small>Payouts and fees reconciled.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="purchase" data-kicker="Purchase · Supply Chain" data-title="Purchase" data-href="{{ROOT}}odoo/apps/purchase.html" data-desc="Replenishment driven by sales velocity and minimum stock, with vendor lead times built in." data-points="Replenishment from sales velocity|Minimum-stock rules|Vendor lead times and pricelists">{{odoo:purchase:36}}<span><b>Purchase</b><small>Replenishment from sales velocity.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="helpdesk" data-kicker="Helpdesk · Services" data-title="Helpdesk" data-href="{{ROOT}}odoo/apps/helpdesk.html" data-desc="Order questions, returns and refunds in one queue with SLAs — refunds and return pickings created from the ticket." data-points="Order questions in one queue|Returns and refunds from the ticket|SLAs and a knowledge base">{{odoo:helpdesk:36}}<span><b>Helpdesk</b><small>Questions, returns, refunds.</small></span></button>
+      </div>
+      <div class="sc-panel" role="tabpanel" aria-live="polite"></div>
     </div>
   </div>
 </section>

@@ -240,4 +240,5 @@ ICONS = {
     "bot": _S % '<rect x="3" y="8" width="18" height="12" rx="3"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1"/><path d="M8 14h.01M16 14h.01"/><path d="M9 17.5c1.5 1 4.5 1 6 0"/>',
     "whatsapp": _S % '<path d="M3 21l1.6-4.7A9 9 0 1 1 8 19.9L3 21z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-1.9-1-1 .9c-1-.4-1.9-1.3-2.3-2.3l.9-1-1-1.9L9 9.5z"/>',
     "expand": _S % '<path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/>',
+    "play": ('<svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>'),
 }
