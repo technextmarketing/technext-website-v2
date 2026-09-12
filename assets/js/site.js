@@ -13,19 +13,77 @@
     if (!el) return;
     if (!document.documentElement.classList.contains('intro')) { el.remove(); return; }
     document.body.style.overflow = 'hidden';
-    var done = false;
+    var done = false, timers = [], raf = null;
     function finish() {
       if (done) return; done = true;
+      timers.forEach(clearTimeout); if (raf) cancelAnimationFrame(raf);
       try { localStorage.setItem('tn_intro_seen', '1'); } catch (_) {}
       el.classList.add('is-out');
       document.documentElement.classList.remove('intro');
       document.body.style.overflow = '';
       document.dispatchEvent(new CustomEvent('tn:intro-done'));
-      setTimeout(function () { el.remove(); }, 650);
+      setTimeout(function () { el.remove(); }, 750);
     }
-    // plane 0–1.1s · trail 0.9s · wordmark wipe 1.15–2.3s · hold · fade at 3.0s
-    requestAnimationFrame(function () { el.classList.add('is-go'); });
-    setTimeout(finish, 3000);
+
+    /* flight path: one smooth cubic Bézier sweep from off-screen bottom-left, up over the wordmark,
+       around the right and back into the plane's slot, arriving on a gentle climb. Built in viewport
+       pixels, then expressed relative to the plane's box for offset-path and drawn as the SVG trail. */
+    var wrap = $('.intro-plane-wrap', el), trail = $('.intro-trail-svg path', el);
+    function buildPath() {
+      var r = wrap.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
+      var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      var P = function (x, y) { return x.toFixed(1) + ',' + y.toFixed(1); };
+      var ex = cx - 0.11 * W, ey = cy + 0.13 * H;                       // last control point (approach from lower-left)
+      var d = 'M' + P(-0.12 * W, 1.08 * H) +
+        ' C' + P(0.0 * W, 0.66 * H) + ' ' + P(0.26 * W, 0.02 * H) + ' ' + P(0.58 * W, 0.16 * H) +
+        ' C' + P(0.86 * W, 0.28 * H) + ' ' + P(0.86 * W, 0.66 * H) + ' ' + P(0.60 * W, 0.68 * H) +
+        ' C' + P(0.44 * W, 0.70 * H) + ' ' + P(ex, ey) + ' ' + P(cx, cy);
+      var theta = Math.atan2(cy - ey, cx - ex) * 180 / Math.PI;          // end tangent (negative = climbing)
+      trail.setAttribute('d', d);
+      var L = trail.getTotalLength();
+      trail.style.strokeDasharray = L + ' ' + L; trail.style.strokeDashoffset = L;
+      var local = d.replace(/(-?\d+\.?\d*),(-?\d+\.?\d*)/g, function (m, x, y) { return (x - r.left).toFixed(1) + ',' + (y - r.top).toFixed(1); });
+      wrap.style.offsetPath = 'path("' + local + '")';
+      wrap.style.offsetRotate = 'auto ' + (-theta).toFixed(1) + 'deg';  // lands level, nose up-right like the logo
+      return L;
+    }
+
+    /* particles converge on the stage while the plane is inbound */
+    function particles() {
+      var c = $('.intro-particles', el); if (!c) return;
+      var ctx = c.getContext('2d'), W = c.width = window.innerWidth, H = c.height = window.innerHeight;
+      var cx = W / 2, cy = H / 2, t0 = null, pts = [];
+      for (var i = 0; i < 90; i++) { var a = Math.random() * 6.283, rr = Math.max(W, H) * (0.35 + Math.random() * 0.45); pts.push({ x: cx + Math.cos(a) * rr, y: cy + Math.sin(a) * rr, r: 1.5 + Math.random() * 2.5, k: 0.6 + Math.random() * 0.4, ph: Math.random() * 6.283 }); }
+      function step(t) {
+        if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 1500), e = 1 - Math.pow(1 - p, 3);
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < pts.length; i++) {
+          var q = pts[i], tx = cx + Math.cos(q.ph) * 150 * (1 - e) , ty = cy + Math.sin(q.ph) * 90 * (1 - e);
+          var x = q.x + (tx - q.x) * e * q.k, y = q.y + (ty - q.y) * e * q.k;
+          ctx.beginPath(); ctx.arc(x, y, q.r * (1 - p * 0.6), 0, 6.283);
+          ctx.fillStyle = 'rgba(49,103,202,' + (0.35 * (1 - p) + 0.05).toFixed(3) + ')'; ctx.fill();
+        }
+        if (p < 1 && !done) raf = requestAnimationFrame(step); else { ctx.clearRect(0, 0, W, H); raf = null; }
+      }
+      raf = requestAnimationFrame(step);
+    }
+
+    /* tagline types on */
+    function typewriter() {
+      var sub = $('.intro-sub', el), text = el.dataset.tagline || '', i = 0;
+      sub.textContent = ''; sub.classList.add('is-typing');
+      (function tick() { if (done) return; sub.textContent = text.slice(0, ++i); if (i < text.length) timers.push(setTimeout(tick, 34)); else timers.push(setTimeout(function () { sub.classList.remove('is-typing'); }, 700)); })();
+    }
+
+    var L = buildPath();
+    requestAnimationFrame(function () {
+      el.classList.add('is-go');
+      trail.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 2000, delay: 150, easing: 'cubic-bezier(.3,.55,.15,1)', fill: 'forwards' });
+      particles();
+    });
+    timers.push(setTimeout(typewriter, 3400));
+    timers.push(setTimeout(finish, 5000));
+    window.addEventListener('resize', buildPath);
     el.addEventListener('click', finish); // let impatient visitors skip
     document.addEventListener('keydown', function onKey(e) { if (e.key === 'Escape' || e.key === 'Enter') { finish(); document.removeEventListener('keydown', onKey); } });
   })();

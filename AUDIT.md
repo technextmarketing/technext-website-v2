@@ -20,9 +20,12 @@ Date: 12 September 2026. Re-run the static half any time with `python _src/audit
 
 ## Sections & showcase (home)
 
-1. **Intro** — first visit only: plane flies in with a light trail (0–1.15 s), wordmark wipes on (1.1–2.35 s),
-   tagline fades (2.15 s), whole screen fades at 3.0 s. Click/Esc skips. Stored in `localStorage.tn_intro_seen`,
-   so refreshes never show it again; skipped entirely under `prefers-reduced-motion`.
+1. **Intro** — first visit only, 5 s: ~90 particles converge (0–1.5 s); the plane flies one cubic-Bézier motion
+   path (`offset-path`, nose on the tangent, lands level) while a trail draws along the same curve (0.15–2.15 s);
+   the wordmark rises letter by letter from slices of the logo PNG (1.05–2.3 s); landing ripples (2.15/2.4 s);
+   glow bloom (2.2 s); tagline types on (3.4 s); shine (4.15 s); progress line; fade into the hero camera
+   entrance at 5.0 s. Click/Esc/Enter skips. Stored in `localStorage.tn_intro_seen`; `?intro=1` replays it;
+   skipped entirely under `prefers-reduced-motion`.
 2. **Hero carousel** (desktop, 10 s per slide, pauses on hover/focus/hidden tab, ← → keys, swipe). Every
    switch is a ~3 s camera move: the leaving slide exits with its own style (spin-away · fly-past · tilt-fall)
    while the arriving slide comes in with a 360° orbit-zoom, spiral or tumble (blur clears as it lands); the

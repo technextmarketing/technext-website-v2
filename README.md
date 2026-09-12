@@ -26,12 +26,13 @@ what GitHub Pages serves — commit both the partial and the generated file.
 | Home hero carousel (3 formats, 10 s), flow chart, pop-ups, background | `assets/js/hero.js` |
 | Chat assistant knowledge base (intents, answers, chips) | `assets/js/chat.js` → `KB` |
 | Quotation builder summary | `assets/js/quote.js` |
-| One-time intro (plane → wordmark), buttons, forms, reveals | `assets/js/site.js` |
+| One-time 5 s intro (motion-path plane, letter rise, typewriter), buttons, forms, reveals | `assets/js/site.js` |
 | Official Odoo app icons (from download.odoocdn.com) | `assets/img/odoo/<module>.svg`, used as `{{odoo:module}}` |
 | Favicons / OG image / intro logo split | `python _src/make_assets.py` |
 | Static audit (links, SEO, headings, labels, claims) | `python _src/audit.py` — see `AUDIT.md` |
 
-To show the intro again on your own machine, clear `localStorage.tn_intro_seen` in DevTools.
+To replay the intro, open any page with `?intro=1` (or clear `localStorage.tn_intro_seen`).
+Wordmark letter slices come from `python _src/make_assets.py --intro-only` (writes `assets/img/letters/` and `_src/letters.json`).
 
 ## Forms → sales@technext.asia
 

@@ -218,18 +218,26 @@ LAYOUT = '''<!doctype html>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{ROOT}assets/css/site.css">
 <style>#intro{display:none}html.intro #intro{display:grid}</style>
-<script>(function(){try{if(!localStorage.getItem('tn_intro_seen')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
+<script>(function(){try{var force=/[?&]intro=1(&|$)/.test(location.search);if((force||!localStorage.getItem('tn_intro_seen'))&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
 {HEAD_EXTRA}
 <script type="application/ld+json">{JSONLD}</script>
 </head>
 <body class="{BODY_CLASS}">
-<div class="intro" id="intro" aria-hidden="true">
+<div class="intro" id="intro" aria-hidden="true" data-tagline="Odoo Ready Partner · Singapore">
+  <div class="intro-bg"></div>
+  <div class="intro-bloom"></div>
+  <canvas class="intro-particles"></canvas>
+  <svg class="intro-trail-svg" aria-hidden="true"><defs><linearGradient id="introGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6FA0F5" stop-opacity="0"/><stop offset=".6" stop-color="#6FA0F5"/><stop offset="1" stop-color="#3167CA"/></linearGradient></defs><path d=""/></svg>
   <div class="intro-stage">
-    <span class="intro-trail"></span>
-    <img class="intro-plane" src="{ROOT}assets/img/logo-plane.png" alt="" width="150" height="150" decoding="sync">
-    <img class="intro-text" src="{ROOT}assets/img/logo-text.png" alt="" width="790" height="140" decoding="sync">
+    <div class="intro-plane-wrap">
+      <span class="intro-ripple"></span><span class="intro-ripple"></span>
+      <img class="intro-plane" src="{ROOT}assets/img/logo-plane.png" alt="" width="160" height="136" decoding="sync">
+    </div>
+    <span class="intro-word" style="aspect-ratio:{LETTERS_W}/{LETTERS_H}">{LETTERS}</span>
   </div>
-  <span class="intro-sub">Odoo Ready Partner · Singapore</span>
+  <span class="intro-sub" aria-hidden="true"></span>
+  <span class="intro-shine" aria-hidden="true"></span>
+  <span class="intro-progress" aria-hidden="true"></span>
   <button class="intro-skip" type="button">Skip</button>
 </div>
 <a class="skip" href="#main">Skip to content</a>
@@ -332,6 +340,19 @@ def marquee_html() -> str:
     return f'<div class="mq-track">{items}</div><div class="mq-track" aria-hidden="true">{items}</div>'
 
 
+def letters_html() -> tuple:
+    """Wordmark slices for the intro (see make_assets.split_letters)."""
+    meta_path = SRC / "letters.json"
+    if not meta_path.exists():
+        return ('<img class="intro-letter" style="left:0;width:100%;--i:0" src="{ROOT}assets/img/logo-text.png" alt="" decoding="sync">', 763, 132)
+    meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    imgs = "".join(
+        f'<img class="intro-letter" style="left:{l["x"]*100:.2f}%;width:{l["w"]*100:.2f}%;--i:{i}" '
+        f'src="{{ROOT}}assets/img/letters/l{i}.png" alt="" decoding="sync">'
+        for i, l in enumerate(meta["letters"]))
+    return imgs, meta["w"], meta["h"]
+
+
 def build_page(path: Path, nav_cache: dict) -> str:
     raw = path.read_text(encoding="utf-8")
     m = META_RE.match(raw)
@@ -355,7 +376,9 @@ def build_page(path: Path, nav_cache: dict) -> str:
     title = meta["title"] if meta["title"].endswith("TechNext") else f'{meta["title"]} · TechNext'
     scripts = "".join(f'<script src="{{ROOT}}{s}" defer></script>' for s in meta.get("scripts", []))
 
-    html = LAYOUT.replace("{NAV}", nav_cache[active]).replace("{MNAV}", mobile_nav_html()).replace("{TALK}", talk_panel_html())
+    letters, lw, lh = letters_html()
+    html = (LAYOUT.replace("{NAV}", nav_cache[active]).replace("{MNAV}", mobile_nav_html()).replace("{TALK}", talk_panel_html())
+                  .replace("{LETTERS}", letters).replace("{LETTERS_W}", str(lw)).replace("{LETTERS_H}", str(lh)))
     html = (html.replace("{TITLE}", title)
                 .replace("{DESC}", meta.get("desc", S.DEFAULT_DESC).replace('"', "&quot;"))
                 .replace("{CANONICAL}", canonical)

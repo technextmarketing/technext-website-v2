@@ -62,6 +62,44 @@ def split_logo():
     return plane.size, text.size
 
 
+def split_letters():
+    """Cut the wordmark into glyph groups (alpha-gap detection) for the letter-by-letter intro.
+    Writes assets/img/letters/l<i>.png (full height, so vertical alignment is trivial) and
+    _src/letters.json with each slice's x / width as fractions of the wordmark."""
+    import json
+    im = Image.open(IMG / "logo-text.png").convert("RGBA")
+    a = im.getchannel("A")
+    W, H = im.size
+    px = a.load()
+    cols = [any(px[x, y] > 8 for y in range(H)) for x in range(W)]
+    groups, x = [], 0
+    while x < W:
+        if cols[x]:
+            s = x
+            while x < W and cols[x]:
+                x += 1
+            groups.append([s, x])
+        else:
+            x += 1
+    # merge slivers (e.g. a detached dot) into the nearest neighbour
+    merged = []
+    for g in groups:
+        if merged and (g[1] - g[0] < 12 or g[0] - merged[-1][1] < 3):
+            merged[-1][1] = g[1]
+        else:
+            merged.append(g)
+    out = IMG / "letters"
+    out.mkdir(exist_ok=True)
+    for old in out.glob("*.png"):
+        old.unlink()
+    meta = {"w": W, "h": H, "letters": []}
+    for i, (s, e) in enumerate(merged):
+        im.crop((s, 0, e, H)).save(out / f"l{i}.png", optimize=True)
+        meta["letters"].append({"x": round(s / W, 4), "w": round((e - s) / W, 4)})
+    (Path(__file__).resolve().parent / "letters.json").write_text(json.dumps(meta), encoding="utf-8")
+    return len(merged), [(e - s) for s, e in merged]
+
+
 def font(size: int, bold=False):
     for name in (("segoeuib.ttf" if bold else "segoeui.ttf"), ("arialbd.ttf" if bold else "arial.ttf")):
         p = Path(r"C:\Windows\Fonts") / name
@@ -95,8 +133,10 @@ if __name__ == "__main__":
     import sys
     if "--intro-only" in sys.argv:
         print("plane, text =", split_logo())
+        print("letters =", split_letters())
         sys.exit()
     print("plane, text =", split_logo())
+    print("letters =", split_letters())
     favicons()
     badge()
     og()

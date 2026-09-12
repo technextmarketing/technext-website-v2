@@ -22,18 +22,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/site.css">
 <style>#intro{display:none}html.intro #intro{display:grid}</style>
-<script>(function(){try{if(!localStorage.getItem('tn_intro_seen')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
+<script>(function(){try{var force=/[?&]intro=1(&|$)/.test(location.search);if((force||!localStorage.getItem('tn_intro_seen'))&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "TechNext Pte. Ltd.", "alternateName": "TechNext", "url": "https://technextmarketing.github.io/technext-website-v2/", "email": "sales@technext.asia", "telephone": "+65 8839 6998", "address": {"@type": "PostalAddress", "streetAddress": "261 Waterloo Street #03-36", "addressLocality": "Singapore", "postalCode": "180261", "addressCountry": "SG"}, "sameAs": ["https://www.linkedin.com/company/technext-asia"], "knowsAbout": ["Odoo ERP", "Odoo Accounting", "Odoo Sales", "Odoo Inventory", "Website design", "Social media management"]}</script>
 </head>
 <body class="">
-<div class="intro" id="intro" aria-hidden="true">
+<div class="intro" id="intro" aria-hidden="true" data-tagline="Odoo Ready Partner · Singapore">
+  <div class="intro-bg"></div>
+  <div class="intro-bloom"></div>
+  <canvas class="intro-particles"></canvas>
+  <svg class="intro-trail-svg" aria-hidden="true"><defs><linearGradient id="introGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6FA0F5" stop-opacity="0"/><stop offset=".6" stop-color="#6FA0F5"/><stop offset="1" stop-color="#3167CA"/></linearGradient></defs><path d=""/></svg>
   <div class="intro-stage">
-    <span class="intro-trail"></span>
-    <img class="intro-plane" src="../assets/img/logo-plane.png" alt="" width="150" height="150" decoding="sync">
-    <img class="intro-text" src="../assets/img/logo-text.png" alt="" width="790" height="140" decoding="sync">
+    <div class="intro-plane-wrap">
+      <span class="intro-ripple"></span><span class="intro-ripple"></span>
+      <img class="intro-plane" src="../assets/img/logo-plane.png" alt="" width="160" height="136" decoding="sync">
+    </div>
+    <span class="intro-word" style="aspect-ratio:763/132"><img class="intro-letter" style="left:0.00%;width:23.07%;--i:0" src="../assets/img/letters/l0.png" alt="" decoding="sync"><img class="intro-letter" style="left:24.25%;width:11.80%;--i:1" src="../assets/img/letters/l1.png" alt="" decoding="sync"><img class="intro-letter" style="left:38.14%;width:10.62%;--i:2" src="../assets/img/letters/l2.png" alt="" decoding="sync"><img class="intro-letter" style="left:51.38%;width:13.37%;--i:3" src="../assets/img/letters/l3.png" alt="" decoding="sync"><img class="intro-letter" style="left:66.32%;width:33.42%;--i:4" src="../assets/img/letters/l4.png" alt="" decoding="sync"></span>
   </div>
-  <span class="intro-sub">Odoo Ready Partner · Singapore</span>
+  <span class="intro-sub" aria-hidden="true"></span>
+  <span class="intro-shine" aria-hidden="true"></span>
+  <span class="intro-progress" aria-hidden="true"></span>
   <button class="intro-skip" type="button">Skip</button>
 </div>
 <a class="skip" href="#main">Skip to content</a>
