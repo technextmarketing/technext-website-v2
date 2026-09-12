@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://technextmarketing.github.io/technext-website-v2/sitemap.xml
