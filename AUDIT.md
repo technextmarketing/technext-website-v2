@@ -25,9 +25,8 @@ Date: 12 September 2026. Re-run the static half any time with `python _src/audit
    the wordmark rises letter by letter from slices of the logo PNG (1.8–3.9 s); landing ripples (3.6/3.9 s);
    glow bloom that keeps breathing (3.7 s); tagline types on (4.6 s); shine (6.4 s); Accounting · Sales ·
    Inventory pills spring in (7.1 s); second shine (8.7 s); progress line; fade into the hero camera entrance
-   at 10.0 s. Click/Esc/Enter skips. The seen flag is written the moment the intro starts (localStorage +
-   cookie fallback), so a refresh never replays it; `?intro=1` replays once and strips itself from the URL;
-   skipped entirely under `prefers-reduced-motion`.
+   at 10.0 s. Click/Esc/Enter skips. Plays on every fresh load and every refresh; skipped only for in-site link
+   navigation (same-origin referrer) and back/forward, and under `prefers-reduced-motion`. `?intro=1` forces it.
 2. **Hero carousel** (desktop, 10 s per slide, pauses on hover/focus/hidden tab, ← → keys, swipe). Every
    switch is a ~3 s camera move: the leaving slide exits with its own style (spin-away · fly-past · tilt-fall)
    while the arriving slide comes in with a 360° orbit-zoom, spiral or tumble (blur clears as it lands); the

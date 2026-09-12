@@ -219,7 +219,7 @@ LAYOUT = '''<!doctype html>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{ROOT}assets/css/site.css">
 <style>#intro{display:none}html.intro #intro{display:grid}</style>
-<script>(function(){try{var force=/[?&]intro=1(&|$)/.test(location.search);var seen=false;try{seen=!!localStorage.getItem('tn_intro_seen');}catch(e){}if(!seen)seen=/(^|; )tn_intro_seen=1/.test(document.cookie);if((force||!seen)&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
+<script>(function(){try{var force=/[?&]intro=1(&|$)/.test(location.search);var nav=(performance.getEntriesByType&&performance.getEntriesByType('navigation')[0])||{};var internal=false;try{internal=!!document.referrer&&new URL(document.referrer).origin===location.origin;}catch(e){}var skip=(nav.type==='navigate'&&internal)||nav.type==='back_forward';if((force||!skip)&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
 {HEAD_EXTRA}
 <script type="application/ld+json">{JSONLD}</script>
 </head>

@@ -31,7 +31,7 @@ what GitHub Pages serves — commit both the partial and the generated file.
 | Favicons / OG image / intro logo split | `python _src/make_assets.py` |
 | Static audit (links, SEO, headings, labels, claims) | `python _src/audit.py` — see `AUDIT.md` |
 
-To replay the intro once, open any page with `?intro=1` (the switch removes itself from the URL so a refresh does not repeat it). The seen flag lives in `localStorage.tn_intro_seen` with a `tn_intro_seen` cookie fallback.
+The intro plays on every fresh load and refresh; it is skipped when a visitor clicks between pages of the site (same-origin referrer) or uses back/forward. `?intro=1` forces it on any load.
 Wordmark letter slices come from `python _src/make_assets.py --intro-only` (writes `assets/img/letters/` and `_src/letters.json`).
 
 ## Forms → sales@technext.asia

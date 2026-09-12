@@ -13,10 +13,10 @@
     if (!el) return;
     if (!document.documentElement.classList.contains('intro')) { el.remove(); return; }
     document.body.style.overflow = 'hidden';
-    // Mark as seen the moment it starts (not at the end), so a refresh mid-intro never replays it.
-    // Cookie fallback covers browsers that block localStorage. A ?intro=1 replay strips itself from the URL.
-    try { localStorage.setItem('tn_intro_seen', '1'); } catch (_) {}
-    try { document.cookie = 'tn_intro_seen=1; max-age=31536000; path=/; SameSite=Lax'; } catch (_) {}
+    // Plays on every fresh load and every refresh (the head script skips it only for in-site link
+    // navigation and back/forward). Old "seen" flags from earlier builds are cleared so they never block it.
+    try { localStorage.removeItem('tn_intro_seen'); sessionStorage.removeItem('tn_intro_seen'); } catch (_) {}
+    try { document.cookie = 'tn_intro_seen=; max-age=0; path=/'; document.cookie = 'tn_intro_s=; max-age=0; path=/'; } catch (_) {}
     if (/[?&]intro=1(&|$)/.test(location.search) && history.replaceState) {
       var clean = location.search.replace(/([?&])intro=1(&|$)/, function (m, a, b) { return b === '&' ? a : ''; });
       history.replaceState(null, '', location.pathname + clean + location.hash);
