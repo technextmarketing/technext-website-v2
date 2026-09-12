@@ -4,7 +4,7 @@
 (function () {
   'use strict';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var ROOT = (function () { var s = document.querySelector('script[src$="assets/js/showcase.js"]'); return s ? s.getAttribute('src').replace('assets/js/showcase.js', '') : ''; })();
+  var ROOT = (function () { var s = document.querySelector('script[src*="assets/js/showcase.js"]'); return s ? s.getAttribute('src').split('assets/js/showcase.js')[0] : ''; })();
   function icon(name) {
     var d = { arrow: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>', check: '<path d="M20 6 9 17l-5-5"/>' }[name];
     return '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';

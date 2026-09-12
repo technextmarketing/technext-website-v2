@@ -376,16 +376,23 @@ body.talk-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 .slide-tag .sep{width:1px;height:14px;background:var(--line)}
 .slide-tag .ic{width:15px;height:15px;color:var(--blue)}
 /* carousel controls */
-.hero-ctl{position:absolute;left:0;right:0;bottom:70px;z-index:5;display:flex;justify-content:center;align-items:center;gap:14px}
-.dots{display:flex;gap:6px}
-.dot{width:56px;height:24px;padding:10px 0;border:0;background:transparent;cursor:pointer;position:relative}
-.dot::before{content:"";position:absolute;left:0;right:0;top:10px;height:4px;border-radius:2px;background:var(--line);transition:background-color .2s}
+/* carousel controls: one glass pill — arrow · three tracks · arrow — everything centred on one 36px axis.
+   The active track widens and fills left-to-right over the slide's 10 s; is-static = autoplay off. */
+.hero-ctl{position:absolute;left:0;right:0;bottom:70px;z-index:5;display:flex;justify-content:center}
+.hero-ctl-inner{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 8px;border-radius:999px;background:rgba(255,255,255,.82);border:1px solid var(--line);box-shadow:var(--shadow-sm);backdrop-filter:blur(8px);pointer-events:auto}
+.dots{display:flex;align-items:center;gap:8px;height:36px;padding:0 4px}
+.dot{position:relative;width:28px;height:36px;padding:0;border:0;background:transparent;cursor:pointer;transition:width .35s var(--spring)}
+.dot::before,.dot::after{content:"";position:absolute;left:0;right:0;top:50%;height:6px;margin-top:-3px;border-radius:999px}
+.dot::before{background:var(--line);transition:background-color .2s}
 .dot:hover::before{background:var(--blue-100)}
-.dot::after{content:"";position:absolute;left:0;right:0;top:10px;height:4px;border-radius:2px;background:var(--blue);transform:scaleX(0);transform-origin:left}
+.dot::after{background:var(--blue);transform:scaleX(0);transform-origin:left}
+.dot.is-active{width:64px}
+.dot.is-active::before{background:var(--blue-100)}
 .dot.is-active::after{animation:prog var(--dur,10s) linear forwards}
 .dot.is-active.is-static::after{animation:none;transform:scaleX(1)}
-.hero.is-paused .dot.is-active::after{animation-play-state:paused}
-.hero-arrow{width:36px;height:36px;border-radius:50%}
+.hero.is-paused .dot.is-active::after,.hero.is-cam .dot.is-active::after{animation-play-state:paused}
+.hero-arrow{width:36px;height:36px;border-radius:50%;border-color:transparent;background:transparent;box-shadow:none}
+.hero-arrow:hover{background:var(--blue-050);border-color:transparent;box-shadow:none;transform:none}
 .hero-arrow .ic{width:16px;height:16px}
 .hero-arrow:hover .ic{transform:translateX(3px)}
 .hero-arrow--prev .ic{transform:rotate(180deg)}
@@ -1066,6 +1073,35 @@ a.app:hover>.ic{transform:translateX(3px);color:var(--blue)}
 .pillar-links a:hover{background:var(--blue-050);color:var(--blue-700)}
 .pillar-links a:hover .ic{transform:translateX(3px);color:var(--blue)}
 .card--feature .card-ic .ic+.ic{margin-left:6px}
+
+
+/* ---------- mobile / tablet simplifications ---------- */
+@media (max-width:960px){
+  /* solution pillars: title + chip links; the paragraph goes on phones */
+  #solutions .card--feature{padding:20px}
+  #solutions .card--feature .card-ic{min-height:0;margin-bottom:12px}
+  #solutions .card--feature .card-ic .oi{width:32px;height:32px}
+  #solutions .card--feature h3{margin-bottom:6px}
+  #solutions .card--feature>.tag{top:18px;right:18px}
+  .pillar-links{display:flex;flex-wrap:wrap;gap:8px;border-top:0;padding-top:4px;margin-top:10px}
+  .pillar-links a{margin:0;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:13.5px;gap:6px}
+  .pillar-links a .ic{width:14px;height:14px}
+  /* constellation: core + the three focus apps, names always visible */
+  .const{max-width:300px}
+  .const-node[style*="--r:2"],.const-node[style*="--r:3"]{display:none}
+  .const-node[style*="--r:1"]{--rad:38cqw;width:56px;height:56px;margin:-28px}
+  .const-node[style*="--r:1"]::after{opacity:1;transform:translateX(-50%)}
+  .const-core{width:112px;height:112px;margin:-56px}
+  .const-core small{display:none}
+  .const-legend{display:none}
+  .const-count{right:50%;bottom:-6px;transform:translateX(50%)}
+  .const-pulse{inset:-10px}
+}
+@media (max-width:640px){
+  #solutions .card--feature p{display:none}
+  #solutions .card--feature>.tag{position:static;display:inline-flex;margin-bottom:10px}
+  .const{max-width:260px;margin-bottom:24px}
+}
 
 /* ---------- semantic helpers (audit) ---------- */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}

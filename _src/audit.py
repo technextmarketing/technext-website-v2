@@ -63,7 +63,7 @@ def main():
             url = m.group(1)
             if url.startswith(("http", "mailto:", "data:", "tel:")): continue
             total_refs += 1
-            if not (p.parent / urllib.parse.unquote(url)).resolve().exists(): issues[key].append(f"broken ref {url}")
+            if not (p.parent / urllib.parse.unquote(url.split("?")[0])).resolve().exists(): issues[key].append(f"broken ref {url}")
         for tok in re.findall(r"\{\{[A-Za-z_:0-9]+\}\}", html): issues[key].append(f"leftover token {tok}")
         q = Page(); q.feed(html)
         if not (30 <= len(q.title) <= 75): issues[key].append(f"title length {len(q.title)}: {q.title!r}")

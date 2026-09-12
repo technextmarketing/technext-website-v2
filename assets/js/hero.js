@@ -161,6 +161,17 @@
   var slides = $$('.slide', hero), dots = $$('.dot', hero), live = $('[data-hero-live]', hero);
   var idx = Math.max(0, slides.findIndex(function (s) { return s.classList.contains('is-active'); }));
   var timer = null, startedAt = 0, remaining = DUR, paused = false, autoplay = !reduce && !mobile.matches;
+  // Random play: a random slide opens the page, and autoplay jumps to a random *different* slide each time.
+  // Arrows, dots and keys still step in order. Mobile keeps slide 1 (the others are hidden by CSS).
+  if (autoplay && slides.length > 1) {
+    var r0 = Math.floor(Math.random() * slides.length);
+    if (r0 !== idx) { slides[idx].classList.remove('is-active'); slides[r0].classList.add('is-active'); idx = r0; }
+  }
+  function nextIdx() {
+    if (slides.length < 2) return idx;
+    var n; do { n = Math.floor(Math.random() * slides.length); } while (n === idx);
+    return n;
+  }
 
   function announce() { if (live) live.textContent = 'Slide ' + (idx + 1) + ' of ' + slides.length + ': ' + (slides[idx].dataset.title || ''); }
 
@@ -207,9 +218,9 @@
     if (viaUser && dots[idx]) dots[idx].focus({ preventScroll: true });
   }
   function clear() { if (timer) { clearTimeout(timer); timer = null; } }
-  function restart() { clear(); remaining = DUR; if (!autoplay) return; if (!paused) { startedAt = performance.now(); timer = setTimeout(function () { show(idx + 1); }, remaining); } }
+  function restart() { clear(); remaining = DUR; if (!autoplay) return; if (!paused) { startedAt = performance.now(); timer = setTimeout(function () { show(nextIdx()); }, remaining); } }
   function pause() { if (paused || !autoplay) return; paused = true; hero.classList.add('is-paused'); if (timer) { remaining = Math.max(200, remaining - (performance.now() - startedAt)); clear(); } }
-  function resume() { if (!paused || !autoplay) return; if (pop && !pop.hidden) return; paused = false; hero.classList.remove('is-paused'); startedAt = performance.now(); timer = setTimeout(function () { show(idx + 1); }, remaining); }
+  function resume() { if (!paused || !autoplay) return; if (pop && !pop.hidden) return; paused = false; hero.classList.remove('is-paused'); startedAt = performance.now(); timer = setTimeout(function () { show(nextIdx()); }, remaining); }
 
   dots.forEach(function (d, i) { d.addEventListener('click', function () { show(i, true); }); });
   var prev = $('[data-hero-prev]', hero), next = $('[data-hero-next]', hero);

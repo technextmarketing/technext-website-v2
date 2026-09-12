@@ -8,7 +8,7 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var log = $('[data-chat-log]', win), chips = $('[data-chat-chips]', win), form = $('[data-chat-form]', win), input = $('#chat-text', win);
-  var ROOT = (function () { var s = document.querySelector('script[src$="assets/js/chat.js"]'); return s ? s.getAttribute('src').replace('assets/js/chat.js', '') : ''; })();
+  var ROOT = (function () { var s = document.querySelector('script[src*="assets/js/chat.js"]'); return s ? s.getAttribute('src').split('assets/js/chat.js')[0] : ''; })();
   var ENDPOINT = 'https://formsubmit.co/ajax/sales@technext.asia';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var history = [];

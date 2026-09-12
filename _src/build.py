@@ -25,6 +25,19 @@ ROOT = SRC.parent
 PAGES = SRC / "pages"
 YEAR = str(date.today().year)
 
+
+def asset_version() -> str:
+    """Short content hash of the CSS/JS bundle, appended as ?v= so a deploy never serves a cached stylesheet
+    against new markup (GitHub Pages caches assets for ~10 minutes)."""
+    import hashlib
+    h = hashlib.sha1()
+    for f in sorted((ROOT / "assets").glob("css/*.css")) + sorted((ROOT / "assets").glob("js/*.js")):
+        h.update(f.read_bytes())
+    return h.hexdigest()[:8]
+
+
+ASSET_V = asset_version()
+
 ICON_RE = re.compile(r"\{\{icon:([a-z0-9_-]+)\}\}")
 ODOO_RE = re.compile(r"\{\{odoo:([a-z0-9_]+)(?::(\d+))?\}\}")
 META_RE = re.compile(r"^\s*<!--meta\s*(\{.*?\})\s*-->", re.S)
@@ -217,7 +230,7 @@ LAYOUT = '''<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{ROOT}assets/css/site.css">
+<link rel="stylesheet" href="{ROOT}assets/css/site.css?v={ASSET_V}">
 <style>#intro{display:none}html.intro #intro{display:grid}</style>
 <script>(function(){try{var force=/[?&]intro=1(&|$)/.test(location.search);var nav=(performance.getEntriesByType&&performance.getEntriesByType('navigation')[0])||{};var internal=false;try{internal=!!document.referrer&&new URL(document.referrer).origin===location.origin;}catch(e){}var skip=(nav.type==='navigate'&&internal)||nav.type==='back_forward';if((force||!skip)&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
 {HEAD_EXTRA}
@@ -286,8 +299,8 @@ LAYOUT = '''<!doctype html>
 
 {TALK}
 
-<script src="{ROOT}assets/js/site.js" defer></script>
-<script src="{ROOT}assets/js/chat.js" defer></script>
+<script src="{ROOT}assets/js/site.js?v={ASSET_V}" defer></script>
+<script src="{ROOT}assets/js/chat.js?v={ASSET_V}" defer></script>
 {SCRIPTS}
 </body>
 </html>
@@ -546,7 +559,7 @@ def render(meta: dict, content: str, nav_cache: dict) -> str:
 
     canonical = S.SITE_URL + ("" if out_rel == "index.html" else out_rel)
     title = meta["title"] if meta["title"].endswith("TechNext") else f'{meta["title"]} · TechNext'
-    scripts = "".join(f'<script src="{{ROOT}}{s}" defer></script>' for s in meta.get("scripts", []))
+    scripts = "".join(f'<script src="{{ROOT}}{s}?v={ASSET_V}" defer></script>' for s in meta.get("scripts", []))
 
     letters, lw, lh = letters_html()
     html = (LAYOUT.replace("{NAV}", nav_cache[active]).replace("{MNAV}", mobile_nav_html()).replace("{TALK}", talk_panel_html())
@@ -555,6 +568,7 @@ def render(meta: dict, content: str, nav_cache: dict) -> str:
                 .replace("{DESC}", meta.get("desc", S.DEFAULT_DESC).replace('"', "&quot;"))
                 .replace("{CANONICAL}", canonical)
                 .replace("{SITE_URL}", S.SITE_URL)
+                .replace("{ASSET_V}", ASSET_V)
                 .replace("{BODY_CLASS}", meta.get("body", ""))
                 .replace("{HEAD_EXTRA}", meta.get("head", ""))
                 .replace("{JSONLD}", jsonld(canonical))
