@@ -41,11 +41,11 @@ Date: 12 September 2026. Re-run the static half any time with `python _src/audit
      pop-up zooms out of that node (WAAPI), prev/next through the steps, cross-links to app pop-ups.
    - Slide 3 — two counter-rotating rings of Odoo apps around the Ready Partner badge; hover pauses and
      shows labels; click → app pop-up.
-   - **3D tilt stage** — the whole active slide rotates toward the cursor (±8° X, ±12° Y, eased) on a 1300 px
-     perspective while the pointer is over the copy/background; it holds still whenever the pointer is over the
-     visual column, CTAs or any icon (350 ms release hysteresis). Clickable elements stay on the slide plane so
-     they hit-test in 2D; depth lives on non-interactive layers only (toasts 150 · edge labels 90 · partner
-     badge 150 · rings −30 · connectors −20) plus the floaters’ lateral parallax. Fine pointers only.
+   - **3D tilt stage** — the active slide is one flat plane that rotates toward the cursor (±8° X, ±12° Y,
+     eased) under a 1300 px perspective while the pointer is over the copy/background, and holds still whenever
+     the pointer is over the visual column, CTAs or any icon (350 ms release hysteresis). `transform-style:
+     flat` so hit-testing is an exact inverse transform of a single layer; no hover target moves on hover
+     (lifts are shadow/border only; icons scale inside). Floaters add lateral parallax. Fine pointers only.
    - Shared background: three drifting aurora blobs, dot grid with radial mask, cursor spotlight, particle
      field with proximity links (canvas, paused when the tab is hidden).
    - Marquee strip of 20 Odoo apps along the bottom edge; pauses on hover.

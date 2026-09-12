@@ -411,7 +411,7 @@ a.card:hover{text-decoration:none}
 .dash-body{padding:16px;display:grid;gap:12px}
 .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .kpi{border:1px solid var(--line);border-radius:12px;padding:12px;background:rgba(255,255,255,.7);display:grid;grid-template-columns:1fr auto;gap:4px 8px;align-items:start;transition:transform .25s var(--spring),box-shadow .25s ease}
-.kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.kpi:hover{box-shadow:0 0 0 3px var(--blue-050),var(--shadow-sm);border-color:var(--blue-100)}
 .kpi .oi{width:26px;height:26px;grid-row:1/3}
 .kpi small{display:block;font-size:10.5px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
 .kpi b{display:block;font:700 1.15rem/1.2 var(--font-display);color:var(--ink);font-variant-numeric:tabular-nums}
@@ -452,7 +452,7 @@ a.card:hover{text-decoration:none}
 .flow{position:relative;padding:18px 0 34px}
 .flow-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto 56px auto;gap:0 20px;position:relative;z-index:2}
 .fnode{grid-row:1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px 14px;border:1px solid var(--glass-line);border-radius:16px;background:rgba(255,255,255,.95);box-shadow:var(--shadow-sm);cursor:pointer;text-align:center;position:relative;transition:transform .3s var(--spring),box-shadow .3s ease,border-color .3s ease}
-.fnode:hover{transform:translateY(-4px) scale(1.03);box-shadow:var(--shadow-md);border-color:var(--blue-100)}
+.fnode:hover{box-shadow:0 0 0 3px var(--blue-050),var(--shadow-md);border-color:var(--blue-100)}
 .fnode.is-lit{border-color:var(--blue);box-shadow:0 0 0 4px var(--blue-050),var(--shadow-md)}
 .fnode .oi{width:38px;height:38px;transition:transform .4s var(--spring)}
 .fnode:hover .oi,.fnode.is-lit .oi{transform:scale(1.12)}
@@ -826,7 +826,7 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
   .slide.is-entering{z-index:2}
   .is-leaving .kw>span,.is-leaving .up{opacity:1;transform:none;animation:none}
   .is-leaving .chart i{transform:none;animation:none}
-  .slide-inner{transform-style:preserve-3d}
+  .slide-inner{transform-style:flat}
   .is-leaving .slide-inner,.is-entering .slide-inner{will-change:transform,opacity,filter}
   .cam-in-orbit .slide-inner{animation:camOrbitIn 2.1s cubic-bezier(.2,.8,.2,1) .75s both}
   .cam-in-spiral .slide-inner{animation:camSpiralIn 2.1s cubic-bezier(.2,.8,.2,1) .75s both}
@@ -866,19 +866,12 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
    their own Z so the tilt reveals depth: copy 30 · dashboard 40 · floaters 60–140 · toasts 120 ·
    flow nodes 20–90 · edge labels 70 · orbit rings 20/60 · partner badge 110. */
 @media (min-width:961px) and (hover:hover){
-  .slide-inner,.slide-inner>*,.slide-copy,.dash-wrap,.flow,.flow-grid,.orbit{transform-style:preserve-3d}
+  /* The tilted slide is ONE flat composited plane (transform-style: flat). Hit-testing a flat plane under a
+     perspective rotation is an exact inverse transform in every browser; preserve-3d child layers are what
+     made hover targets jitter. Depth is expressed by the plane's rotation and the floaters' lateral parallax. */
   .hero-track{perspective:1300px}
+  .slide-inner{transform-style:flat;will-change:transform}
   .dash-wrap{perspective:none}
-  /* Depth lives only on NON-interactive layers. Clickable elements stay on the slide plane (Z 0) so the
-     browser hit-tests them in plain 2D — 3D-positioned hover targets are what caused select/deselect jitter. */
-  .toasts{transform:translateZ(150px)}
-  .flow-svg{transform:translateZ(-20px)}
-  .flow-label{transform:translate(-50%,-50%) translateZ(90px)}
-  .flow-hint{transform:translateZ(20px)}
-  .orbit-core{transform:translateZ(150px)}
-  .orbit-core::before{transform:translateZ(-30px)}
-  .ring{transform:translateZ(-30px)}
-  .spec-strip,.mono-list,.pill-row{transform-style:preserve-3d}
 }
 /* the carousel controls strip spans the full width — only its buttons may take the pointer */
 .hero-ctl{pointer-events:none}
