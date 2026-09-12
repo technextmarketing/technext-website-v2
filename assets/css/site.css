@@ -1030,8 +1030,9 @@ a.app:hover>.ic{transform:translateX(3px);color:var(--blue)}
 /* ---------- app constellation (home) ---------- */
 .const{position:relative;width:100%;aspect-ratio:1;max-width:520px;margin:0 auto;justify-self:center}
 .const-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-.const-spoke{stroke:var(--blue-100);stroke-width:1.5;transition:stroke .25s ease,stroke-width .25s ease}
-.const-spoke.is-focus{stroke:var(--blue-300);stroke-width:2}
+.const-spoke{stroke:var(--blue-300);stroke-opacity:.55;stroke-width:1.5;transition:stroke .25s ease,stroke-width .25s ease,stroke-opacity .25s ease}
+.const-spoke.is-focus{stroke:var(--blue);stroke-opacity:.6;stroke-width:2}
+.const-spoke.is-lit,.const-spoke.is-auto{stroke-opacity:1}
 .const-spoke.is-lit,.const-spoke.is-auto{stroke:var(--blue);stroke-width:2.5}
 .const-core{position:absolute;left:50%;top:50%;width:132px;height:132px;margin:-66px;border-radius:50%;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-md);display:grid;place-content:center;justify-items:center;gap:2px;text-align:center;z-index:2}
 .const-core .ic{width:26px;height:26px;color:var(--blue);margin-bottom:4px}
