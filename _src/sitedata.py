@@ -32,15 +32,31 @@ NAV = [
     {
         "label": "Solution", "id": "solution",
         "columns": [
-            {"title": "ERP", "links": [
-                {"label": "Odoo ERP System", "href": "solutions/odoo-erp.html", "odoo": "accountant",
-                 "desc": "Accounting, Sales and Inventory on one system."},
+            {"title": "ERP", "href": "solutions/odoo-erp.html", "links": [
+                {"label": "Odoo ERP Development", "href": "solutions/odoo-erp.html", "odoo": "accountant",
+                 "desc": "Implementation, configuration and custom modules."},
+                {"label": "CRM Development", "href": "odoo/crm-development.html", "odoo": "crm",
+                 "desc": "Pipelines built around how you sell."},
+                {"label": "Enterprise Solution", "href": "solutions/enterprise.html", "icon": "layers",
+                 "desc": "Multi-company, multi-country Odoo at scale."},
+            ]},
+            {"title": "AI Solution", "href": "solutions/ai.html", "links": [
+                {"label": "RAG Knowledge Assistants", "href": "solutions/ai-knowledge.html", "icon": "database",
+                 "desc": "Answers grounded in your own documents."},
+                {"label": "Odoo + AI integrations", "href": "odoo/ai-integration.html", "odoo": "ai_app",
+                 "desc": "AI working inside your ERP records."},
+                {"label": "Workflow Automation", "href": "solutions/ai-automation.html", "icon": "zap",
+                 "desc": "Agents that run multi-step tasks."},
+                {"label": "AI Chatbots", "href": "solutions/ai-chatbots.html", "icon": "bot",
+                 "desc": "Web, WhatsApp and in-app assistants."},
             ]},
             {"title": "Marketing", "href": "solutions/marketing.html", "links": [
-                {"label": "Website", "href": "solutions/website.html", "icon": "globe",
+                {"label": "Web Design & Development", "href": "solutions/website.html", "icon": "globe",
                  "desc": "Fast, clear sites that explain what you do."},
                 {"label": "Social Media Management", "href": "solutions/social-media.html", "icon": "megaphone",
                  "desc": "Steady posting with a plan behind it."},
+                {"label": "Graphic & Brand Assets", "href": "solutions/brand-assets.html", "icon": "sparkle",
+                 "desc": "Logos, decks, collateral, templates."},
             ]},
         ],
     },
