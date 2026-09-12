@@ -242,6 +242,7 @@ LAYOUT = '''<!doctype html>
   <div class="intro-bloom"></div>
   <canvas class="intro-particles"></canvas>
   <svg class="intro-trail-svg" aria-hidden="true"><defs><linearGradient id="introGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6FA0F5" stop-opacity="0"/><stop offset=".6" stop-color="#6FA0F5"/><stop offset="1" stop-color="#3167CA"/></linearGradient></defs><path d=""/></svg>
+  <div class="intro-lockup">
   <div class="intro-stage">
     <div class="intro-plane-wrap">
       <span class="intro-ripple"></span><span class="intro-ripple"></span>
@@ -257,6 +258,7 @@ LAYOUT = '''<!doctype html>
   </span>
   <span class="intro-shine" aria-hidden="true"></span>
   <span class="intro-shine intro-shine--2" aria-hidden="true"></span>
+  </div>
   <span class="intro-progress" aria-hidden="true"></span>
   <button class="intro-skip" type="button">Skip</button>
 </div>

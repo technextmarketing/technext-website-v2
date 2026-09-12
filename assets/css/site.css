@@ -800,9 +800,12 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 .intro-trail-svg path{fill:none;stroke:url(#introGrad);stroke-width:2.5;stroke-linecap:round;opacity:0}
 .intro.is-go .intro-trail-svg path{animation:trailFade 5.6s ease .3s forwards}
 @keyframes trailFade{0%{opacity:0}6%{opacity:.95}66%{opacity:.95}100%{opacity:0}}
-.intro-stage{position:relative;display:flex;align-items:center;gap:3.5%;width:min(640px,88vw,140vh);z-index:2}
+/* The lock-up (stage + tagline + pills + shine) is one block. CSS centres it; site.js then pins its top in
+   pixels so a mobile URL-bar collapse cannot move it under the plane's pre-computed flight path. */
+.intro-lockup{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:clamp(10px,2.4vh,20px);width:min(640px,88vw,140vh);z-index:2}
+.intro-stage{position:relative;display:flex;align-items:center;gap:3.5%;width:100%}
 /* phones: a slightly smaller lock-up leaves the trail room to loop around the wordmark inside the viewport */
-@media (max-width:480px){.intro-stage{width:min(640px,78vw,140vh)}}
+@media (max-width:480px){.intro-lockup{width:min(640px,80vw,140vh)}}
 .intro-plane-wrap{width:16%;flex:none;position:relative;opacity:0;offset-distance:0%;will-change:offset-distance}
 .intro.is-go .intro-plane-wrap{animation:fly 3.3s cubic-bezier(.3,.55,.15,1) .3s forwards}
 @keyframes fly{0%{opacity:0;offset-distance:0%}5%{opacity:1}100%{opacity:1;offset-distance:100%}}
@@ -817,15 +820,15 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 .intro-letter{position:absolute;top:0;height:100%;opacity:0;transform:translateY(75%) rotate(10deg) scale(.7);transform-origin:50% 100%;filter:blur(6px);will-change:transform,opacity,filter}
 .intro.is-go .intro-letter{animation:letterUp .9s cubic-bezier(.3,1.45,.55,1) forwards;animation-delay:calc(1.8s + var(--i)*.32s)}
 @keyframes letterUp{60%{filter:blur(0)}to{opacity:1;transform:none;filter:blur(0)}}
-.intro-sub{position:absolute;left:50%;top:calc(50% + min(clamp(50px,9vw,78px),14vh));transform:translateX(-50%);font:600 clamp(1.15rem,2.7vw,1.6rem) var(--font-hand);color:var(--blue);white-space:nowrap;min-height:1.4em;z-index:2;max-width:92vw;text-align:center}
+.intro-sub{position:relative;font:600 clamp(1.15rem,2.7vw,1.6rem) var(--font-hand);color:var(--blue);white-space:nowrap;min-height:1.4em;z-index:2;max-width:92vw;text-align:center}
 .intro-sub.is-typing::after{content:"";display:inline-block;width:2px;height:1em;background:var(--blue);margin-left:3px;vertical-align:-0.15em;animation:caret .7s steps(1) infinite}
 @keyframes caret{50%{opacity:0}}
-.intro-pills{position:absolute;left:50%;top:calc(50% + min(clamp(96px,16vw,134px),24vh));transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;gap:8px 10px;z-index:2;white-space:nowrap;width:max-content;max-width:92vw}
+.intro-pills{position:relative;min-height:34px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 10px;z-index:2;white-space:nowrap;width:max-content;max-width:92vw}
 /* landscape phones: the stage is short, keep the plane flight inside the viewport and tighten the stack */
 @media (max-height:480px) and (orientation:landscape){
-  .intro-stage{width:min(520px,60vw)}
-  .intro-sub{top:calc(50% + 11vh);font-size:1.05rem}
-  .intro-pills{top:calc(50% + 21vh)}
+  .intro-lockup{width:min(520px,62vw);gap:8px}
+  .intro-sub{font-size:1.05rem}
+  .intro-pills{min-height:30px}
   .intro-pill{height:30px;font-size:12px}
   .intro-skip{bottom:12px;right:14px}
 }
@@ -833,7 +836,7 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 .intro-pill .oi{width:18px;height:18px}
 .intro.is-go .intro-pill{animation:pillIn .75s cubic-bezier(.3,1.4,.55,1) forwards;animation-delay:calc(7.1s + var(--i)*.24s)}
 @keyframes pillIn{to{opacity:1;transform:none}}
-.intro-shine{position:absolute;left:50%;top:50%;width:min(760px,92vw);height:240px;transform:translate(-50%,-50%);pointer-events:none;overflow:hidden;opacity:0;z-index:3}
+.intro-shine{position:absolute;left:50%;top:50%;width:118%;height:150%;transform:translate(-50%,-50%);pointer-events:none;overflow:hidden;opacity:0;z-index:3}
 .intro-shine::before{content:"";position:absolute;top:-40%;bottom:-40%;width:22%;left:-30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.95) 50%,transparent);transform:skewX(-14deg)}
 .intro.is-go .intro-shine{animation:shineOn 1.2s ease-out 6.4s forwards}
 .intro.is-go .intro-shine::before{animation:shineSweep 1.2s cubic-bezier(.2,.8,.2,1) 6.4s forwards}

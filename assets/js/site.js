@@ -39,6 +39,15 @@
        Built in viewport pixels, then expressed relative to the plane's box for offset-path and drawn as
        the SVG trail. */
     var wrap = $('.intro-plane-wrap', el), stage = $('.intro-stage', el), trail = $('.intro-trail-svg path', el);
+    var lockup = $('.intro-lockup', el), sub = $('.intro-sub', el);
+    // Centre the lock-up once, in pixels: a later viewport-height change (mobile URL bar) then leaves it
+    // exactly where the flight path expects it.
+    function place() {
+      if (!lockup) return;
+      lockup.style.top = '50%'; lockup.style.transform = 'translate(-50%,-50%)';
+      var lh = lockup.offsetHeight, H = window.innerHeight;
+      lockup.style.top = Math.max(8, Math.round((H - lh) / 2)) + 'px'; lockup.style.transform = 'translateX(-50%)';
+    }
     function buildPath() {
       var r = wrap.getBoundingClientRect(), s = stage.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
       var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
@@ -48,8 +57,8 @@
       // reaches about 0.75*X + (ends)/8, so solve X for the extreme we want, kept inside the viewport.
       var reachX = Math.min(sx + sw + pad * 0.9, W - 8);
       var rightX = (reachX - (scx + (scx + sw * 0.12)) / 8) / 0.75;
-      var subOff = Math.min(Math.max(50, Math.min(78, 0.09 * W)), 0.14 * H);  // mirrors .intro-sub's top offset
-      var bottomY = Math.max(sy + sh + pad * 0.95, H / 2 + subOff + 34);      // pass under the tagline's line
+      var subBottom = sub ? sub.getBoundingClientRect().bottom : sy + sh;     // the tagline's real box
+      var bottomY = Math.max(sy + sh + pad * 0.95, subBottom + 18);          // pass under the tagline's line
       var P = function (x, y) { return x.toFixed(1) + ',' + y.toFixed(1); };
       var ex = cx - pad * 1.3, ey = cy + pad * 0.9;                           // last control point: a wide approach from the lower-left
       // Junctions are C1-continuous: each segment's first control point mirrors the previous segment's
@@ -99,20 +108,33 @@
     // 10 s: flight 0.3–3.6 s (same curve as the CSS `fly` keyframes), tagline at 4.6 s, fade at 10.0 s.
     // Every beat is clocked from the real start, which fires on the next frame or after 120 ms at the latest
     // (requestAnimationFrame can stall in a throttled tab).
-    var L = buildPath(), started = false;
+    place();
+    var L = buildPath(), started = false, lastW = window.innerWidth, trailAnim = null;
     function start() {
       if (started || done) return; started = true;
       el.classList.add('is-go');
-      trail.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 3300, delay: 300, easing: 'cubic-bezier(.3,.55,.15,1)', fill: 'forwards' });
+      trailAnim = trail.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 3300, delay: 300, easing: 'cubic-bezier(.3,.55,.15,1)', fill: 'forwards' });
       particles();
       timers.push(setTimeout(typewriter, 4600));
       timers.push(setTimeout(finish, 10000));
     }
     requestAnimationFrame(start);
     timers.push(setTimeout(start, 120));
-    // Rebuild only before take-off: a mid-flight rebuild (mobile URL bar collapsing fires resize)
-    // would swap the motion path under the plane and restart the trail from the wrong length.
-    window.addEventListener('resize', function () { if (!started) L = buildPath(); });
+    function restart() {
+      timers.forEach(clearTimeout); timers = []; if (raf) { cancelAnimationFrame(raf); raf = null; }
+      if (trailAnim) { trailAnim.cancel(); trailAnim = null; }
+      el.classList.remove('is-go'); started = false;
+      if (sub) { sub.textContent = ''; sub.classList.remove('is-typing'); }
+      void el.offsetWidth;                       // reflow so every CSS animation restarts from frame 0
+      place(); L = buildPath(); start();
+    }
+    window.addEventListener('resize', function () {
+      var W = window.innerWidth;
+      if (!started) { place(); L = buildPath(); lastW = W; return; }
+      // Rotation or a real resize re-runs the sequence on the new layout. Height-only changes (mobile URL
+      // bar) are ignored: the lock-up is pinned in pixels, so nothing moves under the plane.
+      if (Math.abs(W - lastW) > 100 && !done) { lastW = W; restart(); }
+    });
     el.addEventListener('click', finish); // let impatient visitors skip
     document.addEventListener('keydown', function onKey(e) { if (e.key === 'Escape' || e.key === 'Enter') { finish(); document.removeEventListener('keydown', onKey); } });
   })();
