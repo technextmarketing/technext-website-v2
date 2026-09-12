@@ -189,7 +189,7 @@ a.card:hover{text-decoration:none}
 /* ---------- header ---------- */
 .header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.9);backdrop-filter:saturate(140%) blur(12px);-webkit-backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid transparent;transition:border-color .2s ease,box-shadow .2s ease}
 .header.is-scrolled,.header.is-open{border-bottom-color:var(--line)}
-.header-inner{height:var(--header-h);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px}
+.header-inner{height:var(--header-h);display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:16px}
 .brand img{height:34px;width:auto;transition:transform .3s var(--spring)}
 .brand:hover img{transform:scale(1.03)}
 .nav{justify-self:center}
@@ -620,8 +620,10 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 .choice label:hover{border-color:#cfd6e6;transform:translateY(-1px);box-shadow:var(--shadow-sm)}
 .choice label:active{transform:scale(.98)}
 .choice label small{display:block;font-size:12px;color:var(--muted);font-weight:400}
-.choice label .oi{width:28px;height:28px}
-.choice label .ck{width:20px;height:20px;flex:none;border-radius:6px;border:1.5px solid #c9c6cf;display:grid;place-items:center;color:#fff;transition:background-color .15s ease,border-color .15s ease,transform .3s var(--spring);margin-left:auto}
+.choice label .oi{width:28px;height:28px;flex:none}
+.choice label>span:not(.ck){flex:1;min-width:0}
+/* the check always sits at the right edge, whatever order it has in the markup */
+.choice label .ck{order:9;width:20px;height:20px;flex:none;border-radius:6px;border:1.5px solid #c9c6cf;display:grid;place-items:center;color:#fff;transition:background-color .15s ease,border-color .15s ease,transform .3s var(--spring);margin-left:auto}
 .choice label .ck .ic{width:13px;height:13px;opacity:0;transform:scale(.5);transition:opacity .15s,transform .3s var(--spring)}
 .choice input:checked+label{border-color:var(--blue);background:var(--blue-050)}
 .choice input:checked+label .ck{background:var(--blue);border-color:var(--blue);transform:scale(1.08)}
@@ -676,8 +678,13 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 @media (max-width:960px){
   :root{--header-h:64px}
   .nav{display:none}
-  .menu-btn{display:grid;grid-column:3;justify-self:end}
-  .header-inner{grid-template-columns:auto 1fr auto}
+  .header-cta{grid-column:3;justify-self:end}
+  .header-cta .btn{width:44px;height:44px;padding:0;border-radius:12px}
+  .header-cta .btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .header-cta .btn .ic{width:20px;height:20px}
+  .header-cta .btn:hover .ic{transform:none}
+  .menu-btn{display:grid;grid-column:4;justify-self:end}
+  .header-inner{grid-template-columns:auto 1fr auto auto;gap:10px}
   .grid-3{grid-template-columns:repeat(2,1fr)}
   .two{grid-template-columns:1fr;gap:36px}
   .qb{grid-template-columns:1fr}
@@ -928,6 +935,33 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 a.app{color:inherit;text-decoration:none}
 a.app>.ic{width:18px;height:18px;color:var(--muted);margin-left:auto;align-self:center;flex:none;transition:transform .25s var(--spring),color .2s}
 a.app:hover>.ic{transform:translateX(3px);color:var(--blue)}
+
+.app-hero-single{max-width:780px}
+.videos{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.videos--one{grid-template-columns:1fr;max-width:900px}
+.video{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-md);aspect-ratio:16/9;background:#0b1020}
+.video>*{width:100%;height:100%;display:block}
+.video .app-video{object-fit:cover}
+.feats{display:grid;gap:44px}
+.feat{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+.feat--flip .feat-media{order:2}
+.feat-media{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow-sm)}
+.feat-media img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--alt);transition:transform .6s var(--ease-out)}
+.feat:hover .feat-media img{transform:scale(1.02)}
+.feat--noimg{grid-template-columns:1fr}
+.feat--noimg .feat-media{display:none}
+.feat-copy h3{font-size:1.45rem;margin-bottom:10px}
+.feat-copy p{font-size:1.02rem;color:var(--body)}
+.feat-copy .checks{margin-top:14px}
+.tag--vid{background:#0b1020;color:#fff}
+.tag--vid .ic{width:11px;height:11px}
+.header-cta .btn{height:40px;padding:0 16px;font-size:14px;border-radius:10px}
+.header-cta .btn .ic{width:17px;height:17px}
+@media (max-width:960px){
+  .feat,.feat--flip{grid-template-columns:1fr;gap:20px}
+  .feat--flip .feat-media{order:0}
+  .feats{gap:36px}
+}
 
 /* ---------- app showcase (industry + Odoo ERP pages) ---------- */
 .showcase{display:grid;grid-template-columns:minmax(260px,.9fr) 1.1fr;gap:22px;align-items:start}

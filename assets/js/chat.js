@@ -47,7 +47,7 @@
       a: 'TechNext Pte. Ltd. is a Singapore-based <b>Odoo Ready Partner</b> with development hubs in Vietnam and the Philippines. Clients in 10+ countries; 11+ enterprise clients transformed. Same team from discovery through support.',
       actions: [['link', 'company.html', 'About TechNext'], ['link', 'case-studies.html', 'Case studies']], next: ['how', 'human'] },
     { id: 'marketing', kw: ['website', 'web design', 'social media', 'marketing', 'facebook', 'linkedin', 'instagram', 'seo', 'landing page'],
-      a: 'Besides Odoo we build <b>websites</b> (company sites, landing pages, Odoo Website/eCommerce) and run <b>social media</b> on a monthly plan — with inquiries landing in Odoo CRM when you run it.',
+      a: 'Separately from Odoo, TechNext builds <b>websites</b> (company sites, landing pages, online stores) and runs <b>social media</b> on a monthly plan — plan, content, community and a one-page report.',
       actions: [['link', 'solutions/website.html', 'Website'], ['link', 'solutions/social-media.html', 'Social media'], ['talk']], next: ['price', 'human'] },
     { id: 'ai', kw: ['ai', 'artificial', 'chatgpt', 'automation', 'agent', 'llm', 'claude', 'ocr', 'rag'],
       a: 'We build <b>AI inside Odoo</b>: vendor bills read and matched, replies drafted from the record, lookups across your data, and agents that run multi-step tasks with approval where money moves.',

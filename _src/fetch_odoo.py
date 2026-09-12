@@ -62,23 +62,29 @@ def parse(slug: str, page: str) -> dict:
     paras = [text(p) for p in re.findall(r"<p[^>]*>(.*?)</p>", after, re.S)]
     paras = [p for p in paras if 60 <= len(p) <= 420 and "cookie" not in p.lower()]
     d["lead"] = paras[0] if paras else ""
-    # sections: h2 followed by its first meaningful paragraph
-    sections = []
-    for hm in re.finditer(r"<h2[^>]*>(.*?)</h2>", page, re.S):
-        head = text(hm.group(1))
-        if not head or len(head) > 80 or head.lower().startswith(("all the features", "join", "unleash")):
+    # sections: each <h2> with the block that follows it up to the next <h2> — its own paragraphs,
+    # its own image and any feature sub-points, so a section can be reproduced faithfully
+    IMG_RE = re.compile(r'(https://(?:download\.)?odoocdn\.com/openerp_website/static/src/img/apps/[^"\' )]+\.(?:webp|png|jpg|jpeg))')
+    SKIP = ("all the features", "join", "unleash", "odoo experience", "one need", "frequently asked", "faq",
+            "pricing", "try it", "start now", "get started", "customer", "testimonial", "our partners", "explore")
+    parts = re.split(r"(<h2[^>]*>.*?</h2>)", page, flags=re.S)
+    sections, seen = [], set()
+    for i in range(1, len(parts) - 1, 2):
+        head = text(parts[i])
+        block = parts[i + 1]
+        if not head or len(head) > 80 or head.lower().startswith(SKIP) or head in seen:
             continue
-        chunk = page[hm.end():hm.end() + 6000]
-        ps = [text(p) for p in re.findall(r"<p[^>]*>(.*?)</p>", chunk, re.S)]
-        ps = [p for p in ps if 40 <= len(p) <= 420]
-        if ps:
-            sections.append({"h": head, "p": ps[0]})
-    # de-dupe by heading
-    seen, uniq = set(), []
-    for s_ in sections:
-        if s_["h"] not in seen:
-            seen.add(s_["h"]); uniq.append(s_)
-    d["sections"] = uniq[:6]
+        ps = [text(p) for p in re.findall(r"<p[^>]*>(.*?)</p>", block, re.S)]
+        ps = [p for p in ps if 40 <= len(p) <= 600 and "cookie" not in p.lower()]
+        if not ps:
+            continue
+        copy = ps[0] if len(ps[0]) > 140 or len(ps) == 1 else (ps[0] + " " + ps[1])[:600]
+        imgs = [u for u in IMG_RE.findall(block) if not re.search(r"separator|icon|logo|flag|badge", u, re.I)]
+        feats = [text(f) for f in re.findall(r"<(?:h4|h5)[^>]*>(.*?)</(?:h4|h5)>", block, re.S)]
+        feats = [f for f in feats if 3 <= len(f) <= 60][:6]
+        seen.add(head)
+        sections.append({"h": head, "p": copy, "img": imgs[0] if imgs else "", "feats": feats})
+    d["sections"] = sections[:8]
     # official screenshots: odoocdn app images (skip separators / icons / tiny svgs)
     imgs = re.findall(r'(https://(?:download\.)?odoocdn\.com/openerp_website/static/src/img/apps/[^"\' )]+\.(?:webp|png|jpg|jpeg))', page)
     imgs += [("https://www.odoo.com" + i if i.startswith("/") else i) for i in

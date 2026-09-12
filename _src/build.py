@@ -259,6 +259,7 @@ LAYOUT = '''<!doctype html>
 {NAV}
       </ul>
     </nav>
+    <div class="header-cta"><a class="btn btn-primary" href="{WA_MSG}" target="_blank" rel="noopener" aria-label="Contact us on WhatsApp">{{icon:whatsapp}}<span>Contact Us</span></a></div>
     <button class="icon-btn menu-btn" type="button" data-mnav-open aria-label="Open menu" aria-expanded="false" aria-controls="mnav">{{icon:menu}}</button>
   </div>
 </header>
@@ -326,6 +327,9 @@ def apps_cats_html() -> str:
         cards = []
         for app in c["apps"]:
             tag = ' <span class="tag">Focus</span>' if app["focus"] else ""
+            cc = APP_CONTENT.get(app["mod"], {})
+            if cc.get("youtube") or cc.get("mp4"):
+                tag += ' <span class="tag tag--vid">{{icon:play}} Video</span>'
             cards.append(f'<a class="app{" is-focus" if app["focus"] else ""}" data-app="{app["mod"]}" href="apps/{app["mod"]}.html">'
                          f'{{{{odoo:{app["mod"]}:40}}}}<div><b>{app["name"]}{tag}</b><small>{app["desc"]}</small></div>{{{{icon:arrow}}}}</a>')
         focus_note = (' <span class="tag tag--ok">{{icon:check}} Our focus area</span>' if c.get("focus") else "")
@@ -392,29 +396,63 @@ def app_page(mod: str) -> tuple:
     headline = c.get("headline") or f"{name} in Odoo"
     odoo_url = c.get("url", "https://www.odoo.com/")
     focus = ' <span class="tag tag--ok">{{icon:check}} TechNext focus app</span>' if app["focus"] else ""
-    # media: video first, else hero image
-    media = ""
-    if c.get("youtube"):
-        media = yt_facade(c["youtube"][0], f"Odoo {name}")
-    elif c.get("mp4"):
-        poster = f' poster="{c["images"][0]}"' if c.get("images") else ""
-        media = f'<video class="app-video" controls preload="none" playsinline{poster}><source src="{c["mp4"]}" type="video/mp4"></video>'
-    elif c.get("images"):
-        media = (f'<img class="app-shot" src="{c["images"][0]}" alt="Odoo {name} screenshot" loading="lazy" decoding="async" '
-                 f'onerror="this.outerHTML=\'<div class=&quot;app-media-fallback&quot;><img class=&quot;oi&quot; src=&quot;{{{{ROOT}}}}assets/img/odoo/{mod}.svg&quot; alt=&quot;&quot; width=&quot;96&quot; height=&quot;96&quot;></div>\'">')
+    images = [i for i in c.get("images", []) if not i.endswith(".svg")]
+    sections = c.get("sections", [])
+    used = {s["img"] for s in sections if s.get("img")}
+
+    # hero: the odoo.com hero image on the right when there is one; otherwise a single column — never a placeholder
+    hero_img = next((i for i in images if i not in used), "")
+    if hero_img:
+        used.add(hero_img)
+        hero_media = (f'<div class="app-media reveal"><img class="app-shot" src="{hero_img}" alt="Odoo {name}" '
+                      f'loading="eager" decoding="async" onerror="this.closest(\'.app-media\').remove()"></div>')
+        hero_grid = "two"
     else:
-        media = f'<div class="app-media-fallback">{{{{odoo:{mod}:96}}}}</div>'
-    # sections from odoo.com
-    secs = "".join(f'<article class="card reveal" style="--i:{i}"><div class="card-ic">{{{{odoo:{mod}:36}}}}</div><h3>{s["h"]}</h3><p>{s["p"]}</p></article>'
-                   for i, s in enumerate(c.get("sections", [])[:6]))
-    if not secs:
-        secs = f'<article class="card reveal"><div class="card-ic">{{{{odoo:{mod}:36}}}}</div><h3>{name}</h3><p>{app["desc"]}</p></article>'
-    # gallery
-    shots = [i for i in c.get("images", []) if not i.endswith(".svg")][:6]
-    # external screenshots hide themselves if odoocdn ever refuses the request
-    gallery = "".join(f'<figure class="shot reveal" style="--i:{k}"><img src="{u}" alt="Odoo {name} screenshot {k+1}" loading="lazy" decoding="async" onerror="this.closest(\'figure\').remove()"><figcaption>Odoo {name} · screenshot from odoo.com</figcaption></figure>' for k, u in enumerate(shots))
-    more_video = "".join(f'<div class="reveal" style="--i:{k}">{yt_facade(v, f"Odoo {name} video {k+2}")}</div>' for k, v in enumerate(c.get("youtube", [])[1:3]))
-    # related apps: same category, plus focus trio
+        hero_media, hero_grid = "", "app-hero-single"
+
+    # videos: every official YouTube video plus the odoocdn hero clip, in their own section right after the hero
+    vids = [yt_facade(v, f"Odoo {name} video {k + 1}") for k, v in enumerate(c.get("youtube", []))]
+    if c.get("mp4"):
+        poster = f' poster="{hero_img}"' if hero_img else ""
+        vids.append(f'<video class="app-video" controls preload="none" playsinline{poster}><source src="{c["mp4"]}" type="video/mp4"></video>')
+    videos = ""
+    if vids:
+        items = "".join(f'<div class="video reveal" style="--i:{k}">{v}</div>' for k, v in enumerate(vids))
+        videos = f'''<section class="section section--tight" id="watch">
+  <div class="container">
+    <div class="sec-head reveal"><span class="hand">watch</span><h2>{name} in action.</h2><p class="lead">Official Odoo videos. Nothing loads until you press play.</p></div>
+    <div class="{"videos videos--one" if len(vids) == 1 else "videos"}">{items}</div>
+  </div>
+</section>'''
+
+    # what it does: one row per odoo.com section — its own heading, copy, sub-points and image
+    rows, cards = [], []
+    for k, s in enumerate(sections[:8]):
+        feats = "".join(f'<li>{{{{icon:check}}}}{f}</li>' for f in s.get("feats", [])[:5])
+        feats_html = f'<ul class="checks">{feats}</ul>' if feats else ""
+        if s.get("img"):
+            flip = " feat--flip" if len(rows) % 2 else ""
+            rows.append(f'''<div class="feat reveal{flip}">
+      <div class="feat-media"><img src="{s["img"]}" alt="Odoo {name} — {s["h"]}" loading="lazy" decoding="async" onerror="this.closest('.feat').classList.add('feat--noimg')"></div>
+      <div class="feat-copy"><span class="card-kicker">{k + 1:02d} · {name}</span><h3>{s["h"]}</h3><p>{s["p"]}</p>{feats_html}</div>
+    </div>''')
+        else:
+            cards.append(f'<article class="card reveal" style="--i:{len(cards)}"><div class="card-ic">{{{{odoo:{mod}:36}}}}</div><h3>{s["h"]}</h3><p>{s["p"]}</p>{feats_html}</article>')
+    if not rows and not cards:
+        cards.append(f'<article class="card reveal"><div class="card-ic">{{{{odoo:{mod}:36}}}}</div><h3>{name}</h3><p>{app["desc"]}</p></article>')
+    what = (f'<div class="feats">{"".join(rows)}</div>' if rows else "") + \
+           (f'<div class="grid-3{" mt-56" if rows else ""}">{"".join(cards)}</div>' if cards else "")
+
+    # remaining screenshots not already shown
+    shots = [i for i in images if i not in used][:6]
+    gallery = "".join(f'<figure class="shot reveal" style="--i:{k}"><img src="{u}" alt="Odoo {name} screenshot {k + 1}" loading="lazy" decoding="async" onerror="this.closest(\'figure\').remove()"><figcaption>Odoo {name} · screenshot from odoo.com</figcaption></figure>' for k, u in enumerate(shots))
+    screens = f'''<section class="section section--alt section--tight">
+  <div class="container">
+    <div class="sec-head reveal"><span class="hand">screens</span><h2>Inside the app.</h2></div>
+    <div class="shots">{gallery}</div>
+  </div>
+</section>''' if gallery else ""
+
     rel_mods = [a["mod"] for a in cat["apps"] if a["mod"] != mod][:4]
     for extra in ("accountant", "sale", "stock"):
         if extra != mod and extra not in rel_mods and len(rel_mods) < 6:
@@ -432,7 +470,7 @@ def app_page(mod: str) -> tuple:
 <section class="page-hero page-hero--split">
   <div class="container">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="{{{{ROOT}}}}index.html">Home</a><span>Odoo</span><span><a href="{{{{ROOT}}}}odoo/apps.html">Apps</a></span><span><a href="{{{{ROOT}}}}odoo/apps.html#{cat["id"]}">{cat["title"]}</a></span><span>{name}</span></nav>
-    <div class="two">
+    <div class="{hero_grid}">
       <div>
         <div class="app-hero-head">{{{{odoo:{mod}:56}}}}<span class="hand">odoo · {cat["title"].lower()}</span></div>
         <h1>{name}<span class="app-sub">{headline}</span></h1>
@@ -440,31 +478,24 @@ def app_page(mod: str) -> tuple:
         <div class="pill-row"><span class="tag tag--odoo">Odoo Ready Partner</span>{focus}</div>
         <div class="actions">
           <a class="btn btn-primary btn-lg" href="{{{{ROOT}}}}quotation.html">Get a quotation {{{{icon:arrow}}}}</a>
-          <a class="btn btn-ghost btn-lg" href="{odoo_url}" target="_blank" rel="noopener">See it on odoo.com {{{{icon:expand}}}}</a>
+          <a class="btn btn-ghost btn-lg" href="#talk">Talk to us</a>
         </div>
       </div>
-      <div class="app-media reveal">{media}</div>
+      {hero_media}
     </div>
   </div>
 </section>
 
+{videos}
+
 <section class="section">
   <div class="container">
-    <div class="sec-head reveal"><span class="hand">what it does</span><h2>{name}, as Odoo presents it.</h2><p class="lead">Highlights from the official product page. TechNext configures these to your process.</p></div>
-    <div class="grid-3">{secs}</div>
+    <div class="sec-head reveal"><span class="hand">what it does</span><h2>{name}, section by section.</h2><p class="lead">The product as Odoo presents it. TechNext configures each part to your process.</p></div>
+    {what}
   </div>
 </section>
 
-{"" if not gallery else f'''<section class="section section--alt section--tight">
-  <div class="container">
-    <div class="sec-head reveal"><span class="hand">screens</span><h2>Inside the app.</h2></div>
-    <div class="shots">{gallery}</div>
-  </div>
-</section>'''}
-
-{"" if not more_video else f'''<section class="section section--tight">
-  <div class="container"><div class="sec-head reveal"><span class="hand">watch</span><h2>More from Odoo.</h2></div><div class="grid-2">{more_video}</div></div>
-</section>'''}
+{screens}
 
 <section class="section section--alt">
   <div class="container">
@@ -479,7 +510,7 @@ def app_page(mod: str) -> tuple:
   <div class="container">
     <div class="sec-head sec-head--row reveal"><div><span class="hand">works with</span><h2 style="margin:0">Apps that share the same database.</h2></div><a class="btn-link" href="{{{{ROOT}}}}odoo/apps.html">All Odoo apps {{{{icon:arrow}}}}</a></div>
     <div class="apps-grid">{related}</div>
-    <p class="small muted mt-24">Product descriptions, screenshots and videos are © Odoo S.A. and shown for reference from <a href="{odoo_url}" target="_blank" rel="noopener">odoo.com</a>. TechNext is an Odoo Ready Partner; we implement and support Odoo.</p>
+    <p class="small muted mt-24">Product descriptions, screenshots and videos are © Odoo S.A., reproduced for reference from <a href="{odoo_url}" target="_blank" rel="noopener">odoo.com</a>. TechNext is an Odoo Ready Partner; we implement and support Odoo.</p>
   </div>
 </section>
 
@@ -492,7 +523,6 @@ def app_page(mod: str) -> tuple:
   </div>
 </section>'''
     return meta, content
-
 
 def build_page(path: Path, nav_cache: dict) -> str:
     raw = path.read_text(encoding="utf-8")
@@ -533,6 +563,7 @@ def render(meta: dict, content: str, nav_cache: dict) -> str:
                 .replace("{JSONLD}", jsonld(canonical))
                 .replace("{CONTENT}", content)
                 .replace("{LEGAL}", S.COMPANY["legal"])
+                .replace("{WA_MSG}", S.COMPANY["whatsapp_msg_link"])
                 .replace("{SCRIPTS}", scripts)
                 .replace("{{YEAR}}", YEAR).replace("{YEAR}", YEAR))
     html = odoo_icons(html)            # emits {{ROOT}}-prefixed <img> tags

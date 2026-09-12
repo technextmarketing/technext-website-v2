@@ -15,6 +15,8 @@ COMPANY = {
     "sales_email": "sales@technext.asia",
     "whatsapp": "+65 8839 6998",
     "whatsapp_link": "https://wa.me/6588396998",
+    # header "Contact Us" opens WhatsApp with a ready-to-send opener
+    "whatsapp_msg_link": "https://wa.me/6588396998?text=Hello%20TechNext%2C%20I%27d%20like%20to%20ask%20about%20Odoo%20for%20my%20company.",
     "linkedin": "https://www.linkedin.com/company/technext-asia",
     "hubs": "Singapore HQ · Vietnam · Philippines",
 }
@@ -35,9 +37,9 @@ NAV = [
                  "desc": "Accounting, Sales and Inventory on one system."},
             ]},
             {"title": "Marketing", "href": "solutions/marketing.html", "links": [
-                {"label": "Website", "href": "solutions/website.html", "odoo": "website",
+                {"label": "Website", "href": "solutions/website.html", "icon": "globe",
                  "desc": "Fast, clear sites that explain what you do."},
-                {"label": "Social Media Management", "href": "solutions/social-media.html", "odoo": "social",
+                {"label": "Social Media Management", "href": "solutions/social-media.html", "icon": "megaphone",
                  "desc": "Steady posting with a plan behind it."},
             ]},
         ],
