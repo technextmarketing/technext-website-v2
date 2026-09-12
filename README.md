@@ -23,9 +23,15 @@ what GitHub Pages serves — commit both the partial and the generated file.
 | Layout, header, mobile nav, Let's Talk panel, footer | `_src/build.py` |
 | Design tokens and all styles | `assets/css/site.css` |
 | Menus, panel, forms, reveals | `assets/js/site.js` |
-| Home hero carousel (3 formats, 10 s) | `assets/js/hero.js` |
+| Home hero carousel (3 formats, 10 s), flow chart, pop-ups, background | `assets/js/hero.js` |
+| Chat assistant knowledge base (intents, answers, chips) | `assets/js/chat.js` → `KB` |
 | Quotation builder summary | `assets/js/quote.js` |
-| Favicons / OG image / badge resize | `python _src/make_assets.py` |
+| One-time intro (plane → wordmark), buttons, forms, reveals | `assets/js/site.js` |
+| Official Odoo app icons (from download.odoocdn.com) | `assets/img/odoo/<module>.svg`, used as `{{odoo:module}}` |
+| Favicons / OG image / intro logo split | `python _src/make_assets.py` |
+| Static audit (links, SEO, headings, labels, claims) | `python _src/audit.py` — see `AUDIT.md` |
+
+To show the intro again on your own machine, clear `localStorage.tn_intro_seen` in DevTools.
 
 ## Forms → sales@technext.asia
 

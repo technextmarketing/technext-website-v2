@@ -23,7 +23,8 @@ def trim(im: Image.Image) -> Image.Image:
 
 
 def favicons():
-    icon = trim(Image.open(IMG / "logo-icon.png").convert("RGBA"))
+    # the plane cut from the horizontal logo (see split_logo) is the favicon source
+    icon = trim(Image.open(IMG / "logo-plane.png").convert("RGBA"))
     side = max(icon.size)
     pad = int(side * 0.08)
     canvas = Image.new("RGBA", (side + 2 * pad, side + 2 * pad), (0, 0, 0, 0))
@@ -35,16 +36,13 @@ def favicons():
             bg.paste(out, (0, 0), out)
             out = bg
         out.save(IMG / name, optimize=True)
-    # Keep a 512 icon for the site itself; drop the 2000px original from the repo.
-    canvas.resize((512, 512), Image.LANCZOS).save(IMG / "logo-icon.png", optimize=True)
 
 
 def badge():
     b = Image.open(IMG / "odoo-ready-partner.png").convert("RGBA")
     b = trim(b)
-    fit(b, 900).save(IMG / "odoo-ready-partner.png", optimize=True)
-    stacked = Image.open(IMG / "logo-stacked.png").convert("RGBA")
-    fit(trim(stacked), 800).save(IMG / "logo-stacked.png", optimize=True)
+    if b.width > 900:
+        fit(b, 900).save(IMG / "odoo-ready-partner.png", optimize=True)
 
 
 def split_logo():
@@ -98,9 +96,9 @@ if __name__ == "__main__":
     if "--intro-only" in sys.argv:
         print("plane, text =", split_logo())
         sys.exit()
+    print("plane, text =", split_logo())
     favicons()
     badge()
     og()
-    print("plane, text =", split_logo())
     for p in sorted(IMG.glob("*.png")):
         print(f"{p.name:28} {p.stat().st_size // 1024:5d} KB")

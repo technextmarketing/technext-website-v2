@@ -1,4 +1,4 @@
-<!--meta {"title": "Get a quotation", "desc": "Tell us which Odoo apps, how many users and which services you need. We reply with a written quotation from sales@technext.asia.", "out": "quotation.html", "nav": "", "scripts": ["assets/js/quote.js"]} -->
+<!--meta {"title": "Get a written Odoo quotation in two minutes", "desc": "Tell us which Odoo apps, how many users and which services you need. We reply with a written quotation from sales@technext.asia.", "out": "quotation.html", "nav": "", "scripts": ["assets/js/quote.js"]} -->
 
 <section class="page-hero">
   <div class="container">
@@ -17,13 +17,13 @@
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="source" value="Quotation builder">
-      <textarea id="q-summary" name="scope_summary" hidden></textarea>
+      <textarea id="q-summary" name="scope_summary" hidden aria-hidden="true" tabindex="-1"></textarea>
 
       <div>
         <!-- 1 apps -->
         <div class="card card--static qb-step">
           <div class="card-kicker"><i>1</i> Odoo apps</div>
-          <h3>Which apps do you need?</h3>
+          <h2 class="step-title">Which apps do you need?</h2>
           <p>Accounting, Sales and Inventory are where most companies start. Pick as many as apply.</p>
           <div class="choices">
             <div class="choice choice--core"><input type="checkbox" id="a1" name="apps" value="Accounting" checked><label for="a1">{{odoo:accountant:28}}<span>Accounting<small>Journals, bank, tax, reports</small></span><span class="ck">{{icon:check}}</span></label></div>
@@ -46,9 +46,10 @@
         <!-- 2 users -->
         <div class="card card--static qb-step">
           <div class="card-kicker"><i>2</i> Users</div>
-          <h3>How many people will log in?</h3>
+          <h2 class="step-title">How many people will log in?</h2>
           <p>Count everyone who needs a screen — finance, sales, warehouse, management.</p>
           <div class="range">
+            <label for="q-users" class="sr-only">Number of users</label>
             <input type="range" id="q-users" name="users" min="1" max="100" step="1" value="10" aria-describedby="q-users-out">
             <output id="q-users-out" for="q-users">10</output>
           </div>
@@ -57,7 +58,7 @@
         <!-- 3 hosting -->
         <div class="card card--static qb-step">
           <div class="card-kicker"><i>3</i> Hosting</div>
-          <h3>Where should Odoo run?</h3>
+          <h2 class="step-title">Where should Odoo run?</h2>
           <p>We'll advise if you're unsure — it depends on customisation and data requirements.</p>
           <div class="choices">
             <div class="choice choice--radio"><input type="radio" id="h1" name="hosting" value="Odoo Online (SaaS)" checked><label for="h1"><span class="ck">{{icon:check}}</span><span>Odoo Online<small>Odoo's cloud, standard apps</small></span></label></div>
@@ -70,7 +71,7 @@
         <!-- 4 services -->
         <div class="card card--static qb-step">
           <div class="card-kicker"><i>4</i> Services</div>
-          <h3>What should TechNext do?</h3>
+          <h2 class="step-title">What should TechNext do?</h2>
           <div class="choices">
             <div class="choice"><input type="checkbox" id="s1" name="services" value="Discovery & scoping" checked><label for="s1"><span class="ck">{{icon:check}}</span><span>Discovery &amp; scoping</span></label></div>
             <div class="choice"><input type="checkbox" id="s2" name="services" value="Configuration & setup" checked><label for="s2"><span class="ck">{{icon:check}}</span><span>Configuration &amp; setup</span></label></div>
@@ -86,7 +87,7 @@
         <!-- 5 timeline -->
         <div class="card card--static qb-step">
           <div class="card-kicker"><i>5</i> Timeline</div>
-          <h3>When do you want to go live?</h3>
+          <h2 class="step-title">When do you want to go live?</h2>
           <div class="choices">
             <div class="choice choice--radio"><input type="radio" id="t1" name="timeline" value="As soon as possible"><label for="t1"><span class="ck">{{icon:check}}</span><span>As soon as possible</span></label></div>
             <div class="choice choice--radio"><input type="radio" id="t2" name="timeline" value="Within 3 months" checked><label for="t2"><span class="ck">{{icon:check}}</span><span>Within 3 months</span></label></div>
@@ -98,7 +99,7 @@
 
       <!-- summary + contact -->
       <aside class="card card--static qb-summary">
-        <h3>Your scope <span class="tag" data-sum="count">1 app</span></h3>
+        <h2 class="step-title">Your scope <span class="tag" data-sum="count">1 app</span></h2>
         <dl class="sum-list">
           <div><dt>Apps</dt><dd data-sum="apps"></dd></div>
           <div><dt>Users</dt><dd data-sum="users"></dd></div>
