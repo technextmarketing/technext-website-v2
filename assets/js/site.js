@@ -146,8 +146,9 @@
   }
   mBtn.addEventListener('click', openMnav);
   $$('[data-mnav-close]').forEach(function (el) { el.addEventListener('click', closeMnav); });
-  // Tapping a link inside the drawer closes it (in-page anchors included).
-  mnav.addEventListener('click', function (e) { if (e.target.closest('a')) closeMnav(); });
+  // Tapping a link or an action button inside the drawer closes it (in-page anchors included).
+  mnav.addEventListener('click', function (e) { if (e.target.closest('a,[data-chat-open]')) closeMnav(); });
+  window.tnCloseMnav = closeMnav;
 
   /* ---------------- Let's Talk panel ---------------- */
   var panel = $('#talk-panel'), tOverlay = $('.talk-overlay');

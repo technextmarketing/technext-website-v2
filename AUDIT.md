@@ -41,10 +41,11 @@ Date: 12 September 2026. Re-run the static half any time with `python _src/audit
      pop-up zooms out of that node (WAAPI), prev/next through the steps, cross-links to app pop-ups.
    - Slide 3 — two counter-rotating rings of Odoo apps around the Ready Partner badge; hover pauses and
      shows labels; click → app pop-up.
-   - **3D tilt stage** — the whole active slide (copy, cards, nodes, labels, rings) rotates toward the cursor
-     in any direction (±8° X, ±12° Y, eased) on a 1300 px perspective; layers sit at their own depth
-     (copy 40 · dashboard 60 · floaters 60–140 · toasts 150 · flow nodes 28–133 · edge labels 100 ·
-     orbit rings 20/80 · partner badge 150) so the tilt shows the layering. Fine pointers only.
+   - **3D tilt stage** — the whole active slide rotates toward the cursor (±8° X, ±12° Y, eased) on a 1300 px
+     perspective while the pointer is over the copy/background; it holds still whenever the pointer is over the
+     visual column, CTAs or any icon (350 ms release hysteresis). Clickable elements stay on the slide plane so
+     they hit-test in 2D; depth lives on non-interactive layers only (toasts 150 · edge labels 90 · partner
+     badge 150 · rings −30 · connectors −20) plus the floaters’ lateral parallax. Fine pointers only.
    - Shared background: three drifting aurora blobs, dot grid with radial mask, cursor spotlight, particle
      field with proximity links (canvas, paused when the tab is hidden).
    - Marquee strip of 20 Odoo apps along the bottom edge; pauses on hover.
@@ -53,8 +54,9 @@ Date: 12 September 2026. Re-run the static half any time with `python _src/audit
 5. **Walkthrough** — four outlined step numbers (fill on hover), connector line on desktop.
 6. **Solutions · Industries · Apps preview · Case studies (placeholders) · CTA band.**
 
-Below 960 px the carousel is replaced by one static hero (headline, copy, CTAs, three tappable app cards);
-canvas and spotlight are not created; the marquee stays. Pop-ups open as a bottom sheet.
+Below 960 px the hero is deliberately plain: no animated background, carousel, marquee or staggered reveals —
+headline, copy, two CTAs and three plain links to the focus apps. The hamburger sits at the right edge; the
+side tabs become two round icon buttons; the drawer carries quotation / Let’s talk / Chat actions and contact details.
 
 ## Interactions verified
 

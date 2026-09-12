@@ -289,13 +289,15 @@
     var inner = $('.slide-inner', slides[idx]);
     if (inner) inner.style.transform = 'rotateX(' + (-tilt.cy * 16).toFixed(2) + 'deg) rotateY(' + (tilt.cx * 24).toFixed(2) + 'deg)';
     layers.forEach(function (el) {
-      var d = parseFloat(el.dataset.depth) || 0, z = parseFloat(el.dataset.z) || 0;
-      el.style.transform = 'translate3d(' + (tilt.cx * d * 48).toFixed(1) + 'px,' + (tilt.cy * d * 36).toFixed(1) + 'px,' + z + 'px)';
+      // floaters drift laterally by depth factor but stay on the slide plane (Z 0) so they hit-test in 2D
+      var d = parseFloat(el.dataset.depth) || 0;
+      el.style.transform = 'translate(' + (tilt.cx * d * 48).toFixed(1) + 'px,' + (tilt.cy * d * 36).toFixed(1) + 'px)';
     });
     tilt.raf = (Math.abs(tilt.tx - tilt.cx) > 0.0005 || Math.abs(tilt.ty - tilt.cy) > 0.0005) ? requestAnimationFrame(tiltStep) : null;
   }
   // While the pointer is over an interactive icon the stage stops moving, so the hit box stays put.
-  var HOT = '[data-app],[data-flow],.spec,.tile,.fnode,.pl,.kpi,.hero-arrow,.dot,.row';
+  // Whole interactive zones lock the stage, not just the icons: the visual column, the spec strip, the CTAs.
+  var HOT = '.dash-wrap,.flow,.orbit,.spec-strip,.actions,.pill-row,.mono-list,[data-app],[data-flow],.hero-arrow,.dot';
   var hoverLock = false, unlockTimer = null;
   function lock() {
     clearTimeout(unlockTimer); unlockTimer = null;
@@ -425,7 +427,7 @@
   // init — the first slide also arrives with a camera move, once the one-time intro (if any) has finished
   if (dots[idx]) { dots[idx].classList.add('is-active'); dots[idx].setAttribute('aria-selected', 'true'); if (!autoplay) dots[idx].classList.add('is-static'); }
   announce(); onSlide(idx); restart();
-  if (mobile.matches) { counters(slides[0]); startRot(); }
+  if (mobile.matches) { counters(slides[0]); clearInterval(rotTimer); var rw = $$('.rot b', hero); rw.forEach(function (w, i) { w.classList.toggle('is-on', i === 0); w.classList.remove('is-out'); }); }
   if (camOn) {
     var firstEnter = function () { camClear(); camEnter(slides[idx], idx, true); };
     if (document.documentElement.classList.contains('intro')) document.addEventListener('tn:intro-done', firstEnter, { once: true });

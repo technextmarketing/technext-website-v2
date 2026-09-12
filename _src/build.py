@@ -104,7 +104,8 @@ def mobile_nav_html() -> str:
     out.append(f'''
 <div class="mnav-cta">
   <a class="btn btn-primary btn-lg" href="{{{{ROOT}}}}quotation.html">Get a quotation {{{{icon:arrow}}}}</a>
-  <a class="btn btn-ghost btn-lg" href="#talk">Let's talk</a>
+  <a class="btn btn-ghost btn-lg" href="#talk">{{{{icon:send}}}} Let's talk</a>
+  <button class="btn btn-ghost btn-lg" type="button" data-chat-open>{{{{icon:chat}}}} Chat with us</button>
 </div>
 <div class="mnav-contact">
   <a href="mailto:{c["sales_email"]}">{{{{icon:mail}}}} {c["sales_email"]}</a>

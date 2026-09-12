@@ -33,11 +33,11 @@
             <button class="spec" type="button" data-app="sale">{{odoo:sale:36}}<span><b>Sales</b><span>Quote → order → invoice</span></span></button>
             <button class="spec" type="button" data-app="stock">{{odoo:stock:36}}<span><b>Inventory</b><span>Stock · barcodes · replenishment</span></span></button>
           </div>
-          <div class="m-visual up" style="--d:700ms" role="group" aria-label="Focus apps">
-            <button type="button" data-app="accountant">{{odoo:accountant:40}}<b>Accounting</b><small>Books, bank, tax</small></button>
-            <button type="button" data-app="sale">{{odoo:sale:40}}<b>Sales</b><small>Quote to invoice</small></button>
-            <button type="button" data-app="stock">{{odoo:stock:40}}<b>Inventory</b><small>Stock &amp; purchasing</small></button>
-          </div>
+          <nav class="m-visual" aria-label="Focus apps">
+            <a href="{{ROOT}}odoo/apps.html#finance">{{odoo:accountant:32}}<span><b>Accounting</b><small>Books, bank feeds, tax</small></span>{{icon:arrow}}</a>
+            <a href="{{ROOT}}odoo/apps.html#sales">{{odoo:sale:32}}<span><b>Sales</b><small>Quotation to invoice</small></span>{{icon:arrow}}</a>
+            <a href="{{ROOT}}odoo/apps.html#supply-chain">{{odoo:stock:32}}<span><b>Inventory</b><small>Stock and purchasing</small></span>{{icon:arrow}}</a>
+          </nav>
         </div>
 
         <div class="dash-wrap up" style="--d:260ms">

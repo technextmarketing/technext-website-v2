@@ -666,7 +666,7 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 @media (max-width:960px){
   :root{--header-h:64px}
   .nav{display:none}
-  .menu-btn{display:grid}
+  .menu-btn{display:grid;grid-column:3;justify-self:end}
   .header-inner{grid-template-columns:auto 1fr auto}
   .grid-3{grid-template-columns:repeat(2,1fr)}
   .two{grid-template-columns:1fr;gap:36px}
@@ -675,27 +675,30 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
   .cta{grid-template-columns:1fr;padding:40px 28px}
   .cta .actions{justify-content:flex-start}
   .split-list{columns:1}
-  /* Home hero on small screens: one clean hero, no carousel, no heavy canvas */
-  .hero-bg .particles,.hero-bg .spotlight{display:none}
-  .slide:not(:first-child),.hero-ctl,.dash-wrap{display:none}
-  .slide-inner{grid-template-columns:1fr;gap:28px;padding:40px 0 132px;min-height:0}
-  .side-tab{height:42px;padding:0 14px;font-size:13px}
-  .side-tab .ic{width:15px;height:15px}
-  .slide-copy h1{font-size:clamp(2.1rem,9vw,3rem)}
-  .m-visual{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .m-visual button{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px 14px;border:1px solid var(--line);border-radius:16px;background:var(--glass);backdrop-filter:blur(8px);cursor:pointer;text-align:center;box-shadow:var(--shadow-sm);transition:transform .2s var(--spring)}
-  .m-visual button:active{transform:scale(.96)}
-  .m-visual .oi{width:40px;height:40px}
-  .m-visual b{font:700 13.5px/1.2 var(--font-display);color:var(--ink)}
-  .m-visual small{font-size:11.5px;color:var(--muted);line-height:1.3}
-  .spec-strip{display:none}
-  .mq-track{animation-duration:34s}
-  .side-tabs{top:auto;bottom:16px;right:16px;transform:none;gap:8px;align-items:flex-end}
+  /* Home hero on small screens: plain and quick — no animated background, no carousel, no marquee,
+     no staggered reveals; the three focus apps are simple links */
+  .hero-bg,.hero-marquee,.hero-ctl,.dash-wrap,.spec-strip{display:none}
+  .slide:not(:first-child){display:none}
+  .hero .kw>span,.hero .up{opacity:1;transform:none;animation:none}
+  .hero .rot>b{transition:none}
+  .slide-inner{grid-template-columns:1fr;gap:24px;padding:28px 0 36px;min-height:0}
+  .slide-copy h1{font-size:clamp(2rem,8.6vw,2.8rem);margin-bottom:16px}
+  .slide-copy .lead{font-size:1.02rem}
+  .slide-copy .actions{margin-top:22px}
+  .m-visual{display:grid;gap:8px}
+  .m-visual a{display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);text-decoration:none;box-shadow:var(--shadow-sm)}
+  .m-visual a:active{background:var(--alt)}
+  .m-visual .oi{width:32px;height:32px}
+  .m-visual b{display:block;font:700 15px/1.2 var(--font-display);color:var(--ink)}
+  .m-visual small{display:block;font-size:12.5px;color:var(--muted);line-height:1.3;margin-top:2px}
+  .m-visual .ic{width:18px;height:18px;color:var(--muted);margin-left:auto;flex:none}
+  .side-tabs{top:auto;bottom:16px;right:16px;transform:none;gap:10px;align-items:flex-end}
   body.chat-open .side-tabs{transform:translateY(120%)}
-  .side-tab{writing-mode:horizontal-tb;transform:none;border-radius:999px;padding:0 16px;height:44px;font-size:13.5px;box-shadow:0 10px 24px -10px rgba(31,31,61,.5)}
-  .side-tab .ic{transform:none}
-  .side-tab:hover{padding-right:18px}
-  .side-tab:active{transform:scale(.96)}
+  .side-tab{writing-mode:horizontal-tb;transform:none;width:50px;height:50px;padding:0;border-radius:50%;justify-content:center;box-shadow:0 10px 24px -10px rgba(31,31,61,.5)}
+  .side-tab span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .side-tab .ic{width:20px;height:20px;transform:none}
+  .side-tab:hover{padding:0}
+  .side-tab:active{transform:scale(.94)}
   .chat{right:0;bottom:0;width:100%;height:100%;border-radius:0;border:0;transform-origin:bottom center}
   .pop{max-height:88vh}
 }
@@ -743,12 +746,9 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
   .pop-foot{padding:12px 18px 20px}
   .pop-foot .btn{flex:1}
   .slide-tag{font-size:12px;flex-wrap:wrap}
-  .m-visual{gap:8px}
-  .m-visual button{padding:14px 6px 12px}
 }
 @media (max-width:420px){
   .choices{grid-template-columns:1fr}
-  .m-visual small{display:none}
 }
 
 /* ---------- one-time intro (display is controlled by the inline head style) ---------- */
@@ -826,7 +826,7 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
   .slide.is-entering{z-index:2}
   .is-leaving .kw>span,.is-leaving .up{opacity:1;transform:none;animation:none}
   .is-leaving .chart i{transform:none;animation:none}
-  .slide-inner{transform-style:preserve-3d;backface-visibility:hidden}
+  .slide-inner{transform-style:preserve-3d}
   .is-leaving .slide-inner,.is-entering .slide-inner{will-change:transform,opacity,filter}
   .cam-in-orbit .slide-inner{animation:camOrbitIn 2.1s cubic-bezier(.2,.8,.2,1) .75s both}
   .cam-in-spiral .slide-inner{animation:camSpiralIn 2.1s cubic-bezier(.2,.8,.2,1) .75s both}
@@ -868,21 +868,21 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
 @media (min-width:961px) and (hover:hover){
   .slide-inner,.slide-inner>*,.slide-copy,.dash-wrap,.flow,.flow-grid,.orbit{transform-style:preserve-3d}
   .hero-track{perspective:1300px}
-  .slide-copy{transform:translateZ(40px)}
   .dash-wrap{perspective:none}
-  .dash{transform:translateZ(60px)}
+  /* Depth lives only on NON-interactive layers. Clickable elements stay on the slide plane (Z 0) so the
+     browser hit-tests them in plain 2D — 3D-positioned hover targets are what caused select/deselect jitter. */
   .toasts{transform:translateZ(150px)}
-  .flow-svg{transform:translateZ(10px)}
-  .fnode{transform:translateZ(calc(var(--z,0)*1.4px))}
-  .fnode:hover{transform:translateZ(calc(var(--z,0)*1.4px + 50px)) translateY(-4px) scale(1.03)}
-  .flow-label{transform:translate(-50%,-50%) translateZ(100px)}
+  .flow-svg{transform:translateZ(-20px)}
+  .flow-label{transform:translate(-50%,-50%) translateZ(90px)}
   .flow-hint{transform:translateZ(20px)}
-  .ring--2{transform:translateZ(20px)}
-  .ring--1{transform:translateZ(80px)}
   .orbit-core{transform:translateZ(150px)}
   .orbit-core::before{transform:translateZ(-30px)}
+  .ring{transform:translateZ(-30px)}
   .spec-strip,.mono-list,.pill-row{transform-style:preserve-3d}
 }
+/* the carousel controls strip spans the full width — only its buttons may take the pointer */
+.hero-ctl{pointer-events:none}
+.hero-ctl button{pointer-events:auto}
 /* stable hit boxes: the pointer target extends past the visual, so hover lifts, bobbing and the
    frozen tilt never move an icon out from under the cursor */
 .pl button,.tile,.fnode,.spec,.kpi{position:relative}
