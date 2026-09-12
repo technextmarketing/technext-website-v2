@@ -271,7 +271,7 @@
       hero.style.setProperty('--mx', (mx * 100).toFixed(1) + '%'); hero.style.setProperty('--my', (my * 100).toFixed(1) + '%');
       parallax(mx - .5, my - .5);
     });
-    hero.addEventListener('pointerleave', function () { parallax(0, 0); });
+    hero.addEventListener('pointerleave', function () { hoverLock = false; parallax(0, 0); });
     window.addEventListener('resize', function () { if (on) { size(); seed(); } });
     document.addEventListener('visibilitychange', function () { if (!document.hidden && on && !raf) raf = requestAnimationFrame(draw); });
     return { on: function () { on = true; if (!raf) { size(); if (!pts.length) seed(); raf = requestAnimationFrame(draw); } }, off: function () { on = false; } };
@@ -295,15 +295,24 @@
     tilt.raf = (Math.abs(tilt.tx - tilt.cx) > 0.0005 || Math.abs(tilt.ty - tilt.cy) > 0.0005) ? requestAnimationFrame(tiltStep) : null;
   }
   // While the pointer is over an interactive icon the stage stops moving, so the hit box stays put.
-  var HOT = '[data-app],[data-flow],.spec,.tile,.fnode,.pl button,.kpi,.hero-arrow,.dot';
-  var hoverLock = false;
-  hero.addEventListener('pointerover', function (e) {
-    if (e.target.closest(HOT)) { hoverLock = true; tilt.tx = tilt.cx; tilt.ty = tilt.cy; }
-  });
+  var HOT = '[data-app],[data-flow],.spec,.tile,.fnode,.pl,.kpi,.hero-arrow,.dot,.row';
+  var hoverLock = false, unlockTimer = null;
+  function lock() {
+    clearTimeout(unlockTimer); unlockTimer = null;
+    if (!hoverLock) { hoverLock = true; hero.classList.add('is-hot'); }
+    tilt.tx = tilt.cx; tilt.ty = tilt.cy;                       // stop the stage exactly where it is
+  }
+  function unlockSoon() {
+    // release with hysteresis so the stage never starts moving the instant the cursor grazes an edge
+    clearTimeout(unlockTimer);
+    unlockTimer = setTimeout(function () { hoverLock = false; hero.classList.remove('is-hot'); unlockTimer = null; }, 350);
+  }
+  hero.addEventListener('pointerover', function (e) { if (e.target.closest(HOT)) lock(); });
   hero.addEventListener('pointerout', function (e) {
     var t = e.target.closest(HOT);
-    if (t && !(e.relatedTarget && t.contains(e.relatedTarget))) hoverLock = false;
+    if (t && !(e.relatedTarget && t.contains(e.relatedTarget))) unlockSoon();
   });
+  hero.addEventListener('pointerleave', function () { clearTimeout(unlockTimer); hoverLock = false; hero.classList.remove('is-hot'); });
   function parallax(x, y) {
     if (!fine || reduce || mobile.matches || hoverLock) return;
     tilt.tx = x; tilt.ty = y;
