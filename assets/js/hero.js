@@ -163,12 +163,42 @@
   var timer = null, startedAt = 0, remaining = DUR, paused = false, autoplay = !reduce && !mobile.matches;
 
   function announce() { if (live) live.textContent = 'Slide ' + (idx + 1) + ' of ' + slides.length + ': ' + (slides[idx].dataset.title || ''); }
+
+  /* ---- camera transitions: a different enter + exit style per slide, ~3 s in total ---- */
+  var CAM_IN = ['cam-in-orbit', 'cam-in-spiral', 'cam-in-tumble'];
+  var CAM_OUT = ['cam-out-spin', 'cam-out-fly', 'cam-out-tilt'];
+  var CAM_CLASSES = CAM_IN.concat(CAM_OUT, ['is-leaving', 'is-entering', 'cam-first']);
+  var camTimers = [], camOn = !reduce && !mobile.matches;
+  function camClear() {
+    camTimers.forEach(clearTimeout); camTimers = [];
+    slides.forEach(function (s) { CAM_CLASSES.forEach(function (c) { s.classList.remove(c); }); });
+    hero.classList.remove('is-cam'); hero.style.removeProperty('--cam');
+  }
+  function camEnter(slide, n, first) {
+    slide.classList.add('is-entering', CAM_IN[n % CAM_IN.length]);
+    if (first) slide.classList.add('cam-first');
+    hero.classList.add('is-cam');
+    hero.style.setProperty('--cam', first ? '700ms' : '900ms');
+    camTimers.push(setTimeout(function () {
+      slide.classList.remove('is-entering', 'cam-first'); CAM_IN.forEach(function (c) { slide.classList.remove(c); });
+      hero.classList.remove('is-cam'); hero.style.removeProperty('--cam');
+    }, first ? 2000 : 3000));
+  }
+  function camLeave(slide, o) {
+    slide.classList.add('is-leaving', CAM_OUT[o % CAM_OUT.length]);
+    camTimers.push(setTimeout(function () { slide.classList.remove('is-leaving'); CAM_OUT.forEach(function (c) { slide.classList.remove(c); }); }, 1200));
+  }
+
   function show(n, viaUser) {
     n = (n + slides.length) % slides.length;
-    slides[idx].classList.remove('is-active');
-    if (dots[idx]) { dots[idx].classList.remove('is-active'); dots[idx].setAttribute('aria-selected', 'false'); }
+    if (n === idx) return;
+    var old = idx;
+    if (camOn) camClear();
+    slides[old].classList.remove('is-active');
+    if (dots[old]) { dots[old].classList.remove('is-active'); dots[old].setAttribute('aria-selected', 'false'); }
     idx = n;
     slides[idx].classList.add('is-active');
+    if (camOn) { camLeave(slides[old], old); camEnter(slides[idx], idx, false); }
     if (dots[idx]) { dots[idx].classList.add('is-active'); dots[idx].setAttribute('aria-selected', 'true'); if (!autoplay) dots[idx].classList.add('is-static'); }
     announce(); onSlide(idx); restart();
     if (viaUser && dots[idx]) dots[idx].focus({ preventScroll: true });
@@ -292,7 +322,13 @@
   var flow = $('.flow', hero), flowSvg = flow && $('.flow-svg', flow), flowRaf = null, flowOn = false, flowPath = null, flowLen = 0, flowT = 0, lastLit = -1;
   var EDGES = [['quote', 'order', 'confirm'], ['order', 'delivery', 'reserves stock'], ['delivery', 'invoice', 'on delivery'], ['invoice', 'payment', 'bank match'], ['order', 'purchase', 'reorder rule', true]];
   var MAIN = ['quote', 'order', 'delivery', 'invoice', 'payment'];
-  function nodeRect(id) { var n = $('[data-node="' + id + '"]', flow); var r = n.getBoundingClientRect(), f = flow.getBoundingClientRect(); return { x: r.left - f.left, y: r.top - f.top, w: r.width, h: r.height, cx: r.left - f.left + r.width / 2, cy: r.top - f.top + r.height / 2, el: n }; }
+  // Layout (offset) geometry, not getBoundingClientRect: the camera transitions transform the slide,
+  // and the connectors must be drawn for the resting layout.
+  function nodeRect(id) {
+    var n = $('[data-node="' + id + '"]', flow), x = 0, y = 0, el = n;
+    while (el && el !== flow) { x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; }
+    return { x: x, y: y, w: n.offsetWidth, h: n.offsetHeight, cx: x + n.offsetWidth / 2, cy: y + n.offsetHeight / 2, el: n };
+  }
   function edgePath(a, b) {
     var A = nodeRect(a), B = nodeRect(b);
     if (Math.abs(A.cy - B.cy) < 4) return { d: 'M' + (A.x + A.w) + ' ' + A.cy + ' L' + B.x + ' ' + B.cy, mx: (A.x + A.w + B.x) / 2, my: A.cy };
@@ -302,7 +338,7 @@
   function drawFlow() {
     if (!flow) return;
     $$('.flow-label', flow).forEach(function (l) { l.remove(); });
-    var f = flow.getBoundingClientRect();
+    var f = { width: flow.offsetWidth, height: flow.offsetHeight };
     flowSvg.setAttribute('viewBox', '0 0 ' + f.width + ' ' + f.height);
     var html = '';
     EDGES.forEach(function (e) {
@@ -349,8 +385,13 @@
     if (s.hasAttribute('data-slide-flow')) flowStart(); else flowStop();
   }
 
-  // init
+  // init — the first slide also arrives with a camera move, once the one-time intro (if any) has finished
   if (dots[idx]) { dots[idx].classList.add('is-active'); dots[idx].setAttribute('aria-selected', 'true'); if (!autoplay) dots[idx].classList.add('is-static'); }
   announce(); onSlide(idx); restart();
   if (mobile.matches) { counters(slides[0]); startRot(); }
+  if (camOn) {
+    var firstEnter = function () { camClear(); camEnter(slides[idx], idx, true); };
+    if (document.documentElement.classList.contains('intro')) document.addEventListener('tn:intro-done', firstEnter, { once: true });
+    else firstEnter();
+  }
 })();

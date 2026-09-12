@@ -343,8 +343,9 @@ a.card:hover{text-decoration:none}
 .slide-copy .lead{margin-bottom:0}
 .kw{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em;margin-bottom:-.08em}
 .kw>span{display:inline-block;transform:translateY(112%);opacity:0}
-.is-active .kw>span{animation:rise .75s var(--ease-out) forwards;animation-delay:calc(var(--i,0)*70ms + 80ms)}
-.is-active .up{animation:fadeUp .6s ease-out both;animation-delay:var(--d,0ms)}
+.is-active .kw>span{animation:rise .75s var(--ease-out) forwards;animation-delay:calc(var(--i,0)*70ms + 80ms + var(--cam,0ms))}
+.is-active .up{animation:fadeUp .6s ease-out both;animation-delay:calc(var(--d,0ms) + var(--cam,0ms))}
+.is-active .chart i{animation-delay:calc(var(--i)*40ms + 500ms + var(--cam,0ms))}
 .up{opacity:0}
 @keyframes rise{to{transform:none;opacity:1}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
@@ -770,6 +771,50 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
   .dot.is-active::after{transform:scaleX(1)}
   .toast{opacity:1;transform:none}
 }
+
+/* ---------- hero camera transitions (desktop only) ----------
+   Every slide change is a ~3 s camera move: the leaving slide exits with its own style while the
+   arriving slide comes in with a 360° orbit-zoom, spiral or tumble. --cam delays the inner reveals. */
+@media (min-width:961px){
+  .hero-track{perspective:1600px;perspective-origin:50% 45%}
+  .slide.is-leaving{position:absolute;inset:0;opacity:1;visibility:visible;pointer-events:none;z-index:1}
+  .slide.is-entering{z-index:2}
+  .is-leaving .kw>span,.is-leaving .up{opacity:1;transform:none;animation:none}
+  .is-leaving .chart i{transform:none;animation:none}
+  .slide-inner{transform-style:preserve-3d;backface-visibility:hidden}
+  .is-leaving .slide-inner,.is-entering .slide-inner{will-change:transform,opacity,filter}
+  .cam-in-orbit .slide-inner{animation:camOrbitIn 2.1s cubic-bezier(.2,.8,.2,1) .75s both}
+  .cam-in-spiral .slide-inner{animation:camSpiralIn 2.1s cubic-bezier(.2,.8,.2,1) .75s both}
+  .cam-in-tumble .slide-inner{animation:camTumbleIn 2.1s cubic-bezier(.2,.8,.2,1) .75s both}
+  .cam-first .slide-inner{animation-delay:.05s}
+  .cam-out-spin .slide-inner{animation:camOutSpin 1.15s cubic-bezier(.5,0,.8,.4) forwards}
+  .cam-out-fly .slide-inner{animation:camOutFly 1.15s cubic-bezier(.5,0,.8,.4) forwards}
+  .cam-out-tilt .slide-inner{animation:camOutTilt 1.15s cubic-bezier(.5,0,.8,.4) forwards}
+  .hero.is-cam .hero-bg{animation:bgBreathe 3s cubic-bezier(.2,.8,.2,1)}
+  .hero.is-cam .hero-ctl{pointer-events:none}
+}
+@keyframes camOrbitIn{
+  0%{transform:translateZ(-1400px) rotateY(-360deg) rotateX(10deg) scale(.5);opacity:0;filter:blur(16px)}
+  16%{opacity:1}
+  70%{filter:blur(2px)}
+  100%{transform:none;opacity:1;filter:blur(0)}
+}
+@keyframes camSpiralIn{
+  0%{transform:translateZ(-900px) rotate(-360deg) rotateX(-25deg) scale(.15);opacity:0;filter:blur(14px)}
+  18%{opacity:1}
+  75%{filter:blur(1px)}
+  100%{transform:none;opacity:1;filter:blur(0)}
+}
+@keyframes camTumbleIn{
+  0%{transform:translateZ(-1200px) rotateX(-360deg) rotateY(-18deg) translateY(-30%) scale(.6);opacity:0;filter:blur(14px)}
+  18%{opacity:1}
+  72%{filter:blur(1.5px)}
+  100%{transform:none;opacity:1;filter:blur(0)}
+}
+@keyframes camOutSpin{to{transform:translateZ(-900px) rotateY(95deg) translateX(-30%) scale(.7);opacity:0;filter:blur(12px)}}
+@keyframes camOutFly{to{transform:translateZ(900px) translateY(6%) scale(1.35);opacity:0;filter:blur(14px)}}
+@keyframes camOutTilt{to{transform:rotateX(82deg) translateY(-35%) translateZ(-300px) scale(.85);opacity:0;filter:blur(10px)}}
+@keyframes bgBreathe{0%{transform:scale(1.08)}100%{transform:none}}
 
 /* ---------- semantic helpers (audit) ---------- */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}

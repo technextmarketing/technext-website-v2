@@ -20,6 +20,7 @@
       el.classList.add('is-out');
       document.documentElement.classList.remove('intro');
       document.body.style.overflow = '';
+      document.dispatchEvent(new CustomEvent('tn:intro-done'));
       setTimeout(function () { el.remove(); }, 650);
     }
     // plane 0–1.1s · trail 0.9s · wordmark wipe 1.15–2.3s · hold · fade at 3.0s

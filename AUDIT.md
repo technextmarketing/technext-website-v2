@@ -23,7 +23,11 @@ Date: 12 September 2026. Re-run the static half any time with `python _src/audit
 1. **Intro** — first visit only: plane flies in with a light trail (0–1.15 s), wordmark wipes on (1.1–2.35 s),
    tagline fades (2.15 s), whole screen fades at 3.0 s. Click/Esc skips. Stored in `localStorage.tn_intro_seen`,
    so refreshes never show it again; skipped entirely under `prefers-reduced-motion`.
-2. **Hero carousel** (desktop, 10 s per slide, pauses on hover/focus/hidden tab, ← → keys, swipe):
+2. **Hero carousel** (desktop, 10 s per slide, pauses on hover/focus/hidden tab, ← → keys, swipe). Every
+   switch is a ~3 s camera move: the leaving slide exits with its own style (spin-away · fly-past · tilt-fall)
+   while the arriving slide comes in with a 360° orbit-zoom, spiral or tumble (blur clears as it lands); the
+   background breathes in step and the inner reveals wait for the camera. The first slide also arrives this
+   way once the intro has finished. Not used below 960 px or under `prefers-reduced-motion`.
    - Slide 1 — word-by-word headline rise, rotating word (*accounts · sales · stock · purchasing · invoicing*),
      liquid-glass Odoo dashboard with count-up KPIs, spring-grown chart, cycling toasts, four parallax
      Odoo app icons (click → pop-up), clickable Accounting/Sales/Inventory strip.
