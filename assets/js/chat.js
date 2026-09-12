@@ -76,7 +76,8 @@
   }
 
   /* ---------------- rendering ---------------- */
-  function scroll() { log.scrollTop = log.scrollHeight; }
+  // programmatic scrolls are instant (the log has scroll-behavior: smooth for the user's own scrolling)
+  function scroll() { log.style.scrollBehavior = 'auto'; log.scrollTop = log.scrollHeight; log.style.scrollBehavior = ''; }
   function add(role, html) {
     var m = document.createElement('div'); m.className = 'msg msg--' + role; m.innerHTML = html; log.appendChild(m); scroll();
     history.push((role === 'user' ? 'Visitor: ' : 'Assistant: ') + m.textContent.replace(/\s+/g, ' ').trim().slice(0, 400));
@@ -95,6 +96,8 @@
   }
   function setChips(ids) {
     chips.innerHTML = ids.map(function (id) { return '<button class="chip" type="button" data-chip="' + id + '">' + (ICON[id] ? oi(ICON[id]) : '') + LABEL[id] + '</button>'; }).join('');
+    // the chips bar takes height from the log — keep the last message fully in view
+    requestAnimationFrame(scroll); setTimeout(scroll, 120);
   }
   function typing() { var m = document.createElement('div'); m.className = 'msg msg--bot'; m.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>'; log.appendChild(m); scroll(); return m; }
   function reply(k) {

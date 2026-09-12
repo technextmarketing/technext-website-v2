@@ -157,6 +157,10 @@
     lastFocus = document.activeElement;
     closeMnav();
     if (window.tnChat) window.tnChat.close();
+    // exit animation on the tab: the plane flies off, then both tabs slide out behind the panel
+    var tab = $('.talk-tab');
+    if (tab) { tab.classList.add('is-exiting'); setTimeout(function () { tab.classList.remove('is-exiting'); }, 700); }
+    document.body.classList.add('talk-open');
     panel.hidden = false; tOverlay.hidden = false;
     document.body.style.overflow = 'hidden';
     requestAnimationFrame(function () {
@@ -167,6 +171,7 @@
   function closeTalk() {
     if (panel.hidden) return;
     panel.classList.remove('is-open'); tOverlay.classList.remove('is-open');
+    document.body.classList.remove('talk-open');
     document.body.style.overflow = '';
     var done = function () { panel.hidden = true; tOverlay.hidden = true; panel.removeEventListener('transitionend', done); };
     if (reduce) done(); else { panel.addEventListener('transitionend', done); setTimeout(done, 400); }
@@ -272,7 +277,8 @@
     setTimeout(function () { s.remove(); }, 650);
   });
   if (fine && !reduce) {
-    $$('.btn-lg, .side-tab').forEach(function (btn) {
+    // magnetic pull on large buttons only (never on the fixed side tabs — a moving fixed target flickers)
+    $$('.btn-lg').forEach(function (btn) {
       var raf = null;
       btn.addEventListener('pointermove', function (e) {
         var r = btn.getBoundingClientRect();
@@ -280,9 +286,7 @@
         if (raf) return;
         raf = requestAnimationFrame(function () {
           raf = null;
-          btn.style.setProperty('--mx', (x * 6).toFixed(1) + 'px');
-          btn.style.setProperty('--my', (y * 4).toFixed(1) + 'px');
-          if (!btn.classList.contains('side-tab')) btn.style.transform = 'translate(var(--mx),calc(var(--my) - 2px))';
+          btn.style.transform = 'translate(' + (x * 6).toFixed(1) + 'px,' + (y * 4 - 2).toFixed(1) + 'px)';
         });
       });
       btn.addEventListener('pointerleave', function () { btn.style.transform = ''; });
