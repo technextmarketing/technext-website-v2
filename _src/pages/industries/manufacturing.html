@@ -1,0 +1,47 @@
+<!--meta {"title": "Odoo for Manufacturing — BoMs, work orders, costing", "desc": "Odoo for manufacturers: bills of materials, work orders, component stock, purchasing and product costing in one database — by TechNext, Odoo Ready Partner.", "out": "industries/manufacturing.html", "nav": "industries", "scripts": ["assets/js/showcase.js"]} -->
+
+<section class="page-hero">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="{{ROOT}}index.html">Home</a><span>Industries</span><span>Manufacturing</span></nav>
+    <span class="hand">make-to-order, make-to-stock, assembly</span>
+    <h1>Know what it costs to make, before you quote it.</h1>
+    <p class="lead">Bills of materials drive component demand, work orders track the floor, and every finished unit carries its real cost into stock and the ledger.</p>
+    <div class="actions"><a class="btn btn-primary btn-lg" href="{{ROOT}}quotation.html">Get a quotation {{icon:arrow}}</a><a class="btn btn-ghost btn-lg" href="#talk">Talk to us</a></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="sec-head reveal"><span class="hand">what usually slows you down</span><h2>Three problems we see first.</h2></div>
+    <div class="grid-3">
+      <article class="card reveal" style="--i:0"><div class="card-ic">{{icon:gear}}</div><h3>BoMs in spreadsheets</h3><p>Component lists live in Excel; when a price changes, the product cost doesn't.</p></article>
+      <article class="card reveal" style="--i:1"><div class="card-ic">{{icon:box}}</div><h3>Shortages found on the floor</h3><p>Production stops because a component ran out that nobody knew was low.</p></article>
+      <article class="card reveal" style="--i:2"><div class="card-ic">{{icon:bars}}</div><h3>Cost per unit unknown</h3><p>Labour, materials and overhead never meet in one place; margin per product is estimated.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="sec-head sec-head--row reveal"><div><span class="hand">how odoo maps to it</span><h2 style="margin:0">The apps we switch on.</h2></div><a class="btn-link" href="{{ROOT}}odoo/apps.html">All Odoo apps {{icon:arrow}}</a></div>
+    <div class="showcase reveal" data-showcase data-interval="6000">
+      <div class="sc-list" role="tablist" aria-label="Odoo apps for manufacturing">
+        <button class="sc-tab" role="tab" type="button" data-app="mrp" data-kicker="Manufacturing · Supply Chain" data-title="Manufacturing" data-href="{{ROOT}}odoo/apps/mrp.html" data-desc="Multi-level bills of materials, routings and work orders; component demand and finished-goods cost follow from them." data-points="Multi-level BoMs and routings|Work orders and work-centre capacity|Finished-goods cost rolled up automatically">{{odoo:mrp:36}}<span><b>Manufacturing</b><small>BoMs, routings, work orders.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="stock" data-kicker="Inventory · Supply Chain" data-title="Inventory" data-href="{{ROOT}}odoo/apps/stock.html" data-desc="Component and finished stock in one system; reordering rules and MRP scheduling so shortages surface before the floor does." data-points="Components and finished goods|Reordering rules and MRP scheduling|Lots and serials through production">{{odoo:stock:36}}<span><b>Inventory</b><small>Components, finished goods, lots.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="purchase" data-kicker="Purchase · Supply Chain" data-title="Purchase" data-href="{{ROOT}}odoo/apps/purchase.html" data-desc="Component demand from BoMs becomes supplier orders; receipts and bills close the loop." data-points="Orders driven by production demand|Vendor lead times respected|Bills matched to receipts">{{odoo:purchase:36}}<span><b>Purchase</b><small>Components from demand.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="quality_control" data-kicker="Quality · Supply Chain" data-title="Quality" data-href="{{ROOT}}odoo/apps/quality_control.html" data-desc="Control points at receipt, in process and at final inspection; alerts and non-conformance tracked." data-points="Control points per operation|Quality alerts and non-conformance|Traceability by lot">{{odoo:quality_control:36}}<span><b>Quality</b><small>Control points and alerts.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="accountant" data-kicker="Accounting · Finance" data-title="Accounting" data-href="{{ROOT}}odoo/apps/accountant.html" data-desc="Standard or real cost per product, WIP and variances in the ledger; margin per product and per order." data-points="Standard or real costing|WIP and variance accounts|Margin per product and order">{{odoo:accountant:36}}<span><b>Accounting</b><small>Product costing and margin.</small></span></button>
+      </div>
+      <div class="sc-panel" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta reveal">
+      <div><span class="hand">next step</span><h2>Send us one product's BoM.</h2><p>We map it, its routing and its cost in a discovery session — enough to scope the first phase.</p></div>
+      <div class="actions"><a class="btn btn-white btn-lg" href="{{ROOT}}quotation.html">Get a quotation</a><a class="btn btn-outline-white btn-lg" href="#talk">Let's talk</a></div>
+    </div>
+  </div>
+</section>

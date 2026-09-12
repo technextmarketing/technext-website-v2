@@ -32,26 +32,40 @@
       setTimeout(function () { el.remove(); }, 750);
     }
 
-    /* flight path: one smooth cubic Bézier sweep from off-screen bottom-left, up over the wordmark,
-       around the right and back into the plane's slot, arriving on a gentle climb. Built in viewport
-       pixels, then expressed relative to the plane's box for offset-path and drawn as the SVG trail. */
-    var wrap = $('.intro-plane-wrap', el), trail = $('.intro-trail-svg path', el);
+    /* flight path: one smooth cubic Bézier sweep from off-screen bottom-left, up and over the lock-up,
+       around its right, back underneath and into the plane's slot on a gentle climb. The loop is built
+       around the stage's box with a clearance (`pad`), so on a phone or a tablet it still encircles the
+       wordmark instead of cutting through the letters, and it stays below the tagline that types on later.
+       Built in viewport pixels, then expressed relative to the plane's box for offset-path and drawn as
+       the SVG trail. */
+    var wrap = $('.intro-plane-wrap', el), stage = $('.intro-stage', el), trail = $('.intro-trail-svg path', el);
     function buildPath() {
-      var r = wrap.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
+      var r = wrap.getBoundingClientRect(), s = stage.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
       var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      var sx = s.left, sy = s.top, sw = s.width, sh = s.height, scx = sx + sw / 2;
+      var pad = Math.max(44, Math.min(120, Math.min(W, H) * 0.12));           // clearance around the lock-up
+      // The loop's right extreme must clear the last letter. A cubic with both middle controls at X only
+      // reaches about 0.75*X + (ends)/8, so solve X for the extreme we want, kept inside the viewport.
+      var reachX = Math.min(sx + sw + pad * 0.9, W - 8);
+      var rightX = (reachX - (scx + (scx + sw * 0.12)) / 8) / 0.75;
+      var subOff = Math.min(Math.max(50, Math.min(78, 0.09 * W)), 0.14 * H);  // mirrors .intro-sub's top offset
+      var bottomY = Math.max(sy + sh + pad * 0.95, H / 2 + subOff + 34);      // pass under the tagline's line
       var P = function (x, y) { return x.toFixed(1) + ',' + y.toFixed(1); };
-      var ex = cx - 0.11 * W, ey = cy + 0.13 * H;                       // last control point (approach from lower-left)
-      var d = 'M' + P(-0.12 * W, 1.08 * H) +
-        ' C' + P(0.0 * W, 0.66 * H) + ' ' + P(0.26 * W, 0.02 * H) + ' ' + P(0.58 * W, 0.16 * H) +
-        ' C' + P(0.86 * W, 0.28 * H) + ' ' + P(0.86 * W, 0.66 * H) + ' ' + P(0.60 * W, 0.68 * H) +
-        ' C' + P(0.44 * W, 0.70 * H) + ' ' + P(ex, ey) + ' ' + P(cx, cy);
-      var theta = Math.atan2(cy - ey, cx - ex) * 180 / Math.PI;          // end tangent (negative = climbing)
+      var ex = cx - pad * 1.3, ey = cy + pad * 0.9;                           // last control point: a wide approach from the lower-left
+      // Junctions are C1-continuous: each segment's first control point mirrors the previous segment's
+      // last one, so the sweep has no kinks at the top or under the lock-up.
+      var topY = sy - pad * 1.15, kx = scx + sw * 0.12;
+      var d = 'M' + P(-0.12 * W, 1.06 * H) +
+        ' C' + P(sx - pad * 1.6, sy + sh + pad * 1.4) + ' ' + P(2 * scx - rightX, 2 * topY - (sy - pad * 0.7)) + ' ' + P(scx, topY) +
+        ' C' + P(rightX, sy - pad * 0.7) + ' ' + P(rightX, bottomY - pad * 0.25) + ' ' + P(kx, bottomY) +
+        ' C' + P(2 * kx - rightX, bottomY + pad * 0.25) + ' ' + P(ex, ey) + ' ' + P(cx, cy);
+      var theta = Math.atan2(cy - ey, cx - ex) * 180 / Math.PI;                // end tangent (negative = climbing)
       trail.setAttribute('d', d);
       var L = trail.getTotalLength();
       trail.style.strokeDasharray = L + ' ' + L; trail.style.strokeDashoffset = L;
       var local = d.replace(/(-?\d+\.?\d*),(-?\d+\.?\d*)/g, function (m, x, y) { return (x - r.left).toFixed(1) + ',' + (y - r.top).toFixed(1); });
       wrap.style.offsetPath = 'path("' + local + '")';
-      wrap.style.offsetRotate = 'auto ' + (-theta).toFixed(1) + 'deg';  // lands level, nose up-right like the logo
+      wrap.style.offsetRotate = 'auto ' + (-theta).toFixed(1) + 'deg';        // lands level, nose up-right like the logo
       return L;
     }
 
@@ -96,7 +110,9 @@
     }
     requestAnimationFrame(start);
     timers.push(setTimeout(start, 120));
-    window.addEventListener('resize', buildPath);
+    // Rebuild only before take-off: a mid-flight rebuild (mobile URL bar collapsing fires resize)
+    // would swap the motion path under the plane and restart the trail from the wrong length.
+    window.addEventListener('resize', function () { if (!started) L = buildPath(); });
     el.addEventListener('click', finish); // let impatient visitors skip
     document.addEventListener('keydown', function onKey(e) { if (e.key === 'Escape' || e.key === 'Enter') { finish(); document.removeEventListener('keydown', onKey); } });
   })();

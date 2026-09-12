@@ -1,0 +1,47 @@
+<!--meta {"title": "Odoo for F&B — restaurants, cafés and central kitchens", "desc": "Odoo for F&B: restaurant POS with kitchen display, recipes and food cost, central kitchen, purchasing and books per outlet — by TechNext, Odoo Ready Partner.", "out": "industries/fnb.html", "nav": "industries", "scripts": ["assets/js/showcase.js"]} -->
+
+<section class="page-hero">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="{{ROOT}}index.html">Home</a><span>Industries</span><span>F&amp;B</span></nav>
+    <span class="hand">restaurants, cafés, central kitchens</span>
+    <h1>From the order to the kitchen to the books, in one system.</h1>
+    <p class="lead">Point of Sale that talks to the kitchen, recipes that deplete stock as dishes sell, purchasing from suppliers on par levels, and each outlet's takings posted to Accounting the same night.</p>
+    <div class="actions"><a class="btn btn-primary btn-lg" href="{{ROOT}}quotation.html">Get a quotation {{icon:arrow}}</a><a class="btn btn-ghost btn-lg" href="#talk">Talk to us</a></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="sec-head reveal"><span class="hand">what usually slows you down</span><h2>Three problems we see first.</h2></div>
+    <div class="grid-3">
+      <article class="card reveal" style="--i:0"><div class="card-ic">{{icon:utensils}}</div><h3>Food cost is a guess</h3><p>Recipes live in someone's head; ingredient prices move and nobody sees the margin per dish.</p></article>
+      <article class="card reveal" style="--i:1"><div class="card-ic">{{icon:box}}</div><h3>Stock counted by feel</h3><p>Walk-in fridges checked by eye; orders placed by habit; waste unrecorded.</p></article>
+      <article class="card reveal" style="--i:2"><div class="card-ic">{{icon:calculator}}</div><h3>Outlets close in spreadsheets</h3><p>Each outlet's Z-report and delivery-platform payouts reconciled by hand, days later.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="sec-head sec-head--row reveal"><div><span class="hand">how odoo maps to it</span><h2 style="margin:0">The apps we switch on.</h2></div><a class="btn-link" href="{{ROOT}}odoo/apps.html">All Odoo apps {{icon:arrow}}</a></div>
+    <div class="showcase reveal" data-showcase data-interval="6000">
+      <div class="sc-list" role="tablist" aria-label="Odoo apps for F&B">
+        <button class="sc-tab" role="tab" type="button" data-app="pos_restaurant" data-kicker="Point of Sale · Sales" data-title="POS Restaurant" data-href="{{ROOT}}odoo/apps/pos_restaurant.html" data-desc="Tables, courses and kitchen printing or displays; split bills, tips and delivery-platform orders in one screen." data-points="Floor plan, tables and courses|Kitchen display or printers per station|Split bills, tips, QR self-ordering">{{odoo:pos_restaurant:36}}<span><b>POS Restaurant</b><small>Tables, kitchen display, bills.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="mrp" data-kicker="Manufacturing · Supply Chain" data-title="Manufacturing" data-href="{{ROOT}}odoo/apps/mrp.html" data-desc="Recipes as bills of materials: each sale consumes ingredients, so stock and food cost update dish by dish." data-points="Recipes as bills of materials|Ingredients consumed per dish sold|Central-kitchen production orders">{{odoo:mrp:36}}<span><b>Manufacturing</b><small>Recipes and food cost.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="stock" data-kicker="Inventory · Supply Chain" data-title="Inventory" data-href="{{ROOT}}odoo/apps/stock.html" data-desc="Per-outlet stock with expiry tracking and par levels that raise supplier orders automatically." data-points="Stock per outlet and central kitchen|Lots and expiry on perishables|Par levels raise purchase orders">{{odoo:stock:36}}<span><b>Inventory</b><small>Perishables, par levels, transfers.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="purchase" data-kicker="Purchase · Supply Chain" data-title="Purchase" data-href="{{ROOT}}odoo/apps/purchase.html" data-desc="Supplier orders from par levels, receipts on the dock, bills matched to what arrived." data-points="Orders from par levels|Receipts by scanning on delivery|Bills matched to receipts">{{odoo:purchase:36}}<span><b>Purchase</b><small>Suppliers and deliveries.</small></span></button>
+        <button class="sc-tab" role="tab" type="button" data-app="accountant" data-kicker="Accounting · Finance" data-title="Accounting" data-href="{{ROOT}}odoo/apps/accountant.html" data-desc="POS sessions post to journals per outlet; delivery-platform payouts and card settlements reconcile from the bank feed." data-points="Journals per outlet|Platform payouts reconciled|Card settlements from the bank feed">{{odoo:accountant:36}}<span><b>Accounting</b><small>Outlet takings and payouts.</small></span></button>
+      </div>
+      <div class="sc-panel" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta reveal">
+      <div><span class="hand">next step</span><h2>Start with one outlet.</h2><p>POS, recipes and books for a single outlet first; the central kitchen and other outlets follow.</p></div>
+      <div class="actions"><a class="btn btn-white btn-lg" href="{{ROOT}}quotation.html">Get a quotation</a><a class="btn btn-outline-white btn-lg" href="#talk">Let's talk</a></div>
+    </div>
+  </div>
+</section>

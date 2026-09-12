@@ -64,3 +64,48 @@
     }
   });
 })();
+
+/* ---------- app constellation (home "Every Odoo app, one database") ----------
+   Nodes are placed on three rings by --a/--r; this draws the spokes to the core, lights a node
+   and its spoke in turn, and shows the app name on hover/focus. */
+(function () {
+  'use strict';
+  var wrap = document.querySelector('[data-const]');
+  if (!wrap) return;
+  var svg = wrap.querySelector('.const-lines'), nodes = Array.prototype.slice.call(wrap.querySelectorAll('.const-node'));
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var paths = [];
+  function draw() {
+    var W = wrap.offsetWidth, H = wrap.offsetHeight, cx = W / 2, cy = H / 2;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.innerHTML = nodes.map(function (n, i) {
+      if (!n.offsetParent) return '<line class="const-spoke" data-i="' + i + '" style="display:none"/>';
+      var x = n.offsetLeft + n.offsetWidth / 2, y = n.offsetTop + n.offsetHeight / 2;
+      return '<line class="const-spoke' + (n.classList.contains('is-focus') ? ' is-focus' : '') + '" data-i="' + i + '" x1="' + cx + '" y1="' + cy + '" x2="' + x + '" y2="' + y + '"/>';
+    }).join('');
+    paths = Array.prototype.slice.call(svg.querySelectorAll('.const-spoke'));
+  }
+  draw();
+  window.addEventListener('resize', draw);
+  // hover/focus lights the spoke
+  nodes.forEach(function (n, i) {
+    var on = function () { wrap.classList.add('is-hot'); n.classList.add('is-lit'); if (paths[i]) paths[i].classList.add('is-lit'); };
+    var off = function () { wrap.classList.remove('is-hot'); n.classList.remove('is-lit'); if (paths[i]) paths[i].classList.remove('is-lit'); };
+    n.addEventListener('pointerenter', on); n.addEventListener('pointerleave', off);
+    n.addEventListener('focus', on); n.addEventListener('blur', off);
+  });
+  // idle: a pulse travels core -> node, node by node, while in view and not hovered
+  if (reduce) return;
+  var k = 0, timer = null;
+  function tick() {
+    if (wrap.classList.contains('is-hot')) return;
+    nodes.forEach(function (n) { n.classList.remove('is-auto'); }); paths.forEach(function (p) { p.classList.remove('is-auto'); });
+    var n = nodes[k], p = paths[k]; k = (k + 1) % nodes.length;
+    if (n) n.classList.add('is-auto'); if (p) p.classList.add('is-auto');
+  }
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (en) {
+    if (en[0].isIntersecting && !timer) { draw(); tick(); timer = setInterval(tick, 1400); }
+    if (!en[0].isIntersecting && timer) { clearInterval(timer); timer = null; }
+  }, { threshold: 0.3 }) : null;
+  if (io) io.observe(wrap); else timer = setInterval(tick, 1400);
+})();

@@ -1,4 +1,4 @@
-<!--meta {"title": "Odoo Ready Partner in Singapore · Accounting, Sales & Inventory | TechNext", "desc": "TechNext implements Odoo ERP for growing companies — Accounting, Sales and Inventory first. Odoo Ready Partner with Singapore HQ and hubs in Vietnam and the Philippines.", "out": "index.html", "nav": "home", "body": "is-home", "scripts": ["assets/js/hero.js"]} -->
+<!--meta {"title": "Odoo Ready Partner in Singapore · Accounting, Sales & Inventory | TechNext", "desc": "TechNext implements Odoo ERP for growing companies — Accounting, Sales and Inventory first. Odoo Ready Partner headquartered in Singapore, serving clients globally.", "out": "index.html", "nav": "home", "body": "is-home", "scripts": ["assets/js/hero.js", "assets/js/showcase.js"]} -->
 
 <!-- ============================================================ HERO CAROUSEL -->
 <section class="hero" data-hero data-root="{{ROOT}}" aria-roledescription="carousel" aria-label="TechNext highlights">
@@ -16,7 +16,7 @@
     <article class="slide is-active" data-slide-dash data-title="Odoo ERP, implemented by TechNext" aria-roledescription="slide">
       <div class="container slide-inner">
         <div class="slide-copy">
-          <span class="slide-tag up" style="--d:0ms"><img src="{{ROOT}}assets/img/odoo-ready-partner.png" alt="Odoo Ready Partner"><span class="sep"></span>Singapore · Vietnam · Philippines</span>
+          <span class="slide-tag up" style="--d:0ms"><img src="{{ROOT}}assets/img/odoo-ready-partner.png" alt="Odoo Ready Partner"><span class="sep"></span>Singapore HQ · Global</span>
           <h1>
             <span class="kw" style="--i:0"><span>Run your</span></span>
             <span class="kw" style="--i:1"><span class="rot"><b class="is-on">accounts</b><b>sales</b><b>stock</b><b>purchasing</b><b>invoicing</b></span></span><br>
@@ -101,12 +101,12 @@
           <div class="flow" role="group" aria-label="Order-to-cash flow — click a step to zoom in">
             <svg class="flow-svg" aria-hidden="true"></svg>
             <div class="flow-grid">
-              <button class="fnode" type="button" data-node="quote" data-flow="0" style="grid-column:1;--z:20"><span class="fn-step">1</span>{{odoo:sale:38}}<b>Quotation</b><small>Sales</small><span class="fn-zoom">{{icon:expand}}</span></button>
-              <button class="fnode" type="button" data-node="order" data-flow="1" style="grid-column:2;--z:55"><span class="fn-step">2</span>{{odoo:sale:38}}<b>Sales order</b><small>Sales</small><span class="fn-zoom">{{icon:expand}}</span></button>
-              <button class="fnode" type="button" data-node="delivery" data-flow="2" style="grid-column:3;--z:85"><span class="fn-step">3</span>{{odoo:stock:38}}<b>Delivery</b><small>Inventory</small><span class="fn-zoom">{{icon:expand}}</span></button>
-              <button class="fnode" type="button" data-node="invoice" data-flow="3" style="grid-column:4;--z:55"><span class="fn-step">4</span>{{odoo:account:38}}<b>Invoice</b><small>Accounting</small><span class="fn-zoom">{{icon:expand}}</span></button>
-              <button class="fnode fnode--r2 fnode--dash" type="button" data-node="purchase" data-flow="5" style="grid-column:2;--z:30">{{odoo:purchase:38}}<b>Purchase order</b><small>Reorder rule</small><span class="fn-zoom">{{icon:expand}}</span></button>
-              <button class="fnode fnode--r2" type="button" data-node="payment" data-flow="4" style="grid-column:4;--z:95"><span class="fn-step">5</span>{{odoo:accountant:38}}<b>Payment</b><small>Reconciled</small><span class="fn-zoom">{{icon:expand}}</span></button>
+              <button class="fnode" type="button" data-node="quote" data-flow="0" style="grid-column:1;--z:20"><span class="fn-when">start</span><span class="fn-ic"><span class="fn-step">1</span>{{odoo:sale:34}}<span class="fn-zoom">{{icon:expand}}</span></span><b>Quotation</b><small>Sales</small></button>
+              <button class="fnode" type="button" data-node="order" data-flow="1" style="grid-column:2;--z:55"><span class="fn-when">on confirm</span><span class="fn-ic"><span class="fn-step">2</span>{{odoo:sale:34}}<span class="fn-zoom">{{icon:expand}}</span></span><b>Sales order</b><small>Sales</small></button>
+              <button class="fnode" type="button" data-node="delivery" data-flow="2" style="grid-column:3;--z:85"><span class="fn-when">reserves stock</span><span class="fn-ic"><span class="fn-step">3</span>{{odoo:stock:34}}<span class="fn-zoom">{{icon:expand}}</span></span><b>Delivery</b><small>Inventory</small></button>
+              <button class="fnode" type="button" data-node="invoice" data-flow="3" style="grid-column:4;--z:55"><span class="fn-when">on delivery</span><span class="fn-ic"><span class="fn-step">4</span>{{odoo:account:34}}<span class="fn-zoom">{{icon:expand}}</span></span><b>Invoice</b><small>Accounting</small></button>
+              <button class="fnode" type="button" data-node="payment" data-flow="4" style="grid-column:5;--z:95"><span class="fn-when">bank match</span><span class="fn-ic"><span class="fn-step">5</span>{{odoo:accountant:34}}<span class="fn-zoom">{{icon:expand}}</span></span><b>Payment</b><small>Reconciled</small></button>
+              <button class="fnode fnode--r2 fnode--dash" type="button" data-node="purchase" data-flow="5" style="grid-column:2;--z:30"><span class="fn-when">reorder rule</span><span class="fn-ic">{{odoo:purchase:34}}<span class="fn-zoom">{{icon:expand}}</span></span><b>Purchase order</b><small>Purchase</small></button>
             </div>
           </div>
           <p class="flow-hint">{{icon:expand}} Click any step to zoom in</p>
@@ -118,7 +118,7 @@
     <article class="slide" data-title="An Odoo Ready Partner in Singapore" aria-roledescription="slide">
       <div class="container slide-inner">
         <div class="slide-copy">
-          <span class="slide-tag up" style="--d:0ms">{{icon:pin}} Singapore HQ · Vietnam · Philippines</span>
+          <span class="slide-tag up" style="--d:0ms">{{icon:pin}} Singapore HQ · Global</span>
           <h2 class="as-h1">
             <span class="kw" style="--i:0"><span>An</span></span>
             <span class="kw" style="--i:1"><span class="hl">Odoo</span></span>
@@ -184,7 +184,7 @@
 <section class="container">
   <div class="strip reveal">
     <img class="strip-badge" src="{{ROOT}}assets/img/odoo-ready-partner.png" alt="Odoo Ready Partner" width="91" height="40">
-    <span class="strip-item">{{icon:pin}} <b>Singapore HQ</b> · Vietnam · Philippines</span>
+    <span class="strip-item">{{icon:pin}} <b>Singapore HQ</b> · Global</span>
     <span class="strip-item">{{icon:globe}} Clients in <b>10+ countries</b></span>
     <span class="strip-item">{{icon:users}} <b>11+</b> enterprise clients transformed</span>
   </div>
@@ -304,6 +304,10 @@
       <a class="card reveal" style="--i:1" href="{{ROOT}}industries/travel.html"><div class="card-ic">{{icon:plane}}</div><h3>Travel</h3><p>Agencies and tour operators: quotations, supplier costs and margins per booking, multi-currency.</p><span class="btn-link">Travel {{icon:arrow}}</span></a>
       <a class="card reveal" style="--i:2" href="{{ROOT}}industries/retail.html"><div class="card-ic">{{icon:bag}}</div><h3>Retail</h3><p>Stores and POS with shared stock, promotions and daily takings posted straight to Accounting.</p><span class="btn-link">Retail {{icon:arrow}}</span></a>
       <a class="card reveal" style="--i:3" href="{{ROOT}}industries/ecommerce.html"><div class="card-ic">{{icon:cart}}</div><h3>Ecommerce</h3><p>Online orders, marketplace feeds and fulfilment tied to real stock and reconciled payouts.</p><span class="btn-link">Ecommerce {{icon:arrow}}</span></a>
+      <a class="card reveal" style="--i:4" href="{{ROOT}}industries/construction.html"><div class="card-ic">{{icon:hardhat}}</div><h3>Construction</h3><p>Contractors and fit-out: job costing per project, subcontractor claims, progress billing and retention.</p><span class="btn-link">Construction {{icon:arrow}}</span></a>
+      <a class="card reveal" style="--i:5" href="{{ROOT}}industries/fnb.html"><div class="card-ic">{{icon:utensils}}</div><h3>F&amp;B</h3><p>Restaurants and central kitchens: POS to kitchen, recipes that deplete stock, outlet takings to the books.</p><span class="btn-link">F&amp;B {{icon:arrow}}</span></a>
+      <a class="card reveal" style="--i:6" href="{{ROOT}}industries/manufacturing.html"><div class="card-ic">{{icon:gear}}</div><h3>Manufacturing</h3><p>Bills of materials, work orders and component stock with the real cost of every finished unit.</p><span class="btn-link">Manufacturing {{icon:arrow}}</span></a>
+      <a class="card reveal" style="--i:7" href="{{ROOT}}industries/health-wellness.html"><div class="card-ic">{{icon:heart}}</div><h3>Health &amp; Wellness</h3><p>Studios, spas and gyms: bookings, memberships, packages and retail on one client record.</p><span class="btn-link">Health &amp; Wellness {{icon:arrow}}</span></a>
     </div>
   </div>
 </section>
@@ -316,13 +320,39 @@
         <span class="hand">the full suite</span>
         <h2>Every Odoo app, one database.</h2>
         <p class="lead">Start with the three that matter most, then add apps without another integration project — they already share customers, products and accounts.</p>
+        <div class="const-legend" aria-hidden="true">
+          <span><i style="background:var(--blue)"></i>Focus apps — where we start</span>
+          <span><i style="background:var(--blue-100)"></i>Added when you need them</span>
+        </div>
         <div class="actions"><a class="btn btn-primary" href="{{ROOT}}odoo/apps.html">Browse all apps {{icon:arrow}}</a></div>
       </div>
-      <div class="grid-2">
-        <a class="card reveal" style="--i:0" href="{{ROOT}}odoo/apps.html#finance"><div class="card-ic">{{odoo:accountant}}</div><h3>Finance</h3><p>Accounting, Invoicing, Expenses, Spreadsheet, Documents, Sign.</p></a>
-        <a class="card reveal" style="--i:1" href="{{ROOT}}odoo/apps.html#sales"><div class="card-ic">{{odoo:sale}}</div><h3>Sales</h3><p>CRM, Sales, Point of Sale, Subscriptions, Rental.</p></a>
-        <a class="card reveal" style="--i:2" href="{{ROOT}}odoo/apps.html#supply-chain"><div class="card-ic">{{odoo:stock}}</div><h3>Supply Chain</h3><p>Inventory, Purchase, Manufacturing, PLM, Maintenance, Quality.</p></a>
-        <a class="card reveal" style="--i:3" href="{{ROOT}}odoo/apps.html#websites"><div class="card-ic">{{odoo:website}}</div><h3>Websites &amp; more</h3><p>Website, eCommerce, HR, Marketing, Services, Productivity.</p></a>
+      <div class="const reveal" data-const aria-label="Odoo apps sharing one database">
+        <svg class="const-lines" aria-hidden="true"></svg>
+        <div class="const-core">
+          <span class="const-pulse"></span>
+          {{icon:database}}
+          <b>One database</b>
+          <small>customers · products · accounts</small>
+        </div>
+        <a class="const-node is-focus" href="{{ROOT}}odoo/apps/accountant.html" style="--a:-90deg;--r:1" data-name="Accounting">{{odoo:accountant:30}}</a>
+        <a class="const-node is-focus" href="{{ROOT}}odoo/apps/sale.html" style="--a:30deg;--r:1" data-name="Sales">{{odoo:sale:30}}</a>
+        <a class="const-node is-focus" href="{{ROOT}}odoo/apps/stock.html" style="--a:150deg;--r:1" data-name="Inventory">{{odoo:stock:30}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/crm.html" style="--a:-45deg;--r:2" data-name="CRM">{{odoo:crm:26}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/purchase.html" style="--a:0deg;--r:2" data-name="Purchase">{{odoo:purchase:26}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/account.html" style="--a:-135deg;--r:2" data-name="Invoicing">{{odoo:account:26}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/point_of_sale.html" style="--a:60deg;--r:2" data-name="Point of Sale">{{odoo:point_of_sale:26}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/website_sale.html" style="--a:105deg;--r:2" data-name="eCommerce">{{odoo:website_sale:26}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/mrp.html" style="--a:180deg;--r:2" data-name="Manufacturing">{{odoo:mrp:26}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/project.html" style="--a:225deg;--r:2" data-name="Project">{{odoo:project:26}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/hr.html" style="--a:-20deg;--r:3" data-name="Employees">{{odoo:hr:24}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/helpdesk.html" style="--a:25deg;--r:3" data-name="Helpdesk">{{odoo:helpdesk:24}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/mass_mailing.html" style="--a:80deg;--r:3" data-name="Email Marketing">{{odoo:mass_mailing:24}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/documents.html" style="--a:130deg;--r:3" data-name="Documents">{{odoo:documents:24}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/sign.html" style="--a:165deg;--r:3" data-name="Sign">{{odoo:sign:24}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/planning.html" style="--a:205deg;--r:3" data-name="Planning">{{odoo:planning:24}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/knowledge.html" style="--a:250deg;--r:3" data-name="Knowledge">{{odoo:knowledge:24}}</a>
+        <a class="const-node" href="{{ROOT}}odoo/apps/ai_app.html" style="--a:-65deg;--r:3" data-name="AI">{{odoo:ai_app:24}}</a>
+        <span class="const-count">50+ apps</span>
       </div>
     </div>
   </div>

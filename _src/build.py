@@ -150,7 +150,7 @@ def talk_panel_html() -> str:
       </div>
       <div class="form-row">
         <div class="field"><label for="tf-email">Work email</label><input id="tf-email" name="email" type="email" required autocomplete="email"></div>
-        <div class="field"><label for="tf-phone">Phone <span class="opt">optional</span></label><input id="tf-phone" name="phone" type="tel" autocomplete="tel"></div>
+        <div class="field"><label for="tf-phone">Phone</label><input id="tf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
       </div>
       <div class="field">
         <label for="tf-topic">I'm interested in</label>
@@ -327,9 +327,6 @@ def apps_cats_html() -> str:
         cards = []
         for app in c["apps"]:
             tag = ' <span class="tag">Focus</span>' if app["focus"] else ""
-            cc = APP_CONTENT.get(app["mod"], {})
-            if cc.get("youtube") or cc.get("mp4"):
-                tag += ' <span class="tag tag--vid">{{icon:play}} Video</span>'
             cards.append(f'<a class="app{" is-focus" if app["focus"] else ""}" data-app="{app["mod"]}" href="apps/{app["mod"]}.html">'
                          f'{{{{odoo:{app["mod"]}:40}}}}<div><b>{app["name"]}{tag}</b><small>{app["desc"]}</small></div>{{{{icon:arrow}}}}</a>')
         focus_note = (' <span class="tag tag--ok">{{icon:check}} Our focus area</span>' if c.get("focus") else "")

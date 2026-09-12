@@ -362,37 +362,32 @@
   var EDGES = [['quote', 'order', 'confirm'], ['order', 'delivery', 'reserves stock'], ['delivery', 'invoice', 'on delivery'], ['invoice', 'payment', 'bank match'], ['order', 'purchase', 'reorder rule', true]];
   var MAIN = ['quote', 'order', 'delivery', 'invoice', 'payment'];
   // Layout (offset) geometry, not getBoundingClientRect: the camera transitions transform the slide,
-  // and the connectors must be drawn for the resting layout.
-  function nodeRect(id) {
-    var n = $('[data-node="' + id + '"]', flow), x = 0, y = 0, el = n;
+  // and the connectors must be drawn for the resting layout. `part` measures a child (the icon tile)
+  // so the rail runs through the tiles, not through the captions and labels.
+  function nodeRect(id, part) {
+    var n = $('[data-node="' + id + '"]', flow), t = (part && $(part, n)) || n, x = 0, y = 0, el = t;
     while (el && el !== flow) { x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; }
-    return { x: x, y: y, w: n.offsetWidth, h: n.offsetHeight, cx: x + n.offsetWidth / 2, cy: y + n.offsetHeight / 2, el: n };
+    return { x: x, y: y, w: t.offsetWidth, h: t.offsetHeight, cx: x + t.offsetWidth / 2, cy: y + t.offsetHeight / 2, el: n };
   }
   function edgePath(a, b) {
-    var A = nodeRect(a), B = nodeRect(b);
-    if (Math.abs(A.cy - B.cy) < 4) return { d: 'M' + (A.x + A.w) + ' ' + A.cy + ' L' + B.x + ' ' + B.cy, mx: (A.x + A.w + B.x) / 2, my: A.cy };
-    // vertical drop
-    return { d: 'M' + A.cx + ' ' + (A.y + A.h) + ' L' + B.cx + ' ' + B.y, mx: A.cx, my: (A.y + A.h + B.y) / 2 };
+    var A = nodeRect(a, '.fn-ic'), B = nodeRect(b, '.fn-ic');
+    if (Math.abs(A.cy - B.cy) < 4) return { d: 'M' + (A.x + A.w + 3) + ' ' + A.cy + ' L' + (B.x - 3) + ' ' + B.cy };
+    // branch: drop from under the source node's label to the top of the target's caption
+    var An = nodeRect(a), Bn = nodeRect(b);
+    return { d: 'M' + An.cx + ' ' + (An.y + An.h + 2) + ' L' + Bn.cx + ' ' + (Bn.y - 2) };
   }
   function drawFlow() {
     if (!flow) return;
-    $$('.flow-label', flow).forEach(function (l) { l.remove(); });
     var f = { width: flow.offsetWidth, height: flow.offsetHeight };
     flowSvg.setAttribute('viewBox', '0 0 ' + f.width + ' ' + f.height);
-    var html = '';
+    var html = '<defs><marker id="flow-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="flow-arrow" d="M1 1 9 5 1 9z"/></marker></defs>';
     EDGES.forEach(function (e) {
       var p = edgePath(e[0], e[1]);
       html += '<path class="edge' + (e[3] ? ' edge--dash' : '') + '" d="' + p.d + '"/>';
-      var lab = document.createElement('span'); lab.className = 'flow-label'; lab.textContent = e[2];
-      lab.style.left = p.mx + 'px'; lab.style.top = p.my + 'px'; flow.appendChild(lab);
     });
-    // main path for the pulse
-    var d = '';
-    for (var i = 0; i < MAIN.length - 1; i++) { var p = edgePath(MAIN[i], MAIN[i + 1]); d += (i ? ' ' : '') + p.d.replace(/^M/, i ? 'L' : 'M').replace(' L', ' L'); }
-    // include node centers so the pulse passes through nodes
-    var pts = MAIN.map(function (id) { var r = nodeRect(id); return r.cx + ' ' + r.cy; });
-    d = 'M' + pts.join(' L');
-    html += '<path class="edge-lit" d="' + d + '" stroke-dasharray="0 9999" data-lit/>';
+    // the lit rail and its pulse run through the icon tile centres
+    var pts = MAIN.map(function (id) { var r = nodeRect(id, '.fn-ic'); return r.cx + ' ' + r.cy; });
+    html += '<path class="edge-lit" d="M' + pts.join(' L') + '" stroke-dasharray="0 9999" data-lit/>';
     html += '<circle class="pulse-halo" r="12" data-halo/><circle class="pulse" r="5" data-dot/>';
     flowSvg.innerHTML = html;
     flowPath = $('[data-lit]', flowSvg); flowLen = flowPath.getTotalLength(); flowT = 0;
