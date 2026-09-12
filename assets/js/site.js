@@ -82,15 +82,20 @@
       (function tick() { if (done) return; sub.textContent = text.slice(0, ++i); if (i < text.length) timers.push(setTimeout(tick, 52)); else timers.push(setTimeout(function () { sub.classList.remove('is-typing'); }, 900)); })();
     }
 
-    // 10 s: flight 0.3–3.6 s (same curve as the CSS `fly` keyframes), tagline at 4.6 s, fade at 10.0 s
-    var L = buildPath();
-    requestAnimationFrame(function () {
+    // 10 s: flight 0.3–3.6 s (same curve as the CSS `fly` keyframes), tagline at 4.6 s, fade at 10.0 s.
+    // Every beat is clocked from the real start, which fires on the next frame or after 120 ms at the latest
+    // (requestAnimationFrame can stall in a throttled tab).
+    var L = buildPath(), started = false;
+    function start() {
+      if (started || done) return; started = true;
       el.classList.add('is-go');
       trail.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 3300, delay: 300, easing: 'cubic-bezier(.3,.55,.15,1)', fill: 'forwards' });
       particles();
-    });
-    timers.push(setTimeout(typewriter, 4600));
-    timers.push(setTimeout(finish, 10000));
+      timers.push(setTimeout(typewriter, 4600));
+      timers.push(setTimeout(finish, 10000));
+    }
+    requestAnimationFrame(start);
+    timers.push(setTimeout(start, 120));
     window.addEventListener('resize', buildPath);
     el.addEventListener('click', finish); // let impatient visitors skip
     document.addEventListener('keydown', function onKey(e) { if (e.key === 'Escape' || e.key === 'Enter') { finish(); document.removeEventListener('keydown', onKey); } });
