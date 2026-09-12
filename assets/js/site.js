@@ -1,10 +1,33 @@
-/* TechNext Website v2 — shared behaviour: header menus, mobile nav, Let's Talk panel,
-   FormSubmit forms, scroll reveals. No dependencies. */
+/* TechNext Website v2 — shared behaviour: one-time intro, header menus, mobile nav, Let's Talk
+   panel, FormSubmit forms, scroll reveals, button ripple + magnetic hover. No dependencies. */
 (function () {
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* ---------------- one-time intro (html.intro is set by the inline head script) ---------------- */
+  (function intro() {
+    var el = $('#intro');
+    if (!el) return;
+    if (!document.documentElement.classList.contains('intro')) { el.remove(); return; }
+    document.body.style.overflow = 'hidden';
+    var done = false;
+    function finish() {
+      if (done) return; done = true;
+      try { localStorage.setItem('tn_intro_seen', '1'); } catch (_) {}
+      el.classList.add('is-out');
+      document.documentElement.classList.remove('intro');
+      document.body.style.overflow = '';
+      setTimeout(function () { el.remove(); }, 650);
+    }
+    // plane 0–1.1s · trail 0.9s · wordmark wipe 1.15–2.3s · hold · fade at 3.0s
+    requestAnimationFrame(function () { el.classList.add('is-go'); });
+    setTimeout(finish, 3000);
+    el.addEventListener('click', finish); // let impatient visitors skip
+    document.addEventListener('keydown', function onKey(e) { if (e.key === 'Escape' || e.key === 'Enter') { finish(); document.removeEventListener('keydown', onKey); } });
+  })();
 
   /* ---------------- header: scrolled state + click-to-open mega menus ---------------- */
   var header = $('[data-header]');
@@ -48,10 +71,11 @@
     mnav.hidden = true; mOverlay.hidden = true;
     mBtn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    mBtn.focus();
   }
   mBtn.addEventListener('click', openMnav);
   $$('[data-mnav-close]').forEach(function (el) { el.addEventListener('click', closeMnav); });
+  // Tapping a link inside the drawer closes it (in-page anchors included).
+  mnav.addEventListener('click', function (e) { if (e.target.closest('a')) closeMnav(); });
 
   /* ---------------- Let's Talk panel ---------------- */
   var panel = $('#talk-panel'), tOverlay = $('.talk-overlay');
@@ -59,11 +83,12 @@
   function openTalk() {
     lastFocus = document.activeElement;
     closeMnav();
+    if (window.tnChat) window.tnChat.close();
     panel.hidden = false; tOverlay.hidden = false;
     document.body.style.overflow = 'hidden';
     requestAnimationFrame(function () {
       panel.classList.add('is-open'); tOverlay.classList.add('is-open');
-      var f = $('#tf-name'); if (f) f.focus({ preventScroll: true });
+      var f = $('#tf-name'); if (f && fine) f.focus({ preventScroll: true });
     });
   }
   function closeTalk() {
@@ -74,16 +99,15 @@
     if (reduce) done(); else { panel.addEventListener('transitionend', done); setTimeout(done, 400); }
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
+  window.tnOpenTalk = openTalk;
   $$('[data-talk-open]').forEach(function (el) { el.addEventListener('click', function (e) { e.preventDefault(); openTalk(); }); });
   $$('[data-talk-close]').forEach(function (el) { el.addEventListener('click', closeTalk); });
-  // Any link to #talk opens the panel (used by CTAs across pages).
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a[href$="#talk"]');
     if (a) { e.preventDefault(); openTalk(); }
   });
   if (location.hash === '#talk') setTimeout(openTalk, 300);
 
-  // Focus trap inside the panel.
   panel.addEventListener('keydown', function (e) {
     if (e.key !== 'Tab') return;
     var f = $$('button, [href], input, select, textarea', panel).filter(function (el) { return !el.disabled && el.offsetParent !== null; });
@@ -106,10 +130,21 @@
     });
     return data;
   }
+  window.tnPostForm = function (endpoint, payload) {
+    return fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        var ok = res.ok && (res.j.success === 'true' || res.j.success === true);
+        if (!ok) throw new Error((res.j && res.j.message) || 'The form service did not accept the message.');
+        return res.j;
+      });
+  };
   $$('form[data-endpoint]').forEach(function (form) {
     var status = $('.form-status', form);
     var btn = $('button[type=submit]', form);
-    // Ensure a success block exists.
     if (!$('.form-sent', form)) {
       var sent = document.createElement('div');
       sent.className = 'form-sent';
@@ -118,23 +153,16 @@
     }
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if ($('input[name=_honey]', form) && $('input[name=_honey]', form).value) return; // bot
+      if ($('input[name=_honey]', form) && $('input[name=_honey]', form).value) return;
       if (!form.checkValidity()) { form.reportValidity(); return; }
       if (form.dataset.beforeSend) { try { window[form.dataset.beforeSend](form); } catch (_) {} }
       var payload = serialize(form);
       btn.classList.add('is-busy'); btn.disabled = true;
       status.className = 'form-status'; status.textContent = 'Sending…';
-      fetch(form.dataset.endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload)
-      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
-        .then(function (res) {
-          var ok = res.ok && (res.j.success === 'true' || res.j.success === true);
-          if (!ok) throw new Error((res.j && res.j.message) || 'The form service did not accept the message.');
+      window.tnPostForm(form.dataset.endpoint, payload)
+        .then(function () {
           form.classList.add('is-sent');
           status.className = 'form-status is-ok'; status.textContent = '';
-          form.dispatchEvent(new CustomEvent('tn:sent'));
         })
         .catch(function (err) {
           status.className = 'form-status is-err';
@@ -156,5 +184,35 @@
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
     reveals.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---------------- buttons: ripple on press, magnetic pull on hover ---------------- */
+  document.addEventListener('pointerdown', function (e) {
+    var btn = e.target.closest('.btn');
+    if (!btn || reduce) return;
+    var r = btn.getBoundingClientRect();
+    var d = Math.max(r.width, r.height) * 1.6;
+    var s = document.createElement('span');
+    s.className = 'ripple';
+    s.style.cssText = 'width:' + d + 'px;height:' + d + 'px;left:' + (e.clientX - r.left - d / 2) + 'px;top:' + (e.clientY - r.top - d / 2) + 'px';
+    btn.appendChild(s);
+    setTimeout(function () { s.remove(); }, 650);
+  });
+  if (fine && !reduce) {
+    $$('.btn-lg, .side-tab').forEach(function (btn) {
+      var raf = null;
+      btn.addEventListener('pointermove', function (e) {
+        var r = btn.getBoundingClientRect();
+        var x = (e.clientX - r.left - r.width / 2) / r.width, y = (e.clientY - r.top - r.height / 2) / r.height;
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = null;
+          btn.style.setProperty('--mx', (x * 6).toFixed(1) + 'px');
+          btn.style.setProperty('--my', (y * 4).toFixed(1) + 'px');
+          if (!btn.classList.contains('side-tab')) btn.style.transform = 'translate(var(--mx),calc(var(--my) - 2px))';
+        });
+      });
+      btn.addEventListener('pointerleave', function () { btn.style.transform = ''; });
+    });
   }
 })();

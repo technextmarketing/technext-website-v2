@@ -47,6 +47,23 @@ def badge():
     fit(trim(stacked), 800).save(IMG / "logo-stacked.png", optimize=True)
 
 
+def split_logo():
+    """Cut the horizontal logo into plane + wordmark for the one-time intro animation."""
+    src = Image.open(IMG / "logo-horizontal.png").convert("RGBA")
+    a = src.getchannel("A")
+    w = src.width
+    # first fully transparent column after the plane starts the gap
+    cols = [max(a.getpixel((x, y)) for y in range(src.height)) for x in range(w)]
+    start = next(x for x in range(w) if cols[x] > 8)
+    gap = next(x for x in range(start + 40, w) if cols[x] <= 8)
+    text_start = next(x for x in range(gap, w) if cols[x] > 8)
+    plane = trim(src.crop((0, 0, gap, src.height)))
+    text = trim(src.crop((text_start, 0, w, src.height)))
+    plane.save(IMG / "logo-plane.png", optimize=True)
+    text.save(IMG / "logo-text.png", optimize=True)
+    return plane.size, text.size
+
+
 def font(size: int, bold=False):
     for name in (("segoeuib.ttf" if bold else "segoeui.ttf"), ("arialbd.ttf" if bold else "arial.ttf")):
         p = Path(r"C:\Windows\Fonts") / name
@@ -77,8 +94,13 @@ def og():
 
 
 if __name__ == "__main__":
+    import sys
+    if "--intro-only" in sys.argv:
+        print("plane, text =", split_logo())
+        sys.exit()
     favicons()
     badge()
     og()
+    print("plane, text =", split_logo())
     for p in sorted(IMG.glob("*.png")):
         print(f"{p.name:28} {p.stat().st_size // 1024:5d} KB")

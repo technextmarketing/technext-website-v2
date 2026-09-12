@@ -25,18 +25,19 @@ FORM_ENDPOINT = "https://formsubmit.co/ajax/sales@technext.asia"
 
 # ---------------------------------------------------------------- navigation
 # `href` values are site-root relative; build.py prefixes {{ROOT}}.
+# A link shows either a stroke `icon` or an official Odoo app icon via `odoo`.
 NAV = [
     {
         "label": "Solution", "id": "solution",
         "columns": [
             {"title": "ERP", "links": [
-                {"label": "Odoo ERP System", "href": "solutions/odoo-erp.html", "icon": "layers",
+                {"label": "Odoo ERP System", "href": "solutions/odoo-erp.html", "odoo": "accountant",
                  "desc": "Accounting, Sales and Inventory on one system."},
             ]},
             {"title": "Marketing", "href": "solutions/marketing.html", "links": [
-                {"label": "Website", "href": "solutions/website.html", "icon": "globe",
+                {"label": "Website", "href": "solutions/website.html", "odoo": "website",
                  "desc": "Fast, clear sites that explain what you do."},
-                {"label": "Social Media Management", "href": "solutions/social-media.html", "icon": "megaphone",
+                {"label": "Social Media Management", "href": "solutions/social-media.html", "odoo": "social",
                  "desc": "Steady posting with a plan behind it."},
             ]},
         ],
@@ -72,19 +73,19 @@ NAV = [
             {"title": "Odoo Apps", "href": "odoo/apps.html", "links": [
                 {"label": "All Odoo apps", "href": "odoo/apps.html", "icon": "grid",
                  "desc": "The full catalogue, by category."},
-                {"label": "Accounting", "href": "odoo/apps.html#finance", "icon": "calculator",
+                {"label": "Accounting", "href": "odoo/apps.html#finance", "odoo": "accountant",
                  "desc": "Our first focus area."},
-                {"label": "Sales", "href": "odoo/apps.html#sales", "icon": "trend",
+                {"label": "Sales", "href": "odoo/apps.html#sales", "odoo": "sale",
                  "desc": "Quotes to orders to invoices."},
-                {"label": "Inventory", "href": "odoo/apps.html#supply-chain", "icon": "box",
+                {"label": "Inventory", "href": "odoo/apps.html#supply-chain", "odoo": "stock",
                  "desc": "Stock, warehouses and deliveries."},
             ]},
             {"title": "Customization", "links": [
-                {"label": "ERP System", "href": "odoo/erp-system.html", "icon": "layers",
+                {"label": "ERP System", "href": "odoo/erp-system.html", "odoo": "web_studio",
                  "desc": "Tailored modules and workflows."},
-                {"label": "AI Integration", "href": "odoo/ai-integration.html", "icon": "cpu",
+                {"label": "AI Integration", "href": "odoo/ai-integration.html", "odoo": "ai_app",
                  "desc": "AI assistants inside Odoo."},
-                {"label": "CRM Development", "href": "odoo/crm-development.html", "icon": "usercheck",
+                {"label": "CRM Development", "href": "odoo/crm-development.html", "odoo": "crm",
                  "desc": "Pipelines built around your sales."},
             ]},
         ],
@@ -94,82 +95,92 @@ NAV = [
 ]
 
 # ---------------------------------------------------------------- Odoo apps
-# Official Odoo app catalogue, grouped the way odoo.com groups it.
+# Official Odoo app catalogue, grouped the way odoo.com groups it. `mod` is the
+# module name used by Odoo's icon CDN; the SVGs live in assets/img/odoo/<mod>.svg.
+def _a(name, desc, mod, focus=False):
+    return {"name": name, "desc": desc, "mod": mod, "focus": focus}
+
 APP_CATEGORIES = [
     {"id": "finance", "title": "Finance", "icon": "calculator", "focus": True,
      "apps": [
-         ("Accounting", "Journals, bank sync, tax reports and closing.", True),
-         ("Invoicing", "Send invoices and collect payments online.", True),
-         ("Expenses", "Capture receipts and approve claims."),
-         ("Spreadsheet (BI)", "Live pivots and dashboards on Odoo data."),
-         ("Documents", "File storage with workflows and OCR."),
-         ("Sign", "Legally binding e-signatures."),
+         _a("Accounting", "Journals, bank sync, tax reports and closing.", "accountant", True),
+         _a("Invoicing", "Send invoices and collect payments online.", "account", True),
+         _a("Expenses", "Capture receipts and approve claims.", "hr_expense"),
+         _a("Spreadsheet (BI)", "Live pivots and dashboards on Odoo data.", "spreadsheet_dashboard"),
+         _a("Documents", "File storage with workflows and OCR.", "documents"),
+         _a("Sign", "Legally binding e-signatures.", "sign"),
      ]},
     {"id": "sales", "title": "Sales", "icon": "trend", "focus": True,
      "apps": [
-         ("CRM", "Leads, pipeline and activities.", True),
-         ("Sales", "Quotations, orders and upsells.", True),
-         ("Point of Sale — Shop", "Offline-ready retail checkout."),
-         ("Point of Sale — Restaurant", "Tables, kitchen printing, bills."),
-         ("Subscriptions", "Recurring billing and renewals."),
-         ("Rental", "Book, pick up and return assets."),
+         _a("CRM", "Leads, pipeline and activities.", "crm", True),
+         _a("Sales", "Quotations, orders and upsells.", "sale", True),
+         _a("Point of Sale — Shop", "Offline-ready retail checkout.", "point_of_sale"),
+         _a("Point of Sale — Restaurant", "Tables, kitchen printing, bills.", "pos_restaurant"),
+         _a("Subscriptions", "Recurring billing and renewals.", "sale_subscription"),
+         _a("Rental", "Book, pick up and return assets.", "sale_renting"),
      ]},
     {"id": "websites", "title": "Websites", "icon": "globe",
      "apps": [
-         ("Website Builder", "Drag-and-drop pages with SEO tools."),
-         ("eCommerce", "Online store tied to stock and accounting."),
-         ("Blog", "Articles with scheduling and SEO."),
-         ("Forum", "Community Q&A."),
-         ("Live Chat", "Chat with visitors from Discuss."),
-         ("eLearning", "Courses, quizzes and certifications."),
+         _a("Website Builder", "Drag-and-drop pages with SEO tools.", "website"),
+         _a("eCommerce", "Online store tied to stock and accounting.", "website_sale"),
+         _a("Blog", "Articles with scheduling and SEO.", "website_blog"),
+         _a("Forum", "Community Q&A.", "website_forum"),
+         _a("Live Chat", "Chat with visitors from Discuss.", "im_livechat"),
+         _a("eLearning", "Courses, quizzes and certifications.", "website_slides"),
      ]},
     {"id": "supply-chain", "title": "Supply Chain", "icon": "box", "focus": True,
      "apps": [
-         ("Inventory", "Multi-warehouse stock, barcodes, replenishment.", True),
-         ("Manufacturing", "Bills of materials and work orders."),
-         ("PLM", "Engineering changes and versions."),
-         ("Purchase", "RFQs, vendor pricelists, receipts.", True),
-         ("Maintenance", "Preventive and corrective requests."),
-         ("Quality", "Control points and quality alerts."),
+         _a("Inventory", "Multi-warehouse stock, barcodes, replenishment.", "stock", True),
+         _a("Manufacturing", "Bills of materials and work orders.", "mrp"),
+         _a("PLM", "Engineering changes and versions.", "mrp_plm"),
+         _a("Purchase", "RFQs, vendor pricelists, receipts.", "purchase", True),
+         _a("Maintenance", "Preventive and corrective requests.", "maintenance"),
+         _a("Quality", "Control points and quality alerts.", "quality_control"),
      ]},
     {"id": "hr", "title": "Human Resources", "icon": "briefcase",
      "apps": [
-         ("Employees", "Directory, contracts and org chart."),
-         ("Recruitment", "Job posts, applicants and interviews."),
-         ("Time Off", "Leave requests and allocations."),
-         ("Appraisals", "Reviews and goals."),
-         ("Referrals", "Employee referral programme."),
-         ("Fleet", "Vehicles, contracts and costs."),
-         ("Payroll", "Salary rules and payslips."),
+         _a("Employees", "Directory, contracts and org chart.", "hr"),
+         _a("Recruitment", "Job posts, applicants and interviews.", "hr_recruitment"),
+         _a("Time Off", "Leave requests and allocations.", "hr_holidays"),
+         _a("Appraisals", "Reviews and goals.", "hr_appraisal"),
+         _a("Referrals", "Employee referral programme.", "hr_referral"),
+         _a("Fleet", "Vehicles, contracts and costs.", "fleet"),
+         _a("Payroll", "Salary rules and payslips.", "hr_payroll"),
      ]},
     {"id": "marketing", "title": "Marketing", "icon": "megaphone",
      "apps": [
-         ("Social Marketing", "Schedule and track posts."),
-         ("Email Marketing", "Campaigns, lists and A/B tests."),
-         ("SMS Marketing", "Text campaigns with tracking."),
-         ("Events", "Registrations, tickets and badges."),
-         ("Marketing Automation", "Multi-step flows on triggers."),
-         ("Surveys", "Forms, quizzes and feedback."),
+         _a("Social Marketing", "Schedule and track posts.", "social"),
+         _a("Email Marketing", "Campaigns, lists and A/B tests.", "mass_mailing"),
+         _a("SMS Marketing", "Text campaigns with tracking.", "mass_mailing_sms"),
+         _a("Events", "Registrations, tickets and badges.", "event"),
+         _a("Marketing Automation", "Multi-step flows on triggers.", "marketing_automation"),
+         _a("Surveys", "Forms, quizzes and feedback.", "survey"),
      ]},
     {"id": "services", "title": "Services", "icon": "wrench",
      "apps": [
-         ("Project", "Tasks, stages and milestones."),
-         ("Timesheets", "Time tracking billed to projects."),
-         ("Field Service", "On-site jobs with worksheets."),
-         ("Helpdesk", "Tickets, SLAs and knowledge base."),
-         ("Planning", "Shift and resource scheduling."),
-         ("Appointments", "Online booking calendars."),
+         _a("Project", "Tasks, stages and milestones.", "project"),
+         _a("Timesheets", "Time tracking billed to projects.", "hr_timesheet"),
+         _a("Field Service", "On-site jobs with worksheets.", "industry_fsm"),
+         _a("Helpdesk", "Tickets, SLAs and knowledge base.", "helpdesk"),
+         _a("Planning", "Shift and resource scheduling.", "planning"),
+         _a("Appointments", "Online booking calendars.", "appointment"),
      ]},
     {"id": "productivity", "title": "Productivity", "icon": "zap",
      "apps": [
-         ("Discuss", "Chat, channels and notifications."),
-         ("Approvals", "Request and approve anything."),
-         ("IoT", "Connect scales, printers and devices."),
-         ("VoIP", "Calls from inside Odoo."),
-         ("Knowledge", "Wiki pages linked to records."),
-         ("WhatsApp", "Templates and conversations."),
+         _a("Discuss", "Chat, channels and notifications.", "mail"),
+         _a("Approvals", "Request and approve anything.", "approvals"),
+         _a("IoT", "Connect scales, printers and devices.", "iot"),
+         _a("VoIP", "Calls from inside Odoo.", "voip"),
+         _a("Knowledge", "Wiki pages linked to records.", "knowledge"),
+         _a("WhatsApp", "Templates and conversations.", "whatsapp"),
+         _a("AI", "Assistants and agents inside Odoo.", "ai_app"),
      ]},
 ]
+
+# Apps shown in the hero marquee strip (module names).
+MARQUEE = ["accountant", "sale", "stock", "crm", "purchase", "account", "point_of_sale", "website_sale",
+           "hr", "project", "helpdesk", "mass_mailing", "mrp", "documents", "sign", "hr_expense",
+           "planning", "appointment", "knowledge", "ai_app"]
 
 # ---------------------------------------------------------------- icons
 # 24px stroke icons (Lucide-style). Used via {{icon:name}} in partials.
@@ -226,4 +237,7 @@ ICONS = {
     "smile": _S % '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/>',
     "code": _S % '<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>',
     "send": _S % '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
+    "bot": _S % '<rect x="3" y="8" width="18" height="12" rx="3"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1"/><path d="M8 14h.01M16 14h.01"/><path d="M9 17.5c1.5 1 4.5 1 6 0"/>',
+    "whatsapp": _S % '<path d="M3 21l1.6-4.7A9 9 0 1 1 8 19.9L3 21z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-1.9-1-1 .9c-1-.4-1.9-1.3-2.3-2.3l.9-1-1-1.9L9 9.5z"/>',
+    "expand": _S % '<path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/>',
 }
