@@ -294,8 +294,18 @@
     });
     tilt.raf = (Math.abs(tilt.tx - tilt.cx) > 0.0005 || Math.abs(tilt.ty - tilt.cy) > 0.0005) ? requestAnimationFrame(tiltStep) : null;
   }
+  // While the pointer is over an interactive icon the stage stops moving, so the hit box stays put.
+  var HOT = '[data-app],[data-flow],.spec,.tile,.fnode,.pl button,.kpi,.hero-arrow,.dot';
+  var hoverLock = false;
+  hero.addEventListener('pointerover', function (e) {
+    if (e.target.closest(HOT)) { hoverLock = true; tilt.tx = tilt.cx; tilt.ty = tilt.cy; }
+  });
+  hero.addEventListener('pointerout', function (e) {
+    var t = e.target.closest(HOT);
+    if (t && !(e.relatedTarget && t.contains(e.relatedTarget))) hoverLock = false;
+  });
   function parallax(x, y) {
-    if (!fine || reduce || mobile.matches) return;
+    if (!fine || reduce || mobile.matches || hoverLock) return;
     tilt.tx = x; tilt.ty = y;
     if (!tilt.raf) tilt.raf = requestAnimationFrame(tiltStep);
   }
