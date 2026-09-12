@@ -19,7 +19,7 @@ what GitHub Pages serves — commit both the partial and the generated file.
 
 | What | Where |
 |---|---|
-| Navigation tree, company details, Odoo app catalogue, icons | `_src/site.py` |
+| Navigation tree, company details, Odoo app catalogue, icons | `_src/sitedata.py` |
 | Layout, header, mobile nav, Let's Talk panel, footer | `_src/build.py` |
 | Design tokens and all styles | `assets/css/site.css` |
 | Menus, panel, forms, reveals | `assets/js/site.js` |
