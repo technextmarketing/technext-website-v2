@@ -13,11 +13,18 @@
     if (!el) return;
     if (!document.documentElement.classList.contains('intro')) { el.remove(); return; }
     document.body.style.overflow = 'hidden';
+    // Mark as seen the moment it starts (not at the end), so a refresh mid-intro never replays it.
+    // Cookie fallback covers browsers that block localStorage. A ?intro=1 replay strips itself from the URL.
+    try { localStorage.setItem('tn_intro_seen', '1'); } catch (_) {}
+    try { document.cookie = 'tn_intro_seen=1; max-age=31536000; path=/; SameSite=Lax'; } catch (_) {}
+    if (/[?&]intro=1(&|$)/.test(location.search) && history.replaceState) {
+      var clean = location.search.replace(/([?&])intro=1(&|$)/, function (m, a, b) { return b === '&' ? a : ''; });
+      history.replaceState(null, '', location.pathname + clean + location.hash);
+    }
     var done = false, timers = [], raf = null;
     function finish() {
       if (done) return; done = true;
       timers.forEach(clearTimeout); if (raf) cancelAnimationFrame(raf);
-      try { localStorage.setItem('tn_intro_seen', '1'); } catch (_) {}
       el.classList.add('is-out');
       document.documentElement.classList.remove('intro');
       document.body.style.overflow = '';
@@ -55,7 +62,7 @@
       var cx = W / 2, cy = H / 2, t0 = null, pts = [];
       for (var i = 0; i < 90; i++) { var a = Math.random() * 6.283, rr = Math.max(W, H) * (0.35 + Math.random() * 0.45); pts.push({ x: cx + Math.cos(a) * rr, y: cy + Math.sin(a) * rr, r: 1.5 + Math.random() * 2.5, k: 0.6 + Math.random() * 0.4, ph: Math.random() * 6.283 }); }
       function step(t) {
-        if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 1500), e = 1 - Math.pow(1 - p, 3);
+        if (!t0) t0 = t; var p = Math.min(1, (t - t0) / 2200), e = 1 - Math.pow(1 - p, 3);
         ctx.clearRect(0, 0, W, H);
         for (var i = 0; i < pts.length; i++) {
           var q = pts[i], tx = cx + Math.cos(q.ph) * 150 * (1 - e) , ty = cy + Math.sin(q.ph) * 90 * (1 - e);
@@ -72,17 +79,18 @@
     function typewriter() {
       var sub = $('.intro-sub', el), text = el.dataset.tagline || '', i = 0;
       sub.textContent = ''; sub.classList.add('is-typing');
-      (function tick() { if (done) return; sub.textContent = text.slice(0, ++i); if (i < text.length) timers.push(setTimeout(tick, 34)); else timers.push(setTimeout(function () { sub.classList.remove('is-typing'); }, 700)); })();
+      (function tick() { if (done) return; sub.textContent = text.slice(0, ++i); if (i < text.length) timers.push(setTimeout(tick, 52)); else timers.push(setTimeout(function () { sub.classList.remove('is-typing'); }, 900)); })();
     }
 
+    // 10 s: flight 0.3–3.6 s (same curve as the CSS `fly` keyframes), tagline at 4.6 s, fade at 10.0 s
     var L = buildPath();
     requestAnimationFrame(function () {
       el.classList.add('is-go');
-      trail.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 2000, delay: 150, easing: 'cubic-bezier(.3,.55,.15,1)', fill: 'forwards' });
+      trail.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 3300, delay: 300, easing: 'cubic-bezier(.3,.55,.15,1)', fill: 'forwards' });
       particles();
     });
-    timers.push(setTimeout(typewriter, 3400));
-    timers.push(setTimeout(finish, 5000));
+    timers.push(setTimeout(typewriter, 4600));
+    timers.push(setTimeout(finish, 10000));
     window.addEventListener('resize', buildPath);
     el.addEventListener('click', finish); // let impatient visitors skip
     document.addEventListener('keydown', function onKey(e) { if (e.key === 'Escape' || e.key === 'Enter') { finish(); document.removeEventListener('keydown', onKey); } });

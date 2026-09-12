@@ -22,7 +22,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/site.css">
 <style>#intro{display:none}html.intro #intro{display:grid}</style>
-<script>(function(){try{var force=/[?&]intro=1(&|$)/.test(location.search);if((force||!localStorage.getItem('tn_intro_seen'))&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
+<script>(function(){try{var force=/[?&]intro=1(&|$)/.test(location.search);var seen=false;try{seen=!!localStorage.getItem('tn_intro_seen');}catch(e){}if(!seen)seen=/(^|; )tn_intro_seen=1/.test(document.cookie);if((force||!seen)&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "TechNext Pte. Ltd.", "alternateName": "TechNext", "url": "https://technextmarketing.github.io/technext-website-v2/", "email": "sales@technext.asia", "telephone": "+65 8839 6998", "address": {"@type": "PostalAddress", "streetAddress": "261 Waterloo Street #03-36", "addressLocality": "Singapore", "postalCode": "180261", "addressCountry": "SG"}, "sameAs": ["https://www.linkedin.com/company/technext-asia"], "knowsAbout": ["Odoo ERP", "Odoo Accounting", "Odoo Sales", "Odoo Inventory", "Website design", "Social media management"]}</script>
 </head>
@@ -40,7 +40,13 @@
     <span class="intro-word" style="aspect-ratio:763/132"><img class="intro-letter" style="left:0.00%;width:23.07%;--i:0" src="assets/img/letters/l0.png" alt="" decoding="sync"><img class="intro-letter" style="left:24.25%;width:11.80%;--i:1" src="assets/img/letters/l1.png" alt="" decoding="sync"><img class="intro-letter" style="left:38.14%;width:10.62%;--i:2" src="assets/img/letters/l2.png" alt="" decoding="sync"><img class="intro-letter" style="left:51.38%;width:13.37%;--i:3" src="assets/img/letters/l3.png" alt="" decoding="sync"><img class="intro-letter" style="left:66.32%;width:33.42%;--i:4" src="assets/img/letters/l4.png" alt="" decoding="sync"></span>
   </div>
   <span class="intro-sub" aria-hidden="true"></span>
+  <span class="intro-pills" aria-hidden="true">
+    <span class="intro-pill" style="--i:0"><img class="oi" src="assets/img/odoo/accountant.svg" alt="" width="18" height="18" loading="lazy" decoding="async">Accounting</span>
+    <span class="intro-pill" style="--i:1"><img class="oi" src="assets/img/odoo/sale.svg" alt="" width="18" height="18" loading="lazy" decoding="async">Sales</span>
+    <span class="intro-pill" style="--i:2"><img class="oi" src="assets/img/odoo/stock.svg" alt="" width="18" height="18" loading="lazy" decoding="async">Inventory</span>
+  </span>
   <span class="intro-shine" aria-hidden="true"></span>
+  <span class="intro-shine intro-shine--2" aria-hidden="true"></span>
   <span class="intro-progress" aria-hidden="true"></span>
   <button class="intro-skip" type="button">Skip</button>
 </div>

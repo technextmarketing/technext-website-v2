@@ -218,7 +218,7 @@ LAYOUT = '''<!doctype html>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{ROOT}assets/css/site.css">
 <style>#intro{display:none}html.intro #intro{display:grid}</style>
-<script>(function(){try{var force=/[?&]intro=1(&|$)/.test(location.search);if((force||!localStorage.getItem('tn_intro_seen'))&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
+<script>(function(){try{var force=/[?&]intro=1(&|$)/.test(location.search);var seen=false;try{seen=!!localStorage.getItem('tn_intro_seen');}catch(e){}if(!seen)seen=/(^|; )tn_intro_seen=1/.test(document.cookie);if((force||!seen)&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('intro');}}catch(e){}})();</script>
 {HEAD_EXTRA}
 <script type="application/ld+json">{JSONLD}</script>
 </head>
@@ -236,7 +236,13 @@ LAYOUT = '''<!doctype html>
     <span class="intro-word" style="aspect-ratio:{LETTERS_W}/{LETTERS_H}">{LETTERS}</span>
   </div>
   <span class="intro-sub" aria-hidden="true"></span>
+  <span class="intro-pills" aria-hidden="true">
+    <span class="intro-pill" style="--i:0">{{odoo:accountant:18}}Accounting</span>
+    <span class="intro-pill" style="--i:1">{{odoo:sale:18}}Sales</span>
+    <span class="intro-pill" style="--i:2">{{odoo:stock:18}}Inventory</span>
+  </span>
   <span class="intro-shine" aria-hidden="true"></span>
+  <span class="intro-shine intro-shine--2" aria-hidden="true"></span>
   <span class="intro-progress" aria-hidden="true"></span>
   <button class="intro-skip" type="button">Skip</button>
 </div>
