@@ -20,7 +20,7 @@
   /* ---------------- knowledge base ---------------- */
   var KB = [
     { id: 'odoo', kw: ['what is odoo', 'odoo?', 'about odoo', 'erp', 'what do you do', 'services', 'offer'],
-      a: '<b>Odoo</b> is a suite of business apps on one database — Accounting, Sales, Inventory, CRM, Purchase, POS, HR and more. TechNext is an <b>Odoo Ready Partner</b>: we scope, configure, migrate, train and support it. Our first focus is Accounting, Sales and Inventory.',
+      a: '<b>Odoo</b> is a suite of business apps on one database — Accounting, Sales, Inventory, CRM, Purchase, POS, HR and more. TechNext is an <b>Odoo Partner</b>: we scope, configure, migrate, train and support it. Our first focus is Accounting, Sales and Inventory.',
       actions: [['link', 'solutions/odoo-erp.html', 'Odoo ERP'], ['link', 'odoo/apps.html', 'All apps']], next: ['accounting', 'sales', 'inventory', 'how'] },
     { id: 'accounting', kw: ['account', 'bookkeep', 'gst', 'vat', 'tax', 'bank', 'reconcil', 'invoice', 'ledger', 'month-end', 'month end', 'finance'],
       a: '<b>Odoo Accounting</b> covers the ledger, bank feeds and reconciliation, GST/VAT returns, multi-currency and full financial reports.<ul><li>' + oi('accountant') + 'Bank sync and one-click reconciliation</li><li>' + oi('account') + 'Invoicing with online payment links</li><li>' + oi('hr_expense') + 'Expenses posted straight to the books</li></ul>We usually implement it together with Sales and Inventory so nothing is typed twice.',
@@ -44,7 +44,7 @@
       a: 'We configure Odoo for <b>Medical</b>, <b>Travel</b>, <b>Retail</b>, <b>Ecommerce</b>, <b>Construction</b> (job costing, progress billing), <b>F&amp;B</b> (POS to kitchen, recipes, outlet books), <b>Manufacturing</b> (BoMs, work orders, costing) and <b>Health &amp; Wellness</b> (bookings, memberships, retail).',
       actions: [['link', 'industries/medical.html', 'Medical'], ['link', 'industries/retail.html', 'Retail'], ['link', 'industries/construction.html', 'Construction'], ['link', 'industries/fnb.html', 'F&B'], ['link', 'industries/manufacturing.html', 'Manufacturing'], ['link', 'industries/health-wellness.html', 'Wellness']], next: ['price', 'human'] },
     { id: 'partner', kw: ['partner', 'certified', 'ready partner', 'official', 'why technext', 'who are you', 'about technext', 'company', 'experience', 'clients'],
-      a: 'TechNext Pte. Ltd. is a Singapore-based <b>Odoo Ready Partner</b> serving clients globally. Clients in 10+ countries; 11+ enterprise clients transformed. Same team from discovery through support.',
+      a: 'TechNext Pte. Ltd. is a Singapore-based <b>Odoo Partner</b> serving clients globally. Clients in 10+ countries; 11+ enterprise clients transformed. Same team from discovery through support.',
       actions: [['link', 'company.html', 'About TechNext'], ['link', 'case-studies.html', 'Case studies']], next: ['how', 'human'] },
     { id: 'marketing', kw: ['website', 'web design', 'social media', 'marketing', 'facebook', 'linkedin', 'instagram', 'seo', 'landing page', 'logo', 'brand', 'branding', 'deck', 'brochure', 'graphic'],
       a: 'Separately from Odoo, TechNext does <b>web design &amp; development</b>, <b>social media management</b> on a monthly plan, and <b>graphic &amp; brand assets</b> — logo, decks, brochures and templates as editable files you own.',

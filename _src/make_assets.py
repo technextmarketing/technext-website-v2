@@ -122,7 +122,7 @@ def og():
     im.paste(logo, (80, 80), logo)
     d.text((80, 220), "Odoo ERP for growing companies.", font=font(58, True), fill=INK)
     d.text((80, 300), "Accounting · Sales · Inventory", font=font(40), fill=BLUE)
-    d.text((80, 380), "Implemented by an Odoo Ready Partner in Singapore.", font=font(30), fill=BODY)
+    d.text((80, 380), "Implemented by an Odoo Partner in Singapore.", font=font(30), fill=BODY)
     bdg = fit(Image.open(IMG / "odoo-ready-partner.png").convert("RGBA"), 300)
     im.paste(bdg, (W - bdg.width - 80, H - bdg.height - 70), bdg)
     d.rectangle((0, H - 8, W, H), fill=BLUE)

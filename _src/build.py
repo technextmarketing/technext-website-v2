@@ -237,7 +237,7 @@ LAYOUT = '''<!doctype html>
 <script type="application/ld+json">{JSONLD}</script>
 </head>
 <body class="{BODY_CLASS}">
-<div class="intro" id="intro" aria-hidden="true" data-tagline="Odoo Ready Partner · Singapore">
+<div class="intro" id="intro" aria-hidden="true" data-tagline="Odoo Partner · Singapore">
   <div class="intro-bg"></div>
   <div class="intro-bloom"></div>
   <canvas class="intro-particles"></canvas>
@@ -500,7 +500,7 @@ def app_page(mod: str) -> tuple:
         <div class="app-hero-head">{{{{odoo:{mod}:56}}}}<span class="hand">odoo · {cat["title"].lower()}</span></div>
         <h1>{name}<span class="app-sub">{headline}</span></h1>
         <p class="lead">{lead}</p>
-        <div class="pill-row"><span class="tag tag--odoo">Odoo Ready Partner</span>{focus}</div>
+        <div class="pill-row"><span class="tag tag--odoo">Odoo Partner</span>{focus}</div>
         <div class="actions">
           <a class="btn btn-primary btn-lg" href="{{{{ROOT}}}}quotation.html">Get a quotation {{{{icon:arrow}}}}</a>
           <a class="btn btn-ghost btn-lg" href="#talk">Talk to us</a>
@@ -535,7 +535,7 @@ def app_page(mod: str) -> tuple:
   <div class="container">
     <div class="sec-head sec-head--row reveal"><div><span class="hand">works with</span><h2 style="margin:0">Apps that share the same database.</h2></div><a class="btn-link" href="{{{{ROOT}}}}odoo/apps.html">All Odoo apps {{{{icon:arrow}}}}</a></div>
     <div class="apps-grid">{related}</div>
-    <p class="small muted mt-24">Product descriptions, screenshots and videos are © Odoo S.A., reproduced for reference from <a href="{odoo_url}" target="_blank" rel="noopener">odoo.com</a>. TechNext is an Odoo Ready Partner; we implement and support Odoo.</p>
+    <p class="small muted mt-24">Product descriptions, screenshots and videos are © Odoo S.A., reproduced for reference from <a href="{odoo_url}" target="_blank" rel="noopener">odoo.com</a>. TechNext is an Odoo Partner; we implement and support Odoo.</p>
   </div>
 </section>
 

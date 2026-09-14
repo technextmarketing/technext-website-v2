@@ -4,7 +4,7 @@
 
 SITE_URL = "https://technextmarketing.github.io/technext-website-v2/"
 SITE_NAME = "TechNext"
-DEFAULT_DESC = ("TechNext is an Odoo Ready Partner delivering all-in-one Odoo ERP software, world-class and "
+DEFAULT_DESC = ("TechNext is an Odoo Partner delivering all-in-one Odoo ERP software, world-class and "
                 "holistic business consultation, and impressive website development for growing companies.")
 
 # The four positioning pillars (used in structured data and the home "what we stand for" strip).
@@ -12,7 +12,7 @@ PILLARS = [
     ("layout", "Impressive Website Development", "Fast, modern sites that explain what you do and win the click."),
     ("target", "World-Class & Holistic Business Consultation", "We map the whole business first, then fix the right thing."),
     ("database", "All-in-One Enterprise Resource Planning", "One Odoo database for sales, stock, money and more."),
-    ("odoo:ai_app", "Odoo Ready Partner", "Odoo's methodology and partner resources, applied to your rollout."),
+    ("odoo:ai_app", "Odoo Partner", "Odoo's methodology and partner resources, applied to your rollout."),
 ]
 
 COMPANY = {
