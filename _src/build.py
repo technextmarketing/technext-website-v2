@@ -322,7 +322,10 @@ def jsonld(canonical: str) -> str:
         "address": {"@type": "PostalAddress", "streetAddress": c["address"][0],
                     "addressLocality": "Singapore", "postalCode": "180261", "addressCountry": "SG"},
         "sameAs": [c["linkedin"]],
-        "knowsAbout": ["Odoo ERP", "Odoo Accounting", "Odoo Sales", "Odoo Inventory", "Website design", "Social media management"],
+        "description": S.DEFAULT_DESC,
+        "slogan": "Impressive website development, world-class business consultation, all-in-one Odoo ERP.",
+        "knowsAbout": ["Odoo ERP", "Enterprise Resource Planning", "Business consultation", "Website development",
+                       "Odoo Accounting", "Odoo Sales", "Odoo Inventory", "Odoo implementation", "AI solutions"],
     }
     return json.dumps(data, ensure_ascii=False)
 
@@ -361,6 +364,16 @@ def marquee_html() -> str:
     names = {a["mod"]: a["name"] for c in S.APP_CATEGORIES for a in c["apps"]}
     items = "".join(f'<span class="mq-item">{{{{odoo:{m}:26}}}}{names.get(m, m)}</span>' for m in S.MARQUEE)
     return f'<div class="mq-track">{items}</div><div class="mq-track" aria-hidden="true">{items}</div>'
+
+
+def pillars_html() -> str:
+    """The four positioning pillars as a card row (sitedata.PILLARS). Icon is a stroke name or 'odoo:mod'."""
+    cards = []
+    for i, (ic, title, desc) in enumerate(S.PILLARS):
+        glyph = f'{{{{odoo:{ic.split(":", 1)[1]}:34}}}}' if ic.startswith("odoo:") else f'{{{{icon:{ic}}}}}'
+        cards.append(f'<article class="pillar reveal" style="--i:{i}"><span class="pillar-ic">{glyph}</span>'
+                     f'<h3>{title}</h3><p>{desc}</p></article>')
+    return "".join(cards)
 
 
 def letters_html() -> tuple:
@@ -551,6 +564,8 @@ def render(meta: dict, content: str, nav_cache: dict) -> str:
         content = content.replace("{{APPS_NAV}}", apps_nav_html()).replace("{{APPS_CATS}}", apps_cats_html())
     if "{{MARQUEE}}" in content:
         content = content.replace("{{MARQUEE}}", marquee_html())
+    if "{{PILLARS}}" in content:
+        content = content.replace("{{PILLARS}}", pillars_html())
 
     out_rel = meta["out"]
     depth = out_rel.count("/")
