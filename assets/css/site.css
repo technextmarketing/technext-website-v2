@@ -708,7 +708,7 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
   .slide:not(:first-child){display:none}
   .hero .kw>span,.hero .up{opacity:1;transform:none;animation:none}
   .hero .rot>b{transition:none}
-  .slide-inner{grid-template-columns:1fr;gap:24px;padding:28px 0 36px;min-height:0}
+  .slide-inner{grid-template-columns:1fr;gap:24px;padding:28px 0 36px;min-height:0;max-width:600px;margin-inline:auto}
   .slide-copy h1{font-size:clamp(2rem,8.6vw,2.8rem);margin-bottom:16px}
   .slide-copy .lead{font-size:1.02rem}
   .slide-copy .actions{margin-top:22px;gap:10px}
@@ -773,8 +773,9 @@ body.chat-open .side-tabs{opacity:0;pointer-events:none;transform:translateY(-50
   .mnav{width:100%}
   .pop-head{padding:20px 18px 0}
   .pop-body{padding:14px 18px 6px}
-  .pop-foot{padding:12px 18px 20px}
-  .pop-foot .btn{flex:1}
+  .pop-foot{padding:12px 18px 20px;flex-direction:column;align-items:stretch;gap:10px}
+  .pop-foot .btn{width:100%;flex:none}
+  .pop-foot .pop-nav{width:100%;justify-content:space-between}
   .slide-tag{font-size:12px;flex-wrap:wrap}
 }
 @media (max-width:420px){
